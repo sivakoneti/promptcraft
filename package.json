@@ -12,11 +12,13 @@
     "build": "bun run build:cli",
     "build:cli": "bun build engine/src/cli.ts --compile --target=bun-linux-x64 --outfile bin/promptcraft",
     "build:bundle": "bun build engine/src/cli.ts --target=node --outfile dist/cli.js",
-    "typecheck": "tsc --noEmit --project engine/tsconfig.json"
+    "typecheck": "bun x tsc --noEmit --project engine/tsconfig.json"
   },
   "devDependencies": {
     "@types/node": "^24.3.1",
-    "typescript": "^7.0.2"
+    "bun-types": "^1.4.0",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.11"
   },
   "dependencies": {
     "zod": "^3.24.2"

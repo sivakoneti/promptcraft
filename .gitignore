@@ -1,0 +1,32 @@
+# .gitignore
+
+# Dependencies
+node_modules/
+bun.lockb
+bun.lock
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Build artifacts & binaries
+dist/
+build/
+bin/*
+!bin/.gitkeep
+
+# Temporary & cache
+.DS_Store
+*.log
+.cache/
+.tmp/
+tmp/
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Editor / IDE
+.idea/
+.vscode/
+*.swp
+*.swo
