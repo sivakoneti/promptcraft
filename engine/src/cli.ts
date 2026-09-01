@@ -589,11 +589,24 @@ export function executeAction(action: string, payload: Record<string, unknown>):
 export function main(): void {
   const rawArgs = process.argv.slice(2);
 
-  if (rawArgs.length === 0 || rawArgs.includes('-h') || rawArgs.includes('--help') || rawArgs[0] === 'help') {
+  if (rawArgs.includes('-h') || rawArgs.includes('--help') || rawArgs[0] === 'help') {
     printHelp();
     return;
   }
 
+  let stdinPayload = '';
+  if (!process.stdin.isTTY) {
+    try {
+      stdinPayload = readFileSync(0, 'utf-8');
+    } catch {
+      stdinPayload = '';
+    }
+  }
+
+  if (rawArgs.length === 0 && !stdinPayload.trim()) {
+    printHelp();
+    return;
+  }
   if (rawArgs[0] === 'capabilities') {
     outputResult(handleCapabilities());
     return;
@@ -609,19 +622,12 @@ export function main(): void {
     return;
   }
 
-  let payloadStr = '';
+  let payloadStr = stdinPayload;
   if (typeof flags.state === 'string') {
     payloadStr = flags.state;
   } else if (typeof flags.json === 'string') {
     payloadStr = flags.json;
-  } else if (!process.stdin.isTTY) {
-    try {
-      payloadStr = readFileSync(0, 'utf-8');
-    } catch {
-      payloadStr = '';
-    }
   }
-
   if (payloadStr.trim()) {
     try {
       const input = JSON.parse(payloadStr) as Record<string, unknown>;
