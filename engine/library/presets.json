@@ -1,0 +1,3623 @@
+{
+  "version": "1.0.0",
+  "shots": [
+    {
+      "id": "bird-s-eye-view",
+      "label": "Bird's-eye view",
+      "promptValue": "Bird's-eye view: The camera is positioned directly above the subject, looking down from a height,",
+      "category": "shots"
+    },
+    {
+      "id": "close-up",
+      "label": "Close up",
+      "promptValue": "Close up shot",
+      "category": "shots"
+    },
+    {
+      "id": "cutaway-shot",
+      "label": "Cutaway shot",
+      "promptValue": "Cutaway shot",
+      "category": "shots"
+    },
+    {
+      "id": "dutch-angle",
+      "label": "Dutch angle",
+      "promptValue": "Tilted dutch angle shot",
+      "category": "shots"
+    },
+    {
+      "id": "entire-body",
+      "label": "Entire body",
+      "promptValue": "Entire body shot",
+      "category": "shots"
+    },
+    {
+      "id": "establishing-shot",
+      "label": "Establishing shot",
+      "promptValue": "Establishing shot",
+      "category": "shots"
+    },
+    {
+      "id": "extreme-close-up",
+      "label": "Extreme close up",
+      "promptValue": "Extreme close up",
+      "category": "shots"
+    },
+    {
+      "id": "group-shot",
+      "label": "Group shot",
+      "promptValue": "Group shot",
+      "category": "shots"
+    },
+    {
+      "id": "headshot",
+      "label": "Headshot",
+      "promptValue": "Headshot",
+      "category": "shots"
+    },
+    {
+      "id": "high-angle-shot",
+      "label": "High angle shot",
+      "promptValue": "High angle shot: camera is physically higher than the subject looking down,",
+      "category": "shots"
+    },
+    {
+      "id": "insert-shot",
+      "label": "Insert shot",
+      "promptValue": "Insert shot",
+      "category": "shots"
+    },
+    {
+      "id": "low-angle-shot",
+      "label": "Low angle shot",
+      "promptValue": "Low angle shot: camera is physically lower than the subject looking up,",
+      "category": "shots"
+    },
+    {
+      "id": "medium-shot",
+      "label": "Medium shot",
+      "promptValue": "Medium shot",
+      "category": "shots"
+    },
+    {
+      "id": "over-the-shoulder-shot",
+      "label": "Over the shoulder shot",
+      "promptValue": "Over the shoulder shot looking at someone or something else in the scene from behind a shoulder or object",
+      "category": "shots"
+    },
+    {
+      "id": "overhead-shot",
+      "label": "Overhead shot",
+      "promptValue": "Overhead shot",
+      "category": "shots"
+    },
+    {
+      "id": "point-of-view-shot",
+      "label": "Point of view shot",
+      "promptValue": "strict first-person Point of View shot the camera is mounted at eye-level, the subject is not in frame, a Go-Pro Bodycam without text overlay from the perspective of",
+      "category": "shots"
+    },
+    {
+      "id": "reaction-shot",
+      "label": "Reaction shot",
+      "promptValue": "Reaction shot",
+      "category": "shots"
+    },
+    {
+      "id": "reverse-shot",
+      "label": "Reverse shot",
+      "promptValue": "Reverse shot",
+      "category": "shots"
+    },
+    {
+      "id": "three-quarter-body",
+      "label": "Three quarter body",
+      "promptValue": "Three quarter body shot",
+      "category": "shots"
+    },
+    {
+      "id": "tight-headshot",
+      "label": "Tight headshot",
+      "promptValue": "Tight headshot",
+      "category": "shots"
+    },
+    {
+      "id": "two-shot",
+      "label": "Two-shot",
+      "promptValue": "Two-shot",
+      "category": "shots"
+    },
+    {
+      "id": "upper-body",
+      "label": "Upper body",
+      "promptValue": "Upper body shot",
+      "category": "shots"
+    },
+    {
+      "id": "wide-shot",
+      "label": "Wide shot",
+      "promptValue": "Wide shot",
+      "category": "shots"
+    },
+    {
+      "id": "worm-s-eye-view",
+      "label": "Worm's-eye view",
+      "promptValue": "worm's-eye view - the camera is very low to the ground looking up and the ground could be included in frame",
+      "category": "shots"
+    }
+  ],
+  "directions": [
+    {
+      "id": "from-the-front",
+      "label": "from the front",
+      "promptValue": "facing the camera:",
+      "category": "directions"
+    },
+    {
+      "id": "from-the-back",
+      "label": "from the back",
+      "promptValue": "facing away from the camera:",
+      "category": "directions"
+    },
+    {
+      "id": "from-the-left",
+      "label": "from the left",
+      "promptValue": "facing the left side of the camera:",
+      "category": "directions"
+    },
+    {
+      "id": "from-the-right",
+      "label": "from the right",
+      "promptValue": "facing the right side of the camera:",
+      "category": "directions"
+    }
+  ],
+  "lighting": [
+    {
+      "id": "backlighting-rim-lighting",
+      "label": "Backlighting / Rim Lighting",
+      "promptValue": "Backlighting / Rim Lighting",
+      "category": "lighting"
+    },
+    {
+      "id": "blue-hour",
+      "label": "Blue hour",
+      "promptValue": "blue-hour ambient lighting",
+      "category": "lighting"
+    },
+    {
+      "id": "bounce-lighting",
+      "label": "Bounce Lighting",
+      "promptValue": "Bounce Lighting",
+      "category": "lighting"
+    },
+    {
+      "id": "candlelight-lighting",
+      "label": "Candlelight Lighting",
+      "promptValue": "Candlelight Lighting with warm flicker and deep surrounding shadows",
+      "category": "lighting"
+    },
+    {
+      "id": "chiaroscuro-lighting",
+      "label": "Chiaroscuro Lighting",
+      "promptValue": "Chiaroscuro Lighting with a single hard key and heavy shadow contrast",
+      "category": "lighting"
+    },
+    {
+      "id": "color-gels",
+      "label": "Color Gels",
+      "promptValue": "Color Gels gelled key light and a contrasting gelled rim light",
+      "category": "lighting"
+    },
+    {
+      "id": "direct-flash",
+      "label": "Direct flash",
+      "promptValue": "direct on-camera flash, creating harsh shadows and a flat, artificial look",
+      "category": "lighting"
+    },
+    {
+      "id": "fog-diffusion",
+      "label": "Fog diffusion",
+      "promptValue": "fog-diffused light",
+      "category": "lighting"
+    },
+    {
+      "id": "gobo-lighting",
+      "label": "Gobo Lighting",
+      "promptValue": "Gobo Lighting with patterned shadows and a soft ambient fill",
+      "category": "lighting"
+    },
+    {
+      "id": "golden-hour",
+      "label": "Golden hour",
+      "promptValue": "warm golden-hour lighting",
+      "category": "lighting"
+    },
+    {
+      "id": "hard-lighting",
+      "label": "Hard Lighting",
+      "promptValue": "Hard Lighting with a small punchy key and crisp shadow edges",
+      "category": "lighting"
+    },
+    {
+      "id": "high-key-lighting",
+      "label": "High Key Lighting",
+      "promptValue": "High Key Lighting",
+      "category": "lighting"
+    },
+    {
+      "id": "low-key-lighting",
+      "label": "Low Key Lighting",
+      "promptValue": "Low Key Lighting",
+      "category": "lighting"
+    },
+    {
+      "id": "midday-sun",
+      "label": "Midday sun",
+      "promptValue": "harsh midday sun lighting",
+      "category": "lighting"
+    },
+    {
+      "id": "moonlight",
+      "label": "Moonlight",
+      "promptValue": "moonlight",
+      "category": "lighting"
+    },
+    {
+      "id": "motivated-lighting",
+      "label": "Motivated Lighting",
+      "promptValue": "Motivated Lighting",
+      "category": "lighting"
+    },
+    {
+      "id": "natural-daylight",
+      "label": "Natural daylight",
+      "promptValue": "natural daylight",
+      "category": "lighting"
+    },
+    {
+      "id": "neon-lighting",
+      "label": "Neon Lighting",
+      "promptValue": "Neon Lighting",
+      "category": "lighting"
+    },
+    {
+      "id": "paramount-lighting",
+      "label": "Paramount Lighting",
+      "promptValue": "Paramount Lighting with a high centered key and a soft shadow under the nose",
+      "category": "lighting"
+    },
+    {
+      "id": "practical-lighting",
+      "label": "Practical Lighting",
+      "promptValue": "Practical Lighting from practical light sources visible in the scene",
+      "category": "lighting"
+    },
+    {
+      "id": "rim-soft-fill",
+      "label": "Rim & soft fill",
+      "promptValue": "subtle rim backlight with soft front fill lighting",
+      "category": "lighting"
+    },
+    {
+      "id": "ring-light",
+      "label": "Ring light",
+      "promptValue": "frontal ring light out of frame with catchlights but IMPORTANT don't show the ring light is in the shot",
+      "category": "lighting"
+    },
+    {
+      "id": "silhouette-shadows",
+      "label": "Silhouette Shadows",
+      "promptValue": "Silhouette Shadows with strong backlight and no front fill, face mostly in shadow",
+      "category": "lighting"
+    },
+    {
+      "id": "soft-lighting",
+      "label": "Soft Lighting",
+      "promptValue": "Soft Lighting",
+      "category": "lighting"
+    },
+    {
+      "id": "split-lighting",
+      "label": "Split Lighting",
+      "promptValue": "Split Lighting with a side key lighting half the face and minimal fill",
+      "category": "lighting"
+    },
+    {
+      "id": "teal-and-orange",
+      "label": "Teal and orange",
+      "promptValue": "teal-and-orange cinematic contrast lighting",
+      "category": "lighting"
+    },
+    {
+      "id": "top-lighting",
+      "label": "Top Lighting",
+      "promptValue": "Top Lighting with an overhead key and subtle fill to control eye shadows",
+      "category": "lighting"
+    },
+    {
+      "id": "underlighting",
+      "label": "Underlighting",
+      "promptValue": "Underlighting with a low key light and reduced fill for eerie upward shadows",
+      "category": "lighting"
+    },
+    {
+      "id": "volumetric-lighting",
+      "label": "Volumetric Lighting",
+      "promptValue": "Volumetric Lighting with visible light beams through haze",
+      "category": "lighting"
+    }
+  ],
+  "cameras": [
+    {
+      "id": "8mm-film-camera",
+      "label": "8mm film camera",
+      "promptValue": "8mm film camera",
+      "category": "cameras"
+    },
+    {
+      "id": "35mm-film-camera",
+      "label": "35mm film camera",
+      "promptValue": "35mm film camera",
+      "category": "cameras"
+    },
+    {
+      "id": "aaton-xtr",
+      "label": "Aaton XTR",
+      "promptValue": "Aaton XTR",
+      "category": "cameras"
+    },
+    {
+      "id": "argus-c3",
+      "label": "Argus C3",
+      "promptValue": "Argus C3",
+      "category": "cameras"
+    },
+    {
+      "id": "arri-alexa-65",
+      "label": "ARRI ALEXA 65",
+      "promptValue": "ARRI ALEXA 65",
+      "category": "cameras"
+    },
+    {
+      "id": "bolex-h16",
+      "label": "Bolex H16",
+      "promptValue": "Bolex H16",
+      "category": "cameras"
+    },
+    {
+      "id": "canon-c500",
+      "label": "Canon C500",
+      "promptValue": "Canon C500",
+      "category": "cameras"
+    },
+    {
+      "id": "panavision-panaflex",
+      "label": "Panavision Panaflex",
+      "promptValue": "Panavision Panaflex",
+      "category": "cameras"
+    },
+    {
+      "id": "red-digital-cinema-camera",
+      "label": "RED digital cinema camera",
+      "promptValue": "RED digital cinema camera",
+      "category": "cameras"
+    },
+    {
+      "id": "s16mm-film-camera",
+      "label": "s16mm film camera",
+      "promptValue": "s16mm film camera",
+      "category": "cameras"
+    },
+    {
+      "id": "sony-fx6",
+      "label": "Sony FX6",
+      "promptValue": "Sony FX6",
+      "category": "cameras"
+    },
+    {
+      "id": "sony-venice",
+      "label": "Sony Venice",
+      "promptValue": "Sony Venice",
+      "category": "cameras"
+    },
+    {
+      "id": "vhs-camera",
+      "label": "VHS Camera",
+      "promptValue": "VHS Camera",
+      "category": "cameras"
+    },
+    {
+      "id": "canon-eos-5d",
+      "label": "Canon EOS 5D",
+      "promptValue": "Canon EOS 5D",
+      "category": "cameras"
+    },
+    {
+      "id": "fujifilm-x-t4",
+      "label": "Fujifilm X-T4",
+      "promptValue": "Fujifilm X-T4",
+      "category": "cameras"
+    },
+    {
+      "id": "gopro-hero",
+      "label": "GoPro Hero",
+      "promptValue": "GoPro Hero",
+      "category": "cameras"
+    },
+    {
+      "id": "hasselblad-x1d-ii",
+      "label": "Hasselblad X1D II",
+      "promptValue": "Hasselblad X1D II",
+      "category": "cameras"
+    },
+    {
+      "id": "insta360-x4",
+      "label": "Insta360 X4",
+      "promptValue": "Insta360 X4",
+      "category": "cameras"
+    },
+    {
+      "id": "leica-q2-monochrom",
+      "label": "Leica Q2 Monochrom",
+      "promptValue": "Leica Q2 Monochrom",
+      "category": "cameras"
+    },
+    {
+      "id": "lumix-gh5",
+      "label": "Lumix GH5",
+      "promptValue": "Lumix GH5",
+      "category": "cameras"
+    },
+    {
+      "id": "pentax-645z",
+      "label": "Pentax 645Z",
+      "promptValue": "Pentax 645Z",
+      "category": "cameras"
+    },
+    {
+      "id": "phase-one-xf-iq4",
+      "label": "Phase One XF IQ4",
+      "promptValue": "Phase One XF IQ4",
+      "category": "cameras"
+    },
+    {
+      "id": "sony-fx3",
+      "label": "Sony FX3",
+      "promptValue": "Sony FX3",
+      "category": "cameras"
+    },
+    {
+      "id": "canon-ae-1",
+      "label": "Canon AE-1",
+      "promptValue": "Canon AE-1",
+      "category": "cameras"
+    },
+    {
+      "id": "contax-t2",
+      "label": "Contax T2",
+      "promptValue": "Contax T2",
+      "category": "cameras"
+    },
+    {
+      "id": "diana-f",
+      "label": "Diana F+",
+      "promptValue": "Diana F+",
+      "category": "cameras"
+    },
+    {
+      "id": "hasselblad-500cm",
+      "label": "Hasselblad 500CM",
+      "promptValue": "Hasselblad 500CM",
+      "category": "cameras"
+    },
+    {
+      "id": "holga-120n",
+      "label": "Holga 120N",
+      "promptValue": "Holga 120N",
+      "category": "cameras"
+    },
+    {
+      "id": "kodak-brownie",
+      "label": "Kodak Brownie",
+      "promptValue": "Kodak Brownie",
+      "category": "cameras"
+    },
+    {
+      "id": "kodak-funsaver",
+      "label": "Kodak Funsaver",
+      "promptValue": "Kodak Funsaver",
+      "category": "cameras"
+    },
+    {
+      "id": "leica-m3",
+      "label": "Leica M3",
+      "promptValue": "Leica M3",
+      "category": "cameras"
+    },
+    {
+      "id": "lomo-lc-a",
+      "label": "Lomo LC-A",
+      "promptValue": "Lomo LC-A",
+      "category": "cameras"
+    },
+    {
+      "id": "mamiya-rb67",
+      "label": "Mamiya RB67",
+      "promptValue": "Mamiya RB67",
+      "category": "cameras"
+    },
+    {
+      "id": "minolta-srt-101",
+      "label": "Minolta SRT-101",
+      "promptValue": "Minolta SRT-101",
+      "category": "cameras"
+    },
+    {
+      "id": "nikon-f2",
+      "label": "Nikon F2",
+      "promptValue": "Nikon F2",
+      "category": "cameras"
+    },
+    {
+      "id": "nikon-fm2",
+      "label": "Nikon FM2",
+      "promptValue": "Nikon FM2",
+      "category": "cameras"
+    },
+    {
+      "id": "olympus-om-1",
+      "label": "Olympus OM-1",
+      "promptValue": "Olympus OM-1",
+      "category": "cameras"
+    },
+    {
+      "id": "pentax-k1000",
+      "label": "Pentax K1000",
+      "promptValue": "Pentax K1000",
+      "category": "cameras"
+    },
+    {
+      "id": "polaroid-600",
+      "label": "Polaroid 600",
+      "promptValue": "Polaroid 600",
+      "category": "cameras"
+    },
+    {
+      "id": "polaroid-sx-70",
+      "label": "Polaroid SX-70",
+      "promptValue": "Polaroid SX-70",
+      "category": "cameras"
+    },
+    {
+      "id": "rolleiflex",
+      "label": "Rolleiflex",
+      "promptValue": "Rolleiflex",
+      "category": "cameras"
+    },
+    {
+      "id": "yashica-t4",
+      "label": "Yashica T4",
+      "promptValue": "Yashica T4",
+      "category": "cameras"
+    },
+    {
+      "id": "zenit-e",
+      "label": "Zenit-E",
+      "promptValue": "Zenit-E",
+      "category": "cameras"
+    },
+    {
+      "id": "compact-camera",
+      "label": "Compact camera",
+      "promptValue": "early 2000s compact digital camera with deep depth of field, cool white balance, and plastic skin tones",
+      "category": "cameras"
+    },
+    {
+      "id": "doorbell-cam",
+      "label": "Doorbell cam",
+      "promptValue": "doorbell security camera",
+      "category": "cameras"
+    },
+    {
+      "id": "iphone-pro",
+      "label": "iPhone Pro",
+      "promptValue": "modern iPhone Pro camera",
+      "category": "cameras"
+    },
+    {
+      "id": "old-android-phone",
+      "label": "Old android phone",
+      "promptValue": "early Android smartphone camera with aggressive noise reduction, soft detail, flattened contrast, and dull colors",
+      "category": "cameras"
+    },
+    {
+      "id": "security-camera",
+      "label": "Security camera",
+      "promptValue": "low-resolution security camera",
+      "category": "cameras"
+    },
+    {
+      "id": "webcam",
+      "label": "Webcam",
+      "promptValue": "modern 1080p webcam",
+      "category": "cameras"
+    }
+  ],
+  "focalLengths": [
+    {
+      "id": "8mm-fisheye",
+      "label": "8mm Fisheye",
+      "promptValue": "8mm Fisheye",
+      "category": "focalLengths"
+    },
+    {
+      "id": "14mm-ultra-wide",
+      "label": "14mm Ultra Wide",
+      "promptValue": "14mm Ultra Wide",
+      "category": "focalLengths"
+    },
+    {
+      "id": "24mm-wide-angle",
+      "label": "24mm Wide Angle",
+      "promptValue": "24mm Wide Angle",
+      "category": "focalLengths"
+    },
+    {
+      "id": "35mm-wide",
+      "label": "35mm Wide",
+      "promptValue": "35mm Wide",
+      "category": "focalLengths"
+    },
+    {
+      "id": "50mm-standard",
+      "label": "50mm Standard",
+      "promptValue": "50mm Standard",
+      "category": "focalLengths"
+    },
+    {
+      "id": "85mm-portrait",
+      "label": "85mm Portrait",
+      "promptValue": "85mm Portrait",
+      "category": "focalLengths"
+    },
+    {
+      "id": "100mm-macro",
+      "label": "100mm Macro",
+      "promptValue": "100mm Macro",
+      "category": "focalLengths"
+    },
+    {
+      "id": "200mm-super-telephoto",
+      "label": "200mm Super Telephoto",
+      "promptValue": "200mm Super Telephoto",
+      "category": "focalLengths"
+    },
+    {
+      "id": "300mm-extreme-telephoto",
+      "label": "300mm Extreme Telephoto",
+      "promptValue": "300mm Extreme Telephoto",
+      "category": "focalLengths"
+    }
+  ],
+  "lenses": [
+    {
+      "id": "anamorphic-cinema-lens",
+      "label": "Anamorphic Cinema Lens",
+      "promptValue": "Anamorphic Cinema Lens",
+      "category": "lenses"
+    },
+    {
+      "id": "catadioptric-mirror-lens",
+      "label": "Catadioptric (Mirror) Lens",
+      "promptValue": "Catadioptric (Mirror) Lens",
+      "category": "lenses"
+    },
+    {
+      "id": "fisheye-lens",
+      "label": "Fisheye Lens",
+      "promptValue": "Fisheye Lens",
+      "category": "lenses"
+    },
+    {
+      "id": "helios-44-2-swirly-bokeh",
+      "label": "Helios 44-2 Swirly Bokeh",
+      "promptValue": "Helios 44-2 Swirly Bokeh",
+      "category": "lenses"
+    },
+    {
+      "id": "holga-style-lens",
+      "label": "Holga Style Lens",
+      "promptValue": "Holga Style Lens",
+      "category": "lenses"
+    },
+    {
+      "id": "lensbaby-selective-focus",
+      "label": "Lensbaby / Selective Focus",
+      "promptValue": "Lensbaby / Selective Focus",
+      "category": "lenses"
+    },
+    {
+      "id": "macro-lens",
+      "label": "Macro Lens",
+      "promptValue": "Macro Lens",
+      "category": "lenses"
+    },
+    {
+      "id": "petzval-portrait-lens",
+      "label": "Petzval Portrait Lens",
+      "promptValue": "Petzval Portrait Lens",
+      "category": "lenses"
+    },
+    {
+      "id": "soft-focus-portrait-lens",
+      "label": "Soft-Focus Portrait Lens",
+      "promptValue": "Soft-Focus Portrait Lens",
+      "category": "lenses"
+    },
+    {
+      "id": "tilt-shift-lens",
+      "label": "Tilt-Shift Lens",
+      "promptValue": "Tilt-Shift Lens",
+      "category": "lenses"
+    },
+    {
+      "id": "toy-plastic-lens",
+      "label": "Toy Plastic Lens",
+      "promptValue": "Toy Plastic Lens",
+      "category": "lenses"
+    },
+    {
+      "id": "voigtl-nder-nokton-50mm-f1",
+      "label": "Voigtl\u00e4nder Nokton 50mm f1",
+      "promptValue": "Voigtl\u00e4nder Nokton 50mm f1",
+      "category": "lenses"
+    }
+  ],
+  "filmStocks": [
+    {
+      "id": "agfa-vista",
+      "label": "Agfa Vista",
+      "promptValue": "Agfa Vista",
+      "category": "filmStocks"
+    },
+    {
+      "id": "cinestill-50d",
+      "label": "Cinestill 50D",
+      "promptValue": "Cinestill 50D",
+      "category": "filmStocks"
+    },
+    {
+      "id": "cinestill-800t",
+      "label": "Cinestill 800T",
+      "promptValue": "Cinestill 800T",
+      "category": "filmStocks"
+    },
+    {
+      "id": "ektachrome-e100",
+      "label": "Ektachrome E100",
+      "promptValue": "Ektachrome E100",
+      "category": "filmStocks"
+    },
+    {
+      "id": "ektar-100",
+      "label": "Ektar 100",
+      "promptValue": "Ektar 100",
+      "category": "filmStocks"
+    },
+    {
+      "id": "fuji-acros-100",
+      "label": "Fuji Acros 100",
+      "promptValue": "Fuji Acros 100",
+      "category": "filmStocks"
+    },
+    {
+      "id": "fuji-pro-400h",
+      "label": "Fuji Pro 400H",
+      "promptValue": "Fuji Pro 400H",
+      "category": "filmStocks"
+    },
+    {
+      "id": "fuji-superia-400",
+      "label": "Fuji Superia 400",
+      "promptValue": "Fuji Superia 400",
+      "category": "filmStocks"
+    },
+    {
+      "id": "fujicolor-pro",
+      "label": "Fujicolor Pro",
+      "promptValue": "Fujicolor Pro",
+      "category": "filmStocks"
+    },
+    {
+      "id": "ilford-delta",
+      "label": "Ilford Delta",
+      "promptValue": "Ilford Delta",
+      "category": "filmStocks"
+    },
+    {
+      "id": "ilford-hp5-plus",
+      "label": "Ilford HP5 Plus",
+      "promptValue": "Ilford HP5 Plus",
+      "category": "filmStocks"
+    },
+    {
+      "id": "ilford-xp2-super",
+      "label": "Ilford XP2 Super",
+      "promptValue": "Ilford XP2 Super",
+      "category": "filmStocks"
+    },
+    {
+      "id": "kodachrome-64",
+      "label": "Kodachrome 64",
+      "promptValue": "Kodachrome 64",
+      "category": "filmStocks"
+    },
+    {
+      "id": "kodak-gold-200",
+      "label": "Kodak Gold 200",
+      "promptValue": "Kodak Gold 200",
+      "category": "filmStocks"
+    },
+    {
+      "id": "kodak-tri-x-400",
+      "label": "Kodak Tri-X 400",
+      "promptValue": "Kodak Tri-X 400",
+      "category": "filmStocks"
+    },
+    {
+      "id": "kodak-ultramax-400",
+      "label": "Kodak UltraMax 400",
+      "promptValue": "Kodak UltraMax 400",
+      "category": "filmStocks"
+    },
+    {
+      "id": "kodak-vision3-500t",
+      "label": "Kodak Vision3 500T",
+      "promptValue": "Kodak Vision3 500T",
+      "category": "filmStocks"
+    },
+    {
+      "id": "kodak-vision3-imax",
+      "label": "Kodak Vision3 IMAX",
+      "promptValue": "Kodak Vision3 IMAX",
+      "category": "filmStocks"
+    },
+    {
+      "id": "lomochrome-metropolis",
+      "label": "LomoChrome Metropolis",
+      "promptValue": "LomoChrome Metropolis",
+      "category": "filmStocks"
+    },
+    {
+      "id": "lomochrome-turquoise",
+      "label": "LomoChrome Turquoise",
+      "promptValue": "LomoChrome Turquoise",
+      "category": "filmStocks"
+    },
+    {
+      "id": "lomography-berlin-kino-b-w",
+      "label": "Lomography Berlin Kino B&W",
+      "promptValue": "Lomography Berlin Kino B&W",
+      "category": "filmStocks"
+    },
+    {
+      "id": "lomography-color-tiger",
+      "label": "Lomography Color Tiger",
+      "promptValue": "Lomography Color Tiger",
+      "category": "filmStocks"
+    },
+    {
+      "id": "lomography-lady-grey-400",
+      "label": "Lomography Lady Grey 400",
+      "promptValue": "Lomography Lady Grey 400",
+      "category": "filmStocks"
+    },
+    {
+      "id": "lomography-lobster-redscale",
+      "label": "Lomography Lobster Redscale",
+      "promptValue": "Lomography Lobster Redscale",
+      "category": "filmStocks"
+    },
+    {
+      "id": "lomography-purple",
+      "label": "Lomography Purple",
+      "promptValue": "Lomography Purple",
+      "category": "filmStocks"
+    },
+    {
+      "id": "portra-160",
+      "label": "Portra 160",
+      "promptValue": "Portra 160",
+      "category": "filmStocks"
+    },
+    {
+      "id": "portra-400",
+      "label": "Portra 400",
+      "promptValue": "Portra 400",
+      "category": "filmStocks"
+    },
+    {
+      "id": "portra-800",
+      "label": "Portra 800",
+      "promptValue": "Portra 800",
+      "category": "filmStocks"
+    },
+    {
+      "id": "provia-100f",
+      "label": "Provia 100F",
+      "promptValue": "Provia 100F",
+      "category": "filmStocks"
+    },
+    {
+      "id": "velvia-100",
+      "label": "Velvia 100",
+      "promptValue": "Velvia 100",
+      "category": "filmStocks"
+    }
+  ],
+  "genres": [
+    {
+      "id": "abstract",
+      "label": "Abstract",
+      "promptValue": "Abstract",
+      "category": "genres"
+    },
+    {
+      "id": "action-photography",
+      "label": "Action Photography",
+      "promptValue": "Action Photography",
+      "category": "genres"
+    },
+    {
+      "id": "aerial-photography",
+      "label": "Aerial Photography",
+      "promptValue": "Aerial Photography",
+      "category": "genres"
+    },
+    {
+      "id": "analog",
+      "label": "Analog",
+      "promptValue": "Analog",
+      "category": "genres"
+    },
+    {
+      "id": "architecture",
+      "label": "Architecture",
+      "promptValue": "Architecture",
+      "category": "genres"
+    },
+    {
+      "id": "astrophotography",
+      "label": "Astrophotography",
+      "promptValue": "Astrophotography",
+      "category": "genres"
+    },
+    {
+      "id": "automotive",
+      "label": "Automotive",
+      "promptValue": "Automotive",
+      "category": "genres"
+    },
+    {
+      "id": "beauty",
+      "label": "Beauty",
+      "promptValue": "Beauty",
+      "category": "genres"
+    },
+    {
+      "id": "boudoir-photography",
+      "label": "Boudoir Photography",
+      "promptValue": "Boudoir Photography",
+      "category": "genres"
+    },
+    {
+      "id": "candid",
+      "label": "Candid",
+      "promptValue": "Candid",
+      "category": "genres"
+    },
+    {
+      "id": "cityscape-photography",
+      "label": "Cityscape Photography",
+      "promptValue": "Cityscape Photography",
+      "category": "genres"
+    },
+    {
+      "id": "conceptual-photography",
+      "label": "Conceptual Photography",
+      "promptValue": "Conceptual Photography",
+      "category": "genres"
+    },
+    {
+      "id": "documentary",
+      "label": "Documentary",
+      "promptValue": "Documentary",
+      "category": "genres"
+    },
+    {
+      "id": "double-exposure",
+      "label": "Double Exposure",
+      "promptValue": "Double Exposure",
+      "category": "genres"
+    },
+    {
+      "id": "drone-photography",
+      "label": "Drone Photography",
+      "promptValue": "Drone Photography",
+      "category": "genres"
+    },
+    {
+      "id": "editorial",
+      "label": "Editorial",
+      "promptValue": "Editorial",
+      "category": "genres"
+    },
+    {
+      "id": "environmental-portrait",
+      "label": "Environmental Portrait",
+      "promptValue": "Environmental Portrait",
+      "category": "genres"
+    },
+    {
+      "id": "event-photography",
+      "label": "Event Photography",
+      "promptValue": "Event Photography",
+      "category": "genres"
+    },
+    {
+      "id": "experimental",
+      "label": "Experimental",
+      "promptValue": "Experimental",
+      "category": "genres"
+    },
+    {
+      "id": "family-photography",
+      "label": "Family Photography",
+      "promptValue": "Family Photography",
+      "category": "genres"
+    },
+    {
+      "id": "fine-art",
+      "label": "Fine Art",
+      "promptValue": "Fine Art",
+      "category": "genres"
+    },
+    {
+      "id": "food",
+      "label": "Food",
+      "promptValue": "Food",
+      "category": "genres"
+    },
+    {
+      "id": "glamour",
+      "label": "Glamour",
+      "promptValue": "Glamour",
+      "category": "genres"
+    },
+    {
+      "id": "high-fashion",
+      "label": "High Fashion",
+      "promptValue": "High Fashion",
+      "category": "genres"
+    },
+    {
+      "id": "instant",
+      "label": "Instant",
+      "promptValue": "Instant",
+      "category": "genres"
+    },
+    {
+      "id": "landscape",
+      "label": "Landscape",
+      "promptValue": "Landscape",
+      "category": "genres"
+    },
+    {
+      "id": "large-format",
+      "label": "Large Format",
+      "promptValue": "Large Format",
+      "category": "genres"
+    },
+    {
+      "id": "lomo-style",
+      "label": "Lomo Style",
+      "promptValue": "Lomo Style",
+      "category": "genres"
+    },
+    {
+      "id": "macro",
+      "label": "Macro",
+      "promptValue": "Macro",
+      "category": "genres"
+    },
+    {
+      "id": "minimalist",
+      "label": "Minimalist",
+      "promptValue": "Minimalist",
+      "category": "genres"
+    },
+    {
+      "id": "modernist",
+      "label": "Modernist",
+      "promptValue": "Modernist",
+      "category": "genres"
+    },
+    {
+      "id": "nature-photography",
+      "label": "Nature Photography",
+      "promptValue": "Nature Photography",
+      "category": "genres"
+    },
+    {
+      "id": "newborn-photography",
+      "label": "Newborn Photography",
+      "promptValue": "Newborn Photography",
+      "category": "genres"
+    },
+    {
+      "id": "night-photography",
+      "label": "Night Photography",
+      "promptValue": "Night Photography",
+      "category": "genres"
+    },
+    {
+      "id": "paparazzi",
+      "label": "Paparazzi",
+      "promptValue": "Paparazzi",
+      "category": "genres"
+    },
+    {
+      "id": "photojournalism",
+      "label": "Photojournalism",
+      "promptValue": "Photojournalism",
+      "category": "genres"
+    },
+    {
+      "id": "pictorialist",
+      "label": "Pictorialist",
+      "promptValue": "Pictorialist",
+      "category": "genres"
+    },
+    {
+      "id": "pinhole",
+      "label": "Pinhole",
+      "promptValue": "Pinhole",
+      "category": "genres"
+    },
+    {
+      "id": "portrait",
+      "label": "Portrait",
+      "promptValue": "Portrait",
+      "category": "genres"
+    },
+    {
+      "id": "product",
+      "label": "Product",
+      "promptValue": "Product",
+      "category": "genres"
+    },
+    {
+      "id": "reportage",
+      "label": "Reportage",
+      "promptValue": "Reportage",
+      "category": "genres"
+    },
+    {
+      "id": "seascape-photography",
+      "label": "Seascape Photography",
+      "promptValue": "Seascape Photography",
+      "category": "genres"
+    },
+    {
+      "id": "sports",
+      "label": "Sports",
+      "promptValue": "Sports",
+      "category": "genres"
+    },
+    {
+      "id": "still-life",
+      "label": "Still Life",
+      "promptValue": "Still Life",
+      "category": "genres"
+    },
+    {
+      "id": "street-fashion",
+      "label": "Street Fashion",
+      "promptValue": "Street Fashion",
+      "category": "genres"
+    },
+    {
+      "id": "street-photography",
+      "label": "Street Photography",
+      "promptValue": "Street Photography",
+      "category": "genres"
+    },
+    {
+      "id": "surrealism",
+      "label": "Surrealism",
+      "promptValue": "Surrealism",
+      "category": "genres"
+    },
+    {
+      "id": "tintype",
+      "label": "Tintype",
+      "promptValue": "Tintype",
+      "category": "genres"
+    },
+    {
+      "id": "travel-photography",
+      "label": "Travel Photography",
+      "promptValue": "Travel Photography",
+      "category": "genres"
+    },
+    {
+      "id": "underwater-photography",
+      "label": "Underwater Photography",
+      "promptValue": "Underwater Photography",
+      "category": "genres"
+    },
+    {
+      "id": "urban-exploration",
+      "label": "Urban Exploration",
+      "promptValue": "Urban Exploration",
+      "category": "genres"
+    },
+    {
+      "id": "wedding-photography",
+      "label": "Wedding Photography",
+      "promptValue": "Wedding Photography",
+      "category": "genres"
+    },
+    {
+      "id": "wildlife",
+      "label": "Wildlife",
+      "promptValue": "Wildlife",
+      "category": "genres"
+    }
+  ],
+  "photographers": [
+    {
+      "id": "7th-era",
+      "label": "7th Era",
+      "promptValue": "In the style of photographer 7th Era, cinematic street, long exposure light glow, high contrast, moody haze",
+      "category": "photographers"
+    },
+    {
+      "id": "alberto-seveso",
+      "label": "Alberto Seveso",
+      "promptValue": "In the style of photographer Alberto Seveso, ink in water textures, vibrant color clouds, surreal composites",
+      "category": "photographers"
+    },
+    {
+      "id": "alec-soth",
+      "label": "Alec Soth",
+      "promptValue": "In the style of photographer Alec Soth, quiet Americana, soft natural light, subdued color, large format calm",
+      "category": "photographers"
+    },
+    {
+      "id": "alen-palander",
+      "label": "Alen Palander",
+      "promptValue": "In the style of photographer Alen Palander, documentary feel, muted palette, natural light, teal and orange,candid moments",
+      "category": "photographers"
+    },
+    {
+      "id": "alex-strohl",
+      "label": "Alex Strohl",
+      "promptValue": "In the style of photographer Alex Strohl, outdoor portraits, pastel tones, soft light, shallow depth of field",
+      "category": "photographers"
+    },
+    {
+      "id": "alex-webb",
+      "label": "Alex Webb",
+      "promptValue": "In the style of photographer Alex Webb, layered street scenes, saturated color, strong shadows, complex framing",
+      "category": "photographers"
+    },
+    {
+      "id": "alfred-stieglitz",
+      "label": "Alfred Stieglitz",
+      "promptValue": "In the style of photographer Alfred Stieglitz, early modernist, soft tonal range, atmospheric light, classic composition",
+      "category": "photographers"
+    },
+    {
+      "id": "ando-fuchs",
+      "label": "Ando Fuchs",
+      "promptValue": "In the style of photographer Ando Fuchs, Black and White, shadow play, negative space, crushed blacks, overexposed whites, ominous framing, heavy image noise",
+      "category": "photographers"
+    },
+    {
+      "id": "andreas-gursky",
+      "label": "Andreas Gursky",
+      "promptValue": "In the style of photographer Andreas Gursky, large scale, elevated perspective, crisp detail, repeating patterns in environments",
+      "category": "photographers"
+    },
+    {
+      "id": "anne-brigman",
+      "label": "Anne Brigman",
+      "promptValue": "In the style of photographer Anne Brigman, pictorialist, soft focus, ethereal light, staged naturalism",
+      "category": "photographers"
+    },
+    {
+      "id": "annie-leibovitz",
+      "label": "Annie Leibovitz",
+      "promptValue": "In the style of photographer Annie Leibovitz, editorial portraits, dramatic lighting, rich color, styled staging",
+      "category": "photographers"
+    },
+    {
+      "id": "ansel-adams",
+      "label": "Ansel Adams",
+      "promptValue": "In the style of photographer Ansel Adams, Black and White, high contrast, crisp detail, grand landscapes",
+      "category": "photographers"
+    },
+    {
+      "id": "august-sander",
+      "label": "August Sander",
+      "promptValue": "In the style of photographer August Sander, Black and White, straight portraits, neutral light, formal composition, documentary tone",
+      "category": "photographers"
+    },
+    {
+      "id": "barbara-kruger",
+      "label": "Barbara Kruger",
+      "promptValue": "In the style of photographer Barbara Kruger, graphic typography overlays, bold contrast, conceptual framing",
+      "category": "photographers"
+    },
+    {
+      "id": "benjamin-hardman",
+      "label": "Benjamin Hardman",
+      "promptValue": "In the style of photographer Benjamin Hardman, muted arctic palette, soft light, minimalist landscapes, cold tones",
+      "category": "photographers"
+    },
+    {
+      "id": "bernd-and-hilla-becher",
+      "label": "Bernd and Hilla Becher",
+      "promptValue": "In the style of photographer Bernd and Hilla Becher, typologies, flat light, frontal framing, industrial grids",
+      "category": "photographers"
+    },
+    {
+      "id": "bill-brandt",
+      "label": "Bill Brandt",
+      "promptValue": "In the style of photographer Bill Brandt, Black and White, high contrast, sculptural light, dramatic shadows",
+      "category": "photographers"
+    },
+    {
+      "id": "brandon-woelfel",
+      "label": "Brandon Woelfel",
+      "promptValue": "In the style of photographer Brandon Woelfel, bokeh, dreamy glow, pastel color, light leaks",
+      "category": "photographers"
+    },
+    {
+      "id": "bryan-schutmaat",
+      "label": "Bryan Schutmaat",
+      "promptValue": "In the style of photographer Bryan Schutmaat, western Americana, natural light, faded color, quiet portraits",
+      "category": "photographers"
+    },
+    {
+      "id": "chris-burkard",
+      "label": "Chris Burkard",
+      "promptValue": "In the style of photographer Chris Burkard, adventure landscapes, golden light, crisp detail, cool tones",
+      "category": "photographers"
+    },
+    {
+      "id": "chris-friel",
+      "label": "Chris Friel",
+      "promptValue": "In the style of photographer Chris Friel, moody landscapes, fog and mist, muted color, soft contrast, motion blur",
+      "category": "photographers"
+    },
+    {
+      "id": "chris-hau",
+      "label": "Chris Hau",
+      "promptValue": "In the style of photographer Chris Hau, travel cityscapes, clean color, cinematic light, wide angles, long exposure light trails",
+      "category": "photographers"
+    },
+    {
+      "id": "cindy-sherman",
+      "label": "Cindy Sherman",
+      "promptValue": "In the style of photographer Cindy Sherman, staged self portrait, cinematic lighting, character transformation",
+      "category": "photographers"
+    },
+    {
+      "id": "daido-moriyama",
+      "label": "Daido Moriyama",
+      "promptValue": "In the style of photographer Daido Moriyama, Black and White, high grain, high contrast, raw street energy",
+      "category": "photographers"
+    },
+    {
+      "id": "daniel-schiffer",
+      "label": "Daniel Schiffer",
+      "promptValue": "In the style of photographer Daniel Schiffer, product detail, hard light, glossy highlights, shallow depth of field",
+      "category": "photographers"
+    },
+    {
+      "id": "david-lachapelle",
+      "label": "David LaChapelle",
+      "promptValue": "In the style of photographer David LaChapelle, hyper saturated color, glossy lighting, surreal staging",
+      "category": "photographers"
+    },
+    {
+      "id": "david-yarrow",
+      "label": "David Yarrow",
+      "promptValue": "In the style of photographer David Yarrow, Black and White, dramatic wildlife, sharp detail, high contrast",
+      "category": "photographers"
+    },
+    {
+      "id": "dorothea-lange",
+      "label": "Dorothea Lange",
+      "promptValue": "In the style of photographer Dorothea Lange, Black and White, documentary portrait, natural light, empathetic framing, soft grain",
+      "category": "photographers"
+    },
+    {
+      "id": "dylan-furst",
+      "label": "Dylan Furst",
+      "promptValue": "In the style of photographer Dylan Furst, cinematic, blue and green desaturated tones, shallow depth of field",
+      "category": "photographers"
+    },
+    {
+      "id": "elliott-erwitt",
+      "label": "Elliott Erwitt",
+      "promptValue": "In the style of photographer Elliott Erwitt, Black and White, candid humor, decisive moments, often contains a dog, simple framing",
+      "category": "photographers"
+    },
+    {
+      "id": "eug-ne-atget",
+      "label": "Eug\u00e8ne Atget",
+      "promptValue": "In the style of photographer Eug\u00e8ne Atget, Black and White, early street scenes, soft light, quiet architecture, nostalgic tone",
+      "category": "photographers"
+    },
+    {
+      "id": "fan-ho",
+      "label": "Fan Ho",
+      "promptValue": "In the style of photographer Fan Ho, Black and White, shafted light, silhouettes, strong geometry",
+      "category": "photographers"
+    },
+    {
+      "id": "garry-winogrand",
+      "label": "Garry Winogrand",
+      "promptValue": "In the style of photographer Garry Winogrand, Black and White, gritty street, wide angle, candid chaos",
+      "category": "photographers"
+    },
+    {
+      "id": "george-hurrell",
+      "label": "George Hurrell",
+      "promptValue": "In the style of photographer George Hurrell, Black and White, Hollywood glamour, hard light, glossy highlights, classic portrait",
+      "category": "photographers"
+    },
+    {
+      "id": "germaine-krull",
+      "label": "Germaine Krull",
+      "promptValue": "In the style of photographer Germaine Krull, Black and White, modernist angles, industrial subjects, stark contrast, dynamic framing",
+      "category": "photographers"
+    },
+    {
+      "id": "gregory-crewdson",
+      "label": "Gregory Crewdson",
+      "promptValue": "In the style of photographer Gregory Crewdson, cinematic tableau, controlled lighting, suburban surrealism",
+      "category": "photographers"
+    },
+    {
+      "id": "guy-bourdin",
+      "label": "Guy Bourdin",
+      "promptValue": "In the style of photographer Guy Bourdin, bold color, provocative fashion, strong shadows, saturated sets",
+      "category": "photographers"
+    },
+    {
+      "id": "hans-bellmer",
+      "label": "Hans Bellmer",
+      "promptValue": "In the style of photographer Hans Bellmer, surreal dolls, unsettling staging, muted tones, stark lighting",
+      "category": "photographers"
+    },
+    {
+      "id": "helmut-newton",
+      "label": "Helmut Newton",
+      "promptValue": "In the style of photographer Helmut Newton, Black and White, high fashion, hard light, provocative poses",
+      "category": "photographers"
+    },
+    {
+      "id": "henri-cartier-bresson",
+      "label": "Henri Cartier-Bresson",
+      "promptValue": "In the style of photographer Henri Cartier-Bresson, Black and White, decisive moment, candid street, balanced composition",
+      "category": "photographers"
+    },
+    {
+      "id": "herb-ritts",
+      "label": "Herb Ritts",
+      "promptValue": "In the style of photographer Herb Ritts, clean fashion portrait, hard light, sculptural bodies, high contrast",
+      "category": "photographers"
+    },
+    {
+      "id": "hiroshi-sugimoto",
+      "label": "Hiroshi Sugimoto",
+      "promptValue": "In the style of photographer Hiroshi Sugimoto, minimalist seascapes, long exposure, smooth tones, serene mood",
+      "category": "photographers"
+    },
+    {
+      "id": "irene-rudnyk",
+      "label": "Irene Rudnyk",
+      "promptValue": "In the style of photographer Irene Rudnyk, natural light portrait, warm tones, soft shadows, lifestyle feel",
+      "category": "photographers"
+    },
+    {
+      "id": "james-bidgood",
+      "label": "James Bidgood",
+      "promptValue": "In the style of photographer James Bidgood, saturated color, theatrical sets, soft focus, surreal fantasy",
+      "category": "photographers"
+    },
+    {
+      "id": "jeff-wall",
+      "label": "Jeff Wall",
+      "promptValue": "In the style of photographer Jeff Wall, large scale tableau, cinematic lighting, staged realism",
+      "category": "photographers"
+    },
+    {
+      "id": "jerry-uelsmann",
+      "label": "Jerry Uelsmann",
+      "promptValue": "In the style of photographer Jerry Uelsmann, darkroom composites, surreal landscapes, Black and White",
+      "category": "photographers"
+    },
+    {
+      "id": "jord-hammond",
+      "label": "Jord Hammond",
+      "promptValue": "In the style of photographer Jord Hammond, moody outdoor portrait, golden light, soft color, shallow depth",
+      "category": "photographers"
+    },
+    {
+      "id": "jordi-koalitic",
+      "label": "Jordi Koalitic",
+      "promptValue": "In the style of photographer Jordi Koalitic, mobile photo tricks, strong symmetry, bright color, clean lines",
+      "category": "photographers"
+    },
+    {
+      "id": "juergen-teller",
+      "label": "Juergen Teller",
+      "promptValue": "In the style of photographer Juergen Teller, flash snapshot, raw fashion, casual framing, harsh light",
+      "category": "photographers"
+    },
+    {
+      "id": "julia-trotti",
+      "label": "Julia Trotti",
+      "promptValue": "In the style of photographer Julia Trotti, soft pastel portraits, natural light, airy tones, shallow depth",
+      "category": "photographers"
+    },
+    {
+      "id": "kim-keever",
+      "label": "Kim Keever",
+      "promptValue": "In the style of photographer Kim Keever, abstract landscapes, pigment in water, soft focus, dreamy color",
+      "category": "photographers"
+    },
+    {
+      "id": "l-szl-moholy-nagy",
+      "label": "L\u00e1szl\u00f3 Moholy-Nagy",
+      "promptValue": "In the style of photographer L\u00e1szl\u00f3 Moholy-Nagy, modernist abstraction, experimental angles, high contrast",
+      "category": "photographers"
+    },
+    {
+      "id": "lee-friedlander",
+      "label": "Lee Friedlander",
+      "promptValue": "In the style of photographer Lee Friedlander, Black and White, busy frames, use of reflections, street layers",
+      "category": "photographers"
+    },
+    {
+      "id": "liam-wong",
+      "label": "Liam Wong",
+      "promptValue": "In the style of photographer Liam Wong, subtle neon city night, rain reflections, pink and purple colors, moody haze",
+      "category": "photographers"
+    },
+    {
+      "id": "lotte-reiniger",
+      "label": "Lotte Reiniger",
+      "promptValue": "In the style of photographer Lotte Reiniger, silhouette style, stark contrast, graphic shapes, theatrical framing",
+      "category": "photographers"
+    },
+    {
+      "id": "man-ray",
+      "label": "Man Ray",
+      "promptValue": "In the style of photographer Man Ray, surreal experiments, black and white solarized look, studio abstraction, high contrast",
+      "category": "photographers"
+    },
+    {
+      "id": "mango-street",
+      "label": "Mango Street",
+      "promptValue": "In the style of photographer Mango Street, clean fashion portrait, bright color, studio light, crisp detail",
+      "category": "photographers"
+    },
+    {
+      "id": "manny-ortiz",
+      "label": "Manny Ortiz",
+      "promptValue": "In the style of photographer Manny Ortiz, off camera flash, studio portraits, outdoor fashion, warm skin tones, soft bokeh",
+      "category": "photographers"
+    },
+    {
+      "id": "martin-schoeller",
+      "label": "Martin Schoeller",
+      "promptValue": "In the style of photographer Martin Schoeller, tight headshots, even light, high detail, neutral background",
+      "category": "photographers"
+    },
+    {
+      "id": "mary-ellen-mark",
+      "label": "Mary Ellen Mark",
+      "promptValue": "In the style of photographer Mary Ellen Mark, documentary portrait, natural light, compassionate realism",
+      "category": "photographers"
+    },
+    {
+      "id": "michael-kenna",
+      "label": "Michael Kenna",
+      "promptValue": "In the style of photographer Michael Kenna, Black and White, minimalist landscapes, long exposure, soft tones",
+      "category": "photographers"
+    },
+    {
+      "id": "mickalene-thomas",
+      "label": "Mickalene Thomas",
+      "promptValue": "In the style of photographer Mickalene Thomas, bold patterns, rich color, staged portrait, mixed media feel",
+      "category": "photographers"
+    },
+    {
+      "id": "miko-lagerstedt",
+      "label": "Miko Lagerstedt",
+      "promptValue": "In the style of photographer Miko Lagerstedt, moody landscapes, mist and fog, cool tones, soft contrast",
+      "category": "photographers"
+    },
+    {
+      "id": "miles-aldridge",
+      "label": "Miles Aldridge",
+      "promptValue": "In the style of photographer Miles Aldridge, hyper saturated color, glossy fashion, stylized sets",
+      "category": "photographers"
+    },
+    {
+      "id": "misha-gordin",
+      "label": "Misha Gordin",
+      "promptValue": "In the style of photographer Misha Gordin, surreal portrait, geometric framing, muted tones, staged minimalism",
+      "category": "photographers"
+    },
+    {
+      "id": "nadav-kander",
+      "label": "Nadav Kander",
+      "promptValue": "In the style of photographer Nadav Kander, atmospheric portraits, muted palette, soft haze, cinematic light",
+      "category": "photographers"
+    },
+    {
+      "id": "nan-goldin",
+      "label": "Nan Goldin",
+      "promptValue": "In the style of photographer Nan Goldin, intimate snapshot, low light, raw color, candid emotion",
+      "category": "photographers"
+    },
+    {
+      "id": "nathan-wirth",
+      "label": "Nathan Wirth",
+      "promptValue": "In the style of photographer Nathan Wirth, moody cinematic portrait, shallow depth, soft light, subdued color",
+      "category": "photographers"
+    },
+    {
+      "id": "nick-knight",
+      "label": "Nick Knight",
+      "promptValue": "In the style of photographer Nick Knight, experimental fashion, bold color, innovative lighting, bold styling",
+      "category": "photographers"
+    },
+    {
+      "id": "northborders",
+      "label": "Northborders",
+      "promptValue": "In the style of photographer Northborders, mobile travel, vibrant color, moody skies, clean composition",
+      "category": "photographers"
+    },
+    {
+      "id": "oleg-oprisco",
+      "label": "Oleg Oprisco",
+      "promptValue": "In the style of photographer Oleg Oprisco, fine art portrait, pastel tones, stylized props, surreal mood",
+      "category": "photographers"
+    },
+    {
+      "id": "paolo-roversi",
+      "label": "Paolo Roversi",
+      "promptValue": "In the style of photographer Paolo Roversi, soft focus, romantic portrait, muted color, gentle light",
+      "category": "photographers"
+    },
+    {
+      "id": "peter-lindbergh",
+      "label": "Peter Lindbergh",
+      "promptValue": "In the style of photographer Peter Lindbergh, Black and White, natural light, candid fashion, soft grain",
+      "category": "photographers"
+    },
+    {
+      "id": "peter-mckinnon",
+      "label": "Peter McKinnon",
+      "promptValue": "In the style of photographer Peter McKinnon, cinematic travel, teal and orange, crisp detail, moody contrast",
+      "category": "photographers"
+    },
+    {
+      "id": "philip-lorca-dicorcia",
+      "label": "Philip-Lorca diCorcia",
+      "promptValue": "In the style of photographer Philip-Lorca diCorcia, street with flash, staged candid, high contrast, cinematic color",
+      "category": "photographers"
+    },
+    {
+      "id": "platon",
+      "label": "Platon",
+      "promptValue": "In the style of photographer Platon, dramatic portrait, strong key light, textured skin, close framing",
+      "category": "photographers"
+    },
+    {
+      "id": "rankin",
+      "label": "Rankin",
+      "promptValue": "In the style of photographer Rankin, glossy fashion, bold color, punchy contrast, studio light",
+      "category": "photographers"
+    },
+    {
+      "id": "r-hahn",
+      "label": "R\u00e9hahn",
+      "promptValue": "In the style of photographer R\u00e9hahn, travel portrait, rich color, natural light, cultural storytelling",
+      "category": "photographers"
+    },
+    {
+      "id": "reuben-wu",
+      "label": "Reuben Wu",
+      "promptValue": "In the style of photographer Reuben Wu, light painted landscapes, night scenes, moody atmosphere",
+      "category": "photographers"
+    },
+    {
+      "id": "richard-avedon",
+      "label": "Richard Avedon",
+      "promptValue": "In the style of photographer Richard Avedon, high key portraits, clean background, crisp detail, direct gaze",
+      "category": "photographers"
+    },
+    {
+      "id": "rinko-kawauchi",
+      "label": "Rinko Kawauchi",
+      "promptValue": "In the style of photographer Rinko Kawauchi, soft light, pastel tones, poetic everyday, airy mood",
+      "category": "photographers"
+    },
+    {
+      "id": "robert-capa",
+      "label": "Robert Capa",
+      "promptValue": "In the style of photographer Robert Capa, conflict reportage, gritty grain, high contrast, candid action",
+      "category": "photographers"
+    },
+    {
+      "id": "robert-frank",
+      "label": "Robert Frank",
+      "promptValue": "In the style of photographer Robert Frank, Black and White, raw street, loose framing, grainy texture",
+      "category": "photographers"
+    },
+    {
+      "id": "saul-leiter",
+      "label": "Saul Leiter",
+      "promptValue": "In the style of photographer Saul Leiter, color street, view through glass, reflections, muted palette, soft focus",
+      "category": "photographers"
+    },
+    {
+      "id": "sebasti-o-salgado",
+      "label": "Sebasti\u00e3o Salgado",
+      "promptValue": "In the style of photographer Sebasti\u00e3o Salgado, Black and White, dramatic light, high contrast, epic documentary",
+      "category": "photographers"
+    },
+    {
+      "id": "sorelle-amore",
+      "label": "Sorelle Amore",
+      "promptValue": "In the style of photographer Sorelle Amore, adventure portrait, warm tones, golden light, candid feel",
+      "category": "photographers"
+    },
+    {
+      "id": "stephen-shore",
+      "label": "Stephen Shore",
+      "promptValue": "In the style of photographer Stephen Shore, color documentary, everyday scenes, balanced composition, neutral light",
+      "category": "photographers"
+    },
+    {
+      "id": "steve-mccurry",
+      "label": "Steve McCurry",
+      "promptValue": "In the style of photographer Steve McCurry, rich color, vivid portraits, strong eyes, natural light",
+      "category": "photographers"
+    },
+    {
+      "id": "thomas-struth",
+      "label": "Thomas Struth",
+      "promptValue": "In the style of photographer Thomas Struth, large format, groups of people, neutral light, architectural clarity, human scale",
+      "category": "photographers"
+    },
+    {
+      "id": "tim-walker",
+      "label": "Tim Walker",
+      "promptValue": "In the style of photographer Tim Walker, whimsical fashion, surreal sets, soft light, rich color",
+      "category": "photographers"
+    },
+    {
+      "id": "todd-hido",
+      "label": "Todd Hido",
+      "promptValue": "In the style of photographer Todd Hido, moody suburbs, night scenes, misty light, muted color",
+      "category": "photographers"
+    },
+    {
+      "id": "tyler-shields",
+      "label": "Tyler Shields",
+      "promptValue": "In the style of photographer Tyler Shields, high contrast, bold staging, cinematic portrait, edgy tone",
+      "category": "photographers"
+    },
+    {
+      "id": "vivian-maier",
+      "label": "Vivian Maier",
+      "promptValue": "In the style of photographer Vivian Maier, Black and White, street candid, sharp detail, reflective moments",
+      "category": "photographers"
+    },
+    {
+      "id": "w-eugene-smith",
+      "label": "W. Eugene Smith",
+      "promptValue": "In the style of photographer W. Eugene Smith, documentary essay, dramatic light, deep shadows, emotive portraits",
+      "category": "photographers"
+    },
+    {
+      "id": "walker-evans",
+      "label": "Walker Evans",
+      "promptValue": "In the style of photographer Walker Evans, straight documentary, neutral light, American vernacular, quiet tone",
+      "category": "photographers"
+    },
+    {
+      "id": "william-eggleston",
+      "label": "William Eggleston",
+      "promptValue": "In the style of photographer William Eggleston, color snapshot, everyday scenes, warm tones, simple framing",
+      "category": "photographers"
+    },
+    {
+      "id": "wolfgang-tillmans",
+      "label": "Wolfgang Tillmans",
+      "promptValue": "In the style of photographer Wolfgang Tillmans, casual documentary, soft light, experimental abstraction, muted color",
+      "category": "photographers"
+    },
+    {
+      "id": "yousuf-karsh",
+      "label": "Yousuf Karsh",
+      "promptValue": "In the style of photographer Yousuf Karsh, classic portrait, dramatic lighting, sculpted shadows, formal pose",
+      "category": "photographers"
+    },
+    {
+      "id": "zanele-muholi",
+      "label": "Zanele Muholi",
+      "promptValue": "In the style of photographer Zanele Muholi, Black and White, high contrast, direct gaze, activist portrait",
+      "category": "photographers"
+    }
+  ],
+  "movieLooks": [
+    {
+      "id": "1917",
+      "label": "1917",
+      "promptValue": "With the visual aesthetic of the movie 1917 with muted khaki palette, smoky haze, soft contrast, subtle grain",
+      "category": "movieLooks"
+    },
+    {
+      "id": "2001-a-space-odyssey",
+      "label": "2001: A Space Odyssey",
+      "promptValue": "With the visual aesthetic of the movie 2001: A Space Odyssey with pristine retro-futurist design, minimalist symmetry and a clean 1960s large-format sci-fi look.",
+      "category": "movieLooks"
+    },
+    {
+      "id": "alien",
+      "label": "Alien",
+      "promptValue": "With the visual aesthetic of the movie Alien with cold industrial lighting, deep shadows, blue-green tint, heavy grain",
+      "category": "movieLooks"
+    },
+    {
+      "id": "am-lie",
+      "label": "Am\u00e9lie",
+      "promptValue": "With the visual aesthetic of the movie Am\u00e9lie with warm amber and green tones, whimsical glow, soft contrast",
+      "category": "movieLooks"
+    },
+    {
+      "id": "annihilation",
+      "label": "Annihilation",
+      "promptValue": "With the visual aesthetic of the movie Annihilation with prismatic color shifts, dreamy haze, ethereal glow, soft focus",
+      "category": "movieLooks"
+    },
+    {
+      "id": "apocalypse-now",
+      "label": "Apocalypse Now",
+      "promptValue": "With the visual aesthetic of the movie Apocalypse Now with gritty 1970s film texture, heavy atmosphere and surreal war-odyssey mood.",
+      "category": "movieLooks"
+    },
+    {
+      "id": "arrival",
+      "label": "Arrival",
+      "promptValue": "With the visual aesthetic of the movie Arrival with desaturated neutrals, foggy diffusion, low contrast, moody lighting",
+      "category": "movieLooks"
+    },
+    {
+      "id": "ash-vs-the-evil-dead",
+      "label": "Ash vs The Evil Dead",
+      "promptValue": "With the visual aesthetic of the movie Ash vs The Evil Dead with heavy film grain, warm color tones, dark environments, faint green in light highlights and a 1970s look",
+      "category": "movieLooks"
+    },
+    {
+      "id": "avatar",
+      "label": "Avatar",
+      "promptValue": "With the visual aesthetic of the movie Avatar with rich cyan and teal glow, high saturation, crisp detail",
+      "category": "movieLooks"
+    },
+    {
+      "id": "back-to-the-future",
+      "label": "Back to the Future",
+      "promptValue": "With the visual aesthetic of the movie Back to the Future with 1980s color pop, clean contrast, subtle film grain",
+      "category": "movieLooks"
+    },
+    {
+      "id": "beetlejuice",
+      "label": "Beetlejuice",
+      "promptValue": "With the visual aesthetic of the movie Beetlejuice with high contrast, gothic shadows, saturated blacks, quirky color accents",
+      "category": "movieLooks"
+    },
+    {
+      "id": "ben-hur-1959",
+      "label": "Ben-Hur (1959)",
+      "promptValue": "With the visual aesthetic of the movie Ben-Hur (1959) with grand historical spectacle, monumental sets and a rich 1950s Technicolor epic look.",
+      "category": "movieLooks"
+    },
+    {
+      "id": "black-hawk-down",
+      "label": "Black Hawk Down",
+      "promptValue": "With the visual aesthetic of the movie Black Hawk Down with dusty desaturation, harsh sunlight, handheld grit, high contrast",
+      "category": "movieLooks"
+    },
+    {
+      "id": "blade-runner",
+      "label": "Blade Runner",
+      "promptValue": "With the visual aesthetic of the movie Blade Runner with subtle incidental neon lights, reflections, deep shadows and a 1980s film neo noir look. ",
+      "category": "movieLooks"
+    },
+    {
+      "id": "blade-runner-2049",
+      "label": "Blade Runner 2049",
+      "promptValue": "With the visual aesthetic of the movie Blade Runner 2049 with amber desert tones, cyan shadows, clean contrast, minimal grain",
+      "category": "movieLooks"
+    },
+    {
+      "id": "casablanca",
+      "label": "Casablanca",
+      "promptValue": "With the visual aesthetic of the movie Casablanca with classic 1940s studio black-and-white glamour, soft facial key light and smoky atmosphere.",
+      "category": "movieLooks"
+    },
+    {
+      "id": "children-of-men",
+      "label": "Children of Men",
+      "promptValue": "With the visual aesthetic of the movie Children of Men with naturalistic light, muted palette, handheld realism, soft contrast",
+      "category": "movieLooks"
+    },
+    {
+      "id": "chinatown",
+      "label": "Chinatown",
+      "promptValue": "With the visual aesthetic of the movie Chinatown with warm golden tones, sun-bleached highlights, soft contrast, film grain",
+      "category": "movieLooks"
+    },
+    {
+      "id": "city-of-god",
+      "label": "City of God",
+      "promptValue": "With the visual aesthetic of the movie City of God with vibrant tropical colors, punchy contrast, sunlit warmth, lively saturation",
+      "category": "movieLooks"
+    },
+    {
+      "id": "cleopatra-1963",
+      "label": "Cleopatra (1963)",
+      "promptValue": "With the visual aesthetic of the movie Cleopatra (1963) with lavish set design, opulent costuming and a 1960s classic Technicolor look.",
+      "category": "movieLooks"
+    },
+    {
+      "id": "close-encounters-of-the-third-kind",
+      "label": "Close Encounters of the Third Kind",
+      "promptValue": "With the visual aesthetic of the movie Close Encounters of the Third Kind with grounded 1970s suburban realism and luminous, practical-effects sci-fi spectacle.",
+      "category": "movieLooks"
+    },
+    {
+      "id": "collateral",
+      "label": "Collateral",
+      "promptValue": "With the visual aesthetic of the movie Collateral with green blue interior light tones contrasted with tungsten street lighting, crisp digital sharpness, high contrast",
+      "category": "movieLooks"
+    },
+    {
+      "id": "conan-the-barbarian",
+      "label": "Conan the Barbarian",
+      "promptValue": "With the visual aesthetic of the movie Conan the Barbarian with warm earth tones, rugged grain, dramatic contrast, harsh light, with 1970s fantasy style",
+      "category": "movieLooks"
+    },
+    {
+      "id": "crouching-tiger-hidden-dragon",
+      "label": "Crouching Tiger, Hidden Dragon",
+      "promptValue": "With the visual aesthetic of the movie Crouching Tiger, Hidden Dragon with lush greens, misty diffusion, soft contrast, elegant color",
+      "category": "movieLooks"
+    },
+    {
+      "id": "dark-city",
+      "label": "Dark City",
+      "promptValue": "With the visual aesthetic of the movie Dark City with blue-gray highlights, heavy shadows, hard lighting, steam, smoke or mist",
+      "category": "movieLooks"
+    },
+    {
+      "id": "days-of-heaven",
+      "label": "Days of Heaven",
+      "promptValue": "With the visual aesthetic of the movie Days of Heaven with golden hour glow, soft highlights, warm film grain, pastel skies",
+      "category": "movieLooks"
+    },
+    {
+      "id": "district-9",
+      "label": "District 9",
+      "promptValue": "With the visual aesthetic of the movie District 9 with gritty handheld look, desaturated palette, documentary realism, dust haze",
+      "category": "movieLooks"
+    },
+    {
+      "id": "drive",
+      "label": "Drive",
+      "promptValue": "With the visual aesthetic of the movie Drive with neon pink and blue, glossy highlights, night glow, soft contrast",
+      "category": "movieLooks"
+    },
+    {
+      "id": "dune",
+      "label": "Dune",
+      "promptValue": "With the visual aesthetic of the movie Dune with sandy amber palette, high contrast, atmospheric haze, minimal grain",
+      "category": "movieLooks"
+    },
+    {
+      "id": "enter-the-void",
+      "label": "Enter the Void",
+      "promptValue": "With the visual aesthetic of the movie Enter the Void with psychedelic neon, intense saturation, glowing bloom, yellowish skin tones, high contrast",
+      "category": "movieLooks"
+    },
+    {
+      "id": "eraserhead",
+      "label": "Eraserhead",
+      "promptValue": "With the visual aesthetic of the movie Eraserhead with stark black and white, harsh lighting, heavy grain, deep shadows",
+      "category": "movieLooks"
+    },
+    {
+      "id": "fight-club",
+      "label": "Fight Club",
+      "promptValue": "With the visual aesthetic of the movie Fight Club with grimy greenish tint, low-key lighting, gritty grain, high contrast",
+      "category": "movieLooks"
+    },
+    {
+      "id": "full-metal-jacket",
+      "label": "Full Metal Jacket",
+      "promptValue": "With the visual aesthetic of the movie Full Metal Jacket with stark 1980s realism, cold institutional interiors and rigid, clinical framing.",
+      "category": "movieLooks"
+    },
+    {
+      "id": "game-of-thrones",
+      "label": "Game of Thrones",
+      "promptValue": "With the visual aesthetic of the movie Game of Thrones with muted medieval palette, moody shadows, natural light, soft grain",
+      "category": "movieLooks"
+    },
+    {
+      "id": "ghostbusters",
+      "label": "Ghostbusters",
+      "promptValue": "With the visual aesthetic of the movie Ghostbusters with 1980s color pop, crisp contrast, light haze, mild grain",
+      "category": "movieLooks"
+    },
+    {
+      "id": "gladiator",
+      "label": "Gladiator",
+      "promptValue": "With the visual aesthetic of the movie Gladiator with gritty historical realism, warm dusty tones and dramatic early-2000s cinematic contrast.",
+      "category": "movieLooks"
+    },
+    {
+      "id": "godzilla-minus-one",
+      "label": "Godzilla Minus One",
+      "promptValue": "With the visual aesthetic of the movie Godzilla Minus One with monochrome-leaning desaturation, smoky haze, high contrast, film grain",
+      "category": "movieLooks"
+    },
+    {
+      "id": "grease",
+      "label": "Grease",
+      "promptValue": "With the visual aesthetic of the movie Grease with bright pastel palette, glossy highlights, clean contrast, 1950s technicolor sheen",
+      "category": "movieLooks"
+    },
+    {
+      "id": "halloween",
+      "label": "Halloween",
+      "promptValue": "With the visual aesthetic of the movie Halloween with deep blacks, cool autumn tones, minimal light, suspenseful contrast",
+      "category": "movieLooks"
+    },
+    {
+      "id": "hereditary",
+      "label": "Hereditary",
+      "promptValue": "With the visual aesthetic of the movie Hereditary with dim interior lighting, brown-orange palette, heavy shadows, low contrast",
+      "category": "movieLooks"
+    },
+    {
+      "id": "hook",
+      "label": "Hook",
+      "promptValue": "With the visual aesthetic of the movie Hook with high saturation color, matte painted background plates, subtle film grain, gentle contrast.",
+      "category": "movieLooks"
+    },
+    {
+      "id": "in-the-mood-for-love",
+      "label": "In the Mood for Love",
+      "promptValue": "With the visual aesthetic of the movie In the Mood for Love with rich reds and greens, soft diffusion, romantic glow, fine grain",
+      "category": "movieLooks"
+    },
+    {
+      "id": "jaws",
+      "label": "Jaws",
+      "promptValue": "With the visual aesthetic of the movie Jaws with bright coastal realism and a tense 1970s thriller film look with natural daylight photography.",
+      "category": "movieLooks"
+    },
+    {
+      "id": "john-wick",
+      "label": "John Wick",
+      "promptValue": "With the visual aesthetic of the movie John Wick with neon-accented darkness, cool shadows, crisp contrast, sleek polish",
+      "category": "movieLooks"
+    },
+    {
+      "id": "joker",
+      "label": "Joker",
+      "promptValue": "With the visual aesthetic of the movie Joker with gritty texture, muted greens and yellows, heavy grain, harsh light",
+      "category": "movieLooks"
+    },
+    {
+      "id": "jurassic-park",
+      "label": "Jurassic Park",
+      "promptValue": "With the visual aesthetic of the movie Jurassic Park with naturalistic greens, humid haze, cinematic contrast, warm highlights",
+      "category": "movieLooks"
+    },
+    {
+      "id": "kill-bill-volume-1",
+      "label": "Kill Bill: Volume 1",
+      "promptValue": "With the visual aesthetic of the movie Kill Bill: Volume 1 with Technicolor palette with saturated primary colors, the lighting is high-contrast and hard, creating sharp, dramatic shadows. The image has a polished, glossy film look with fine grain, sharp focus, and a wide dynamic range.",
+      "category": "movieLooks"
+    },
+    {
+      "id": "king-kong-1933",
+      "label": "King Kong (1933)",
+      "promptValue": "With the visual aesthetic of the movie King Kong (1933) with vintage black-and-white adventure, classic studio lighting and old-Hollywood optical-effects texture.",
+      "category": "movieLooks"
+    },
+    {
+      "id": "la-la-land",
+      "label": "La La Land",
+      "promptValue": "With the visual aesthetic of the movie La La Land with technicolor palette, golden hour glow, clean contrast, dreamy polish",
+      "category": "movieLooks"
+    },
+    {
+      "id": "lawrence-of-arabia",
+      "label": "Lawrence of Arabia",
+      "promptValue": "With the visual aesthetic of the movie Lawrence of Arabia with sweeping widescreen desert vistas and a crisp 1960s large-format epic film look.",
+      "category": "movieLooks"
+    },
+    {
+      "id": "life-of-pi",
+      "label": "Life of Pi",
+      "promptValue": "With the visual aesthetic of the movie Life of Pi with vibrant jewel tones, luminous highlights, soft glow, clean contrast",
+      "category": "movieLooks"
+    },
+    {
+      "id": "lost-in-translation",
+      "label": "Lost in Translation",
+      "promptValue": "With the visual aesthetic of the movie Lost in Translation with muted neon nights, soft grain, cool shadows, gentle contrast",
+      "category": "movieLooks"
+    },
+    {
+      "id": "mad-max-fury-road",
+      "label": "Mad Max: Fury Road",
+      "promptValue": "With the visual aesthetic of the movie Mad Max: Fury Road with high-contrast desert palette, orange-teal split, dust haze, sharp detail",
+      "category": "movieLooks"
+    },
+    {
+      "id": "metropolis-1927",
+      "label": "Metropolis (1927)",
+      "promptValue": "With the visual aesthetic of the movie Metropolis (1927) with high-contrast monochrome, dramatic lighting, crisp geometry, film grain",
+      "category": "movieLooks"
+    },
+    {
+      "id": "midsommar",
+      "label": "Midsommar",
+      "promptValue": "With the visual aesthetic of the movie Midsommar with bright daylight, pastel warmth, soft shadows, airy diffusion",
+      "category": "movieLooks"
+    },
+    {
+      "id": "minority-report",
+      "label": "Minority Report",
+      "promptValue": "With the visual aesthetic of the movie Minority Report with cool blue-gray tint, high contrast, soft bloom, slick polish",
+      "category": "movieLooks"
+    },
+    {
+      "id": "monty-python-and-the-holy-grail",
+      "label": "Monty Python and the Holy Grail",
+      "promptValue": "With the visual aesthetic of the movie Monty Python and the Holy Grail with scrappy low-budget period comedy and a raw 1970s film look.",
+      "category": "movieLooks"
+    },
+    {
+      "id": "moonlight",
+      "label": "Moonlight",
+      "promptValue": "With the visual aesthetic of the movie Moonlight with deep blues and purples, soft glow, rich shadows, fine grain",
+      "category": "movieLooks"
+    },
+    {
+      "id": "no-country-for-old-men",
+      "label": "No Country for Old Men",
+      "promptValue": "With the visual aesthetic of the movie No Country for Old Men with sun-bleached neutrals, stark shadows, dry contrast, subdued palette",
+      "category": "movieLooks"
+    },
+    {
+      "id": "nope",
+      "label": "Nope",
+      "promptValue": "With the visual aesthetic of the movie Nope with natural dusk tones, deep sky blues, crisp contrast, subtle grain",
+      "category": "movieLooks"
+    },
+    {
+      "id": "nosferatu",
+      "label": "Nosferatu",
+      "promptValue": "With the visual aesthetic of the movie Nosferatu with silent-era monochrome, heavy vignetting, stark shadows, film grain",
+      "category": "movieLooks"
+    },
+    {
+      "id": "notting-hill",
+      "label": "Notting Hill",
+      "promptValue": "With the visual aesthetic of the movie Notting Hill with soft naturalism, cosy London street photography and clean late-1990s rom-com polish.",
+      "category": "movieLooks"
+    },
+    {
+      "id": "o-brother-where-art-thou",
+      "label": "O Brother, Where Art Thou?",
+      "promptValue": "With the visual aesthetic of the movie O Brother, Where Art Thou? with sepia and warm amber grade, dry contrast, dusty haze",
+      "category": "movieLooks"
+    },
+    {
+      "id": "oblivion",
+      "label": "Oblivion",
+      "promptValue": "With the visual aesthetic of the movie Oblivion with clean sci-fi gloss, cool blue palette, high clarity, soft bloom",
+      "category": "movieLooks"
+    },
+    {
+      "id": "pans-labyrinth",
+      "label": "Pans Labyrinth",
+      "promptValue": "With the visual aesthetic of the movie Pans Labyrinth by Guillermo Del Toro, with mossy greens, warm candlelight glow, soft contrast, fairy-tale haze",
+      "category": "movieLooks"
+    },
+    {
+      "id": "parasite",
+      "label": "Parasite",
+      "promptValue": "With the visual aesthetic of the movie Parasite with clean modern tones, neutral palette, crisp contrast, controlled lighting",
+      "category": "movieLooks"
+    },
+    {
+      "id": "psycho",
+      "label": "Psycho",
+      "promptValue": "With the visual aesthetic of the movie Psycho with sharp black and white, high contrast, hard light, film grain",
+      "category": "movieLooks"
+    },
+    {
+      "id": "raiders-of-the-lost-ark",
+      "label": "Raiders of the Lost Ark",
+      "promptValue": "With the visual aesthetic of the movie Raiders of the Lost Ark with punchy 1980s adventure cinematography, practical stunts energy and warm, dusty film texture.",
+      "category": "movieLooks"
+    },
+    {
+      "id": "roma",
+      "label": "Roma",
+      "promptValue": "With the visual aesthetic of the movie Roma with crisp black and white, soft natural light, fine grain, gentle contrast",
+      "category": "movieLooks"
+    },
+    {
+      "id": "saving-private-ryan",
+      "label": "Saving Private Ryan",
+      "promptValue": "With the visual aesthetic of the movie Saving Private Ryan with desaturated palette, high shutter sharpness, gritty, contrast",
+      "category": "movieLooks"
+    },
+    {
+      "id": "saw",
+      "label": "Saw",
+      "promptValue": "With the visual aesthetic of the movie Saw with cold greenish tint, gritty low-light realism and early-2000s horror-thriller film style.",
+      "category": "movieLooks"
+    },
+    {
+      "id": "sicario",
+      "label": "Sicario",
+      "promptValue": "With the visual aesthetic of the movie Sicario with dusty amber tones, harsh sunlight, high contrast, heat haze",
+      "category": "movieLooks"
+    },
+    {
+      "id": "sin-city",
+      "label": "Sin City",
+      "promptValue": "With the visual aesthetic of the movie Sin City with stark black and white, extreme contrast, selective color accents",
+      "category": "movieLooks"
+    },
+    {
+      "id": "skyfall",
+      "label": "Skyfall",
+      "promptValue": "With the visual aesthetic of the movie Skyfall with rich teal shadows, glossy highlights, moody contrast, refined grain",
+      "category": "movieLooks"
+    },
+    {
+      "id": "squid-game",
+      "label": "Squid Game",
+      "promptValue": "With the visual aesthetic of the movie Squid Game with bright candy colors, clean contrast, flat lighting, graphic clarity",
+      "category": "movieLooks"
+    },
+    {
+      "id": "stalker",
+      "label": "Stalker",
+      "promptValue": "With the visual aesthetic of the movie Stalker with muted earth tones, low saturation, soft focus, misty atmosphere",
+      "category": "movieLooks"
+    },
+    {
+      "id": "star-wars-a-new-hope",
+      "label": "Star Wars: A New Hope",
+      "promptValue": "With the visual aesthetic of the movie Star Wars: A New Hope with lived-in practical-effects texture and a classic late-1970s space-opera film look.",
+      "category": "movieLooks"
+    },
+    {
+      "id": "stranger-things",
+      "label": "Stranger Things",
+      "promptValue": "With the visual aesthetic of the movie Stranger Things with 1980s nostalgia grade, warm practical glow, soft grain, moody contrast, red tinted cloudyskies, particle effects",
+      "category": "movieLooks"
+    },
+    {
+      "id": "suspiria-1977",
+      "label": "Suspiria (1977)",
+      "promptValue": "With the visual aesthetic of the movie Suspiria (1977) with saturated primary colors, heavy gels, surreal glow, high contrast",
+      "category": "movieLooks"
+    },
+    {
+      "id": "terminator-2",
+      "label": "Terminator 2",
+      "promptValue": "With the visual aesthetic of the movie Terminator 2 with cool steel-blue palette, sharp contrast, cinematic shine, mild grain",
+      "category": "movieLooks"
+    },
+    {
+      "id": "the-assassination-of-jesse-james",
+      "label": "The Assassination of Jesse James",
+      "promptValue": "With the visual aesthetic of the movie The Assassination of Jesse James with sepia-leaning tones, soft vignetting, gentle contrast, film grain",
+      "category": "movieLooks"
+    },
+    {
+      "id": "the-bourne-ultimatum",
+      "label": "The Bourne Ultimatum",
+      "promptValue": "With the visual aesthetic of the movie The Bourne Ultimatum with handheld kinetic look, cool desaturation, sharp contrast, gritty grain",
+      "category": "movieLooks"
+    },
+    {
+      "id": "the-dark-crystal",
+      "label": "The Dark Crystal",
+      "promptValue": "With the visual aesthetic of the movie The Dark Crystal with a DVD screengrab quality without text overlay, lo-fi appearance, rich earthy palette, soft diffusion, dim glow, fantasy haze",
+      "category": "movieLooks"
+    },
+    {
+      "id": "the-dark-knight",
+      "label": "The Dark Knight",
+      "promptValue": "With the visual aesthetic of the movie The Dark Knight with cool urban tones, deep shadows, high contrast, crisp clarity",
+      "category": "movieLooks"
+    },
+    {
+      "id": "the-exorcist",
+      "label": "The Exorcist",
+      "promptValue": "With the visual aesthetic of the movie The Exorcist with cold greenish tint, low-key lighting, heavy grain, stark contrast",
+      "category": "movieLooks"
+    },
+    {
+      "id": "the-godfather",
+      "label": "The Godfather",
+      "promptValue": "With the visual aesthetic of the movie The Godfather with warm amber low-key lighting, deep shadows, soft film grain",
+      "category": "movieLooks"
+    },
+    {
+      "id": "the-good-the-bad-and-the-ugly",
+      "label": "The Good, the Bad and the Ugly",
+      "promptValue": "With the visual aesthetic of the movie The Good, the Bad and the Ugly with sun-bleached Western landscapes, gritty close-ups and a classic 1960s spaghetti-western film look with Technicolor 3-Strip film.",
+      "category": "movieLooks"
+    },
+    {
+      "id": "the-grand-budapest-hotel",
+      "label": "The Grand Budapest Hotel",
+      "promptValue": "With the visual aesthetic of the movie The Grand Budapest Hotel with pastel palette, symmetrical polish typical of Wes Anderson, soft contrast, playful tint",
+      "category": "movieLooks"
+    },
+    {
+      "id": "the-hurt-locker",
+      "label": "The Hurt Locker",
+      "promptValue": "With the visual aesthetic of the movie The Hurt Locker with desaturated palette, harsh sunlight, handheld grit, dusty haze",
+      "category": "movieLooks"
+    },
+    {
+      "id": "the-lighthouse",
+      "label": "The Lighthouse",
+      "promptValue": "With the visual aesthetic of the movie The Lighthouse with high-contrast black and white, harsh light, heavy grain, vignetting",
+      "category": "movieLooks"
+    },
+    {
+      "id": "the-lord-of-the-rings",
+      "label": "The Lord of the Rings",
+      "promptValue": "With the visual aesthetic of the movie The Lord of the Rings with natural greens and golds, warm light, soft contrast, epic grade",
+      "category": "movieLooks"
+    },
+    {
+      "id": "the-maltese-falcon",
+      "label": "The Maltese Falcon",
+      "promptValue": "With the visual aesthetic of the movie The Maltese Falcon with high-contrast 1940s black-and-white noir, hard shadows and smoky interiors.",
+      "category": "movieLooks"
+    },
+    {
+      "id": "the-matrix",
+      "label": "The Matrix",
+      "promptValue": "With the visual aesthetic of the movie The Matrix with green tint, high contrast, cool shadows, glossy highlights",
+      "category": "movieLooks"
+    },
+    {
+      "id": "the-neverending-story",
+      "label": "The NeverEnding Story",
+      "promptValue": "With the visual aesthetic of the movie The NeverEnding Story with a DVD screengrab quality without text overlay, lo-fi appearance, soft 1980s fantasy glow, warm palette, gentle contrast, film grain",
+      "category": "movieLooks"
+    },
+    {
+      "id": "the-revenant",
+      "label": "The Revenant",
+      "promptValue": "With the visual aesthetic of the movie The Revenant with cold natural light, desaturated palette, crisp detail, soft grain",
+      "category": "movieLooks"
+    },
+    {
+      "id": "the-ring",
+      "label": "The Ring",
+      "promptValue": "With the visual aesthetic of the movie The Ring with cold blue-gray palette, heavy shadows, damp haze, low saturation",
+      "category": "movieLooks"
+    },
+    {
+      "id": "the-shape-of-water",
+      "label": "The Shape of Water",
+      "promptValue": "With the visual aesthetic of the movie The Shape of Water with teal-green palette, soft glow, gentle contrast, dreamy haze",
+      "category": "movieLooks"
+    },
+    {
+      "id": "the-shining",
+      "label": "The Shining",
+      "promptValue": "With the visual aesthetic of the movie The Shining with a 1970's film style with symmetrical compositions, use of patterns, deep reds, sharp contrast, clean clarity",
+      "category": "movieLooks"
+    },
+    {
+      "id": "the-ten-commandments",
+      "label": "The Ten Commandments",
+      "promptValue": "With the visual aesthetic of the movie The Ten Commandments with grand biblical pageantry, saturated colours and a classic 1950s Technicolor studio-epic look.",
+      "category": "movieLooks"
+    },
+    {
+      "id": "the-texas-chain-saw-massacre",
+      "label": "The Texas Chain Saw Massacre",
+      "promptValue": "With the visual aesthetic of the movie The Texas Chain Saw Massacre with raw 1970s film grain, sun-bleached tones, harsh contrast",
+      "category": "movieLooks"
+    },
+    {
+      "id": "the-thing",
+      "label": "The Thing",
+      "promptValue": "With the visual aesthetic of the movie The Thing with cold blue lighting, deep shadows, gritty grain, high contrast and a 1980s film look",
+      "category": "movieLooks"
+    },
+    {
+      "id": "the-witch",
+      "label": "The Witch",
+      "promptValue": "With the visual aesthetic of the movie The Witch with muted earth tones, natural candlelight, low contrast, fine grain",
+      "category": "movieLooks"
+    },
+    {
+      "id": "there-will-be-blood",
+      "label": "There Will Be Blood",
+      "promptValue": "With the visual aesthetic of the movie There Will Be Blood with dusty sepia palette, high contrast, stark shadows, film grain",
+      "category": "movieLooks"
+    },
+    {
+      "id": "titanic",
+      "label": "Titanic",
+      "promptValue": "With the visual aesthetic of the movie Titanic with romantic period grandeur, warm luxurious interiors and polished 1990s cinematic realism.",
+      "category": "movieLooks"
+    },
+    {
+      "id": "trainspotting",
+      "label": "Trainspotting",
+      "promptValue": "With the visual aesthetic of the movie Trainspotting with gritty 1990s look, muted palette, harsh contrast, light grain",
+      "category": "movieLooks"
+    },
+    {
+      "id": "twilight",
+      "label": "Twilight",
+      "promptValue": "With the visual aesthetic of the movie Twilight with cool blue tint, soft diffusion, low contrast, dreamy haze",
+      "category": "movieLooks"
+    },
+    {
+      "id": "under-the-skin",
+      "label": "Under the Skin",
+      "promptValue": "With the visual aesthetic of the movie Under the Skin with minimal palette, high contrast, cold light, clean negative space, surrealist composition",
+      "category": "movieLooks"
+    },
+    {
+      "id": "utopia",
+      "label": "Utopia",
+      "promptValue": "With the visual aesthetic of the movie Utopia a British TV Series, with bold colors, high contrast, clean lines, slight vignette",
+      "category": "movieLooks"
+    },
+    {
+      "id": "who-framed-roger-rabbit",
+      "label": "Who Framed Roger Rabbit",
+      "promptValue": "With the visual aesthetic of the movie Who Framed Roger Rabbit with bright 1940s noir palette, 2D loony toons style cartoon elements mixed with live action, sharp contrast, glossy highlights",
+      "category": "movieLooks"
+    },
+    {
+      "id": "zero-dark-thirty",
+      "label": "Zero Dark Thirty",
+      "promptValue": "With the visual aesthetic of the movie Zero Dark Thirty with desaturated realism, cool tones, handheld grit, low saturation",
+      "category": "movieLooks"
+    }
+  ],
+  "filters": [
+    {
+      "id": "black-and-white",
+      "label": "Black And White",
+      "promptValue": "Black And White",
+      "category": "filters"
+    },
+    {
+      "id": "black-mist-filter",
+      "label": "Black mist filter",
+      "promptValue": "Black mist filter",
+      "category": "filters"
+    },
+    {
+      "id": "bloom-glow",
+      "label": "Bloom Glow",
+      "promptValue": "Bloom Glow",
+      "category": "filters"
+    },
+    {
+      "id": "bokeh",
+      "label": "Bokeh",
+      "promptValue": "Bokeh",
+      "category": "filters"
+    },
+    {
+      "id": "chromatic-aberration",
+      "label": "Chromatic Aberration",
+      "promptValue": "Chromatic Aberration",
+      "category": "filters"
+    },
+    {
+      "id": "collage-cutout",
+      "label": "Collage Cutout",
+      "promptValue": "Collage Cutout",
+      "category": "filters"
+    },
+    {
+      "id": "color-filter",
+      "label": "Color Filter",
+      "promptValue": "Color Filter",
+      "category": "filters"
+    },
+    {
+      "id": "cross-processed",
+      "label": "Cross Processed",
+      "promptValue": "Cross Processed",
+      "category": "filters"
+    },
+    {
+      "id": "crt-scanlines",
+      "label": "CRT Scanlines",
+      "promptValue": "CRT Scanlines",
+      "category": "filters"
+    },
+    {
+      "id": "cyanotype",
+      "label": "Cyanotype",
+      "promptValue": "Cyanotype",
+      "category": "filters"
+    },
+    {
+      "id": "datamosh-glitch",
+      "label": "Datamosh Glitch",
+      "promptValue": "Datamosh Glitch",
+      "category": "filters"
+    },
+    {
+      "id": "desaturated-grunge",
+      "label": "Desaturated Grunge",
+      "promptValue": "Desaturated Grunge",
+      "category": "filters"
+    },
+    {
+      "id": "dreamy-haze",
+      "label": "Dreamy Haze",
+      "promptValue": "Dreamy Haze",
+      "category": "filters"
+    },
+    {
+      "id": "duotone",
+      "label": "Duotone",
+      "promptValue": "Duotone",
+      "category": "filters"
+    },
+    {
+      "id": "film-grain",
+      "label": "Film Grain",
+      "promptValue": "Film Grain",
+      "category": "filters"
+    },
+    {
+      "id": "glitch-style",
+      "label": "Glitch Style",
+      "promptValue": "Glitch Style",
+      "category": "filters"
+    },
+    {
+      "id": "halftone",
+      "label": "Halftone",
+      "promptValue": "Halftone",
+      "category": "filters"
+    },
+    {
+      "id": "hdr-tone-mapping",
+      "label": "HDR Tone Mapping",
+      "promptValue": "HDR Tone Mapping",
+      "category": "filters"
+    },
+    {
+      "id": "hologram-effect",
+      "label": "Hologram Effect",
+      "promptValue": "Hologram Effect",
+      "category": "filters"
+    },
+    {
+      "id": "infrared-filter",
+      "label": "Infrared Filter",
+      "promptValue": "Infrared Filter",
+      "category": "filters"
+    },
+    {
+      "id": "kaleidoscope",
+      "label": "Kaleidoscope",
+      "promptValue": "Kaleidoscope",
+      "category": "filters"
+    },
+    {
+      "id": "lens-flare",
+      "label": "Lens Flare",
+      "promptValue": "Lens Flare",
+      "category": "filters"
+    },
+    {
+      "id": "light-leaks",
+      "label": "Light Leaks",
+      "promptValue": "Light Leaks",
+      "category": "filters"
+    },
+    {
+      "id": "liquify-smear",
+      "label": "Liquify Smear",
+      "promptValue": "Liquify Smear",
+      "category": "filters"
+    },
+    {
+      "id": "long-exposure",
+      "label": "Long Exposure",
+      "promptValue": "Long Exposure",
+      "category": "filters"
+    },
+    {
+      "id": "mirror-split",
+      "label": "Mirror Split",
+      "promptValue": "Mirror Split",
+      "category": "filters"
+    },
+    {
+      "id": "motion-blur",
+      "label": "Motion Blur",
+      "promptValue": "Motion Blur",
+      "category": "filters"
+    },
+    {
+      "id": "nd-filter",
+      "label": "ND Filter",
+      "promptValue": "ND Filter",
+      "category": "filters"
+    },
+    {
+      "id": "newspaper-print",
+      "label": "Newspaper Print",
+      "promptValue": "Newspaper Print",
+      "category": "filters"
+    },
+    {
+      "id": "off-register-cmyk-print",
+      "label": "Off-Register CMYK Print",
+      "promptValue": "Off-Register CMYK Print",
+      "category": "filters"
+    },
+    {
+      "id": "orton-glow",
+      "label": "Orton Glow",
+      "promptValue": "Orton Glow",
+      "category": "filters"
+    },
+    {
+      "id": "overexposed",
+      "label": "Overexposed",
+      "promptValue": "Overexposed",
+      "category": "filters"
+    },
+    {
+      "id": "photocopy-xerox",
+      "label": "Photocopy / Xerox",
+      "promptValue": "Photocopy / Xerox",
+      "category": "filters"
+    },
+    {
+      "id": "pixel-sort",
+      "label": "Pixel Sort",
+      "promptValue": "Pixel Sort",
+      "category": "filters"
+    },
+    {
+      "id": "posterized",
+      "label": "Posterized",
+      "promptValue": "Posterized",
+      "category": "filters"
+    },
+    {
+      "id": "radial-blur",
+      "label": "Radial Blur",
+      "promptValue": "Radial Blur",
+      "category": "filters"
+    },
+    {
+      "id": "risograph-print",
+      "label": "Risograph Print",
+      "promptValue": "Risograph Print",
+      "category": "filters"
+    },
+    {
+      "id": "selective-color",
+      "label": "Selective Color",
+      "promptValue": "Selective Color",
+      "category": "filters"
+    },
+    {
+      "id": "sepia-tone",
+      "label": "Sepia Tone",
+      "promptValue": "Sepia Tone",
+      "category": "filters"
+    },
+    {
+      "id": "soft-focus",
+      "label": "Soft Focus",
+      "promptValue": "Soft Focus",
+      "category": "filters"
+    },
+    {
+      "id": "solarized",
+      "label": "Solarized",
+      "promptValue": "Solarized",
+      "category": "filters"
+    },
+    {
+      "id": "split-tone",
+      "label": "Split Tone",
+      "promptValue": "Split Tone",
+      "category": "filters"
+    },
+    {
+      "id": "underexposed",
+      "label": "Underexposed",
+      "promptValue": "Underexposed",
+      "category": "filters"
+    },
+    {
+      "id": "vignette",
+      "label": "Vignette",
+      "promptValue": "Vignette",
+      "category": "filters"
+    }
+  ],
+  "animeGenres": [
+    {
+      "id": "3d-anime",
+      "label": "3D Anime",
+      "promptValue": "3D Anime",
+      "category": "animeGenres",
+      "pre": "A stylized anime 3D cinematic render.",
+      "post": "Featuring high-end CGI character model, subsurface skin shading, sculpted face, detailed hair strands with detailed-painted textures, rendered like a premium cinematic anime cutscene, global illumination, clean lighting, vibrant but controlled colors, clean background."
+    },
+    {
+      "id": "90s-ova-anime",
+      "label": "90s OVA Anime",
+      "promptValue": "90s OVA Anime",
+      "category": "animeGenres",
+      "pre": "1990s high-budget OVA anime style.",
+      "post": "Featuring no outlines on backgrounds with rich hand-painted textures, premium cel-era detail, and moody chromatic aberration. Refined character art, lush color depth, and a high-end vintage atmosphere. Captured on 35mm film animation look."
+    },
+    {
+      "id": "avant-garde-anime",
+      "label": "Avant-Garde Anime",
+      "promptValue": "Avant-Garde Anime",
+      "category": "animeGenres",
+      "pre": "Experimental avant-garde anime style.",
+      "post": "Featuring unconventional composition, abstract graphic shapes, and symbolic visual treatments. Art-house animation styling with unusual color relationships."
+    },
+    {
+      "id": "battle-shonen-anime",
+      "label": "Battle Shonen Anime",
+      "promptValue": "Battle Shonen Anime",
+      "category": "animeGenres",
+      "pre": "Modern battle-shonen action anime style.",
+      "post": "Featuring strong character shape design, and bold action-oriented line art. Dynamic cel shading, and high-impact visual effects."
+    },
+    {
+      "id": "bishoujo-anime",
+      "label": "Bishoujo Anime",
+      "promptValue": "Bishoujo Anime",
+      "category": "animeGenres",
+      "pre": "Idealized Bishoujo (beautiful girl) anime style.",
+      "post": "Featuring idealized character styling, large luminous eyes, and delicate facial features. Glossy polished rendering, clean elegant line art, and a premium commercial animation finish."
+    },
+    {
+      "id": "chibi-super-deformed",
+      "label": "Chibi/Super-Deformed",
+      "promptValue": "Chibi/Super-Deformed",
+      "category": "animeGenres",
+      "pre": "Chibi / super-deformed anime style.",
+      "post": "Featuring characters with oversized head, tiny simplified bodies, and cute comedic proportions. Soft clean linework, bright readable shapes, and playful mascot-like energy. Limited colors, flat shading, high-quality anime screenshot."
+    },
+    {
+      "id": "clamp-like-elegant-anime",
+      "label": "CLAMP-like Elegant Anime",
+      "promptValue": "CLAMP-like Elegant Anime",
+      "category": "animeGenres",
+      "pre": "Late 1990s CLAMP-inspired decorative anime style.",
+      "post": "Featuring elongated graceful proportions, intricate decorative filigree, and refined line art. Luminous fantasy-romance mood often with floating feathers and stylized floral patterns, high-quality animation aesthetic."
+    },
+    {
+      "id": "classic-80s-cel-anime",
+      "label": "Classic 80s Cel Anime",
+      "promptValue": "Classic 80s Cel Anime",
+      "category": "animeGenres",
+      "pre": "Classic 1980s hand-painted cel anime style.",
+      "post": "Featuring simple colors, simple line art, limited shading, and a vintage color palette. Painted background plates. 1980s Anime cartoon aesthetic."
+    },
+    {
+      "id": "dark-fantasy-anime",
+      "label": "Dark Fantasy Anime",
+      "promptValue": "Dark Fantasy Anime",
+      "category": "animeGenres",
+      "pre": "Grim dark fantasy anime style.",
+      "post": "Featuring a cold restrained and simple color palette, harsh jagged shadows, Cel shaded. Bleak supernatural atmosphere, severe dramatic styling, and heavy atmospheric fog, high-production animation look."
+    },
+    {
+      "id": "early-2000s-digital-anime",
+      "label": "Early 2000s Digital Anime",
+      "promptValue": "Early 2000s Digital Anime",
+      "category": "animeGenres",
+      "pre": "Early 2000s digital-era anime style.",
+      "post": "Featuring clean digital gradients, flat digital compositing, neat character line art, modest lighting effects, and a polished early-digital look with subtle bloom."
+    },
+    {
+      "id": "gacha-game-3d",
+      "label": "Gacha Game 3D",
+      "promptValue": "Gacha Game 3D",
+      "category": "animeGenres",
+      "pre": "Stylized anime 3D style.",
+      "post": "Featuring high-end cel-shaded game render, polished anime RPG model, soft warm interior lighting, smooth toon shading, detailed hair cards, crisp eyes, premium gacha game cutscene look"
+    },
+    {
+      "id": "ghibli-like-fantasy",
+      "label": "Ghibli-like Fantasy",
+      "promptValue": "Ghibli-like Fantasy",
+      "category": "animeGenres",
+      "pre": "Studio Ghibli anime style.",
+      "post": "Featuring simple black outlines for characters with gentle facial styling, no outlines on backgrounds painted with impressionistic soft watercolor-textures, fluffy layered clouds, and a serene storybook aesthetic."
+    },
+    {
+      "id": "gothic-horror-anime",
+      "label": "Gothic Horror Anime",
+      "promptValue": "Gothic Horror Anime",
+      "category": "animeGenres",
+      "pre": "Gothic horror anime style.",
+      "post": "Featuring no outlines on backgrounds with rich hand-painted textures, dramatic heavy shadows, premium cel shaded detail, and a deep crimson-and-black palette. Sinister old-world atmosphere."
+    },
+    {
+      "id": "idol-anime",
+      "label": "Idol Anime",
+      "promptValue": "Idol Anime",
+      "category": "animeGenres",
+      "pre": "Glitzy idol performance anime style.",
+      "post": "Featuring bright polished rendering, glossy highlights, and vivid clean colors. Sparkling particle effects, smooth skin treatment, and high-energy entertainment-anime line art."
+    },
+    {
+      "id": "josei-anime",
+      "label": "Josei Anime",
+      "promptValue": "Josei Anime",
+      "category": "animeGenres",
+      "pre": "Josei drama anime style.",
+      "post": "Featuring mature character styling, natural adult proportions, and a restrained dramatic mood. Polished line art, understated elegance, and grounded emotional styling. Cinematic lighting with city reflections in glass, clean digital animation finish."
+    },
+    {
+      "id": "key-visual-anime",
+      "label": "Key Visual Anime",
+      "promptValue": "Key Visual Anime",
+      "category": "animeGenres",
+      "pre": "Promotional Key Visual / Animation anime style.",
+      "post": "Featuring premium promotional rendering, polished compositing, and crisp silhouette emphasis. High-detail finish, balanced color design, and a cinematic studio-poster animation style."
+    },
+    {
+      "id": "kodomo-anime",
+      "label": "Kodomo Anime",
+      "promptValue": "Kodomo Anime",
+      "category": "animeGenres",
+      "pre": "Kodomo (children's) anime style.",
+      "post": "Featuring simple rounded shapes, friendly facial designs, and soft cheerful colors. Gentle linework, easy readability, and a warm child-friendly visual tone. Limited shading, clean TV-broadcast finish."
+    },
+    {
+      "id": "modern-glossy-anime",
+      "label": "Modern Glossy Anime",
+      "promptValue": "Modern Glossy Anime",
+      "category": "animeGenres",
+      "pre": "High-end anime style.",
+      "post": "Featuring crisp digital highlights, premium polished rendering, and smooth subsurface scattering on skin. High production finish, clean cinematic lighting, and contemporary character design. Ultra-high resolution digital animation aesthetic"
+    },
+    {
+      "id": "moe-anime",
+      "label": "Moe Anime",
+      "promptValue": "Moe Anime",
+      "category": "animeGenres",
+      "pre": "Modern \"Moe\" soft-style anime style.",
+      "post": "Featuring soft rounded facial features, massive glossy \"liquid\" eyes, and a delicate nose. Clean smooth line art, pastel-leaning palette, and polished soft shading. Cute, heart-warming animation tone."
+    },
+    {
+      "id": "otome-game-anime",
+      "label": "Otome Game Anime",
+      "promptValue": "Otome Game Anime",
+      "category": "animeGenres",
+      "pre": "Romantic Otome game anime style.",
+      "post": "Featuring refined facial structures, luminous long-lashed eyes, and elegant decorative line art. Jewel-toned color accents, soft lens flares, and a glossy high-romance animation rendering."
+    },
+    {
+      "id": "sakuga-action-frame",
+      "label": "Sakuga Action Frame",
+      "promptValue": "Sakuga Action Frame",
+      "category": "animeGenres",
+      "pre": "High-intensity \"Sakuga\" anime style.",
+      "post": "Featuring highly expressive draftsmanship, dynamic variable line art weights, and dense shading accents. Motion smears, heightened detail, and a fluid high-impact hand-drawn animation finish."
+    },
+    {
+      "id": "seinen-anime",
+      "label": "Seinen Anime",
+      "promptValue": "Seinen Anime",
+      "category": "animeGenres",
+      "pre": "Seinen psychological anime style.",
+      "post": "Featuring mature grounded facial design, a darker restrained palette, and serious dramatic tones. Sharper shadows, grounded mood, and weighty visual treatment. High-contrast lighting, gritty urban atmosphere, clean professional animation line art."
+    },
+    {
+      "id": "shoujo-manga-anime",
+      "label": "Shoujo Manga Anime",
+      "promptValue": "Shoujo Manga Anime",
+      "category": "animeGenres",
+      "pre": "Shoujo manga-inspired anime style.",
+      "post": "Featuring elegant facial styling, large expressive eyes, and delicate line art. Airy sparkle accents, soft romantic glow, and a dreamy feminine atmosphere. Limited colors, soft watercolor-style gradients, high-quality animation frame."
+    },
+    {
+      "id": "superflat-anime",
+      "label": "Superflat Anime",
+      "promptValue": "Superflat Anime",
+      "category": "animeGenres",
+      "pre": "Superflat anime style.",
+      "post": "Featuring perfectly flat graphic planes, bold color blocking, and zero shading. Sharp clean line art and a highly stylized pop-art commercial animation finish."
+    },
+    {
+      "id": "visual-novel-anime",
+      "label": "Visual Novel Anime",
+      "promptValue": "Visual Novel Anime",
+      "category": "animeGenres",
+      "pre": "Modern Visual Novel character sprite style.",
+      "post": "Featuring crisp character rendering with a distinct separation from the blurred background. Neat hair separation, smooth digital gradients, and a polished commercial finish typical of high-end animation-style games."
+    }
+  ],
+  "aspectRatios": [
+    {
+      "id": "1-1",
+      "label": "1:1",
+      "promptValue": "1:1",
+      "category": "aspectRatios"
+    },
+    {
+      "id": "3-4",
+      "label": "3:4",
+      "promptValue": "3:4",
+      "category": "aspectRatios"
+    },
+    {
+      "id": "4-3",
+      "label": "4:3",
+      "promptValue": "4:3",
+      "category": "aspectRatios"
+    },
+    {
+      "id": "9-16",
+      "label": "9:16",
+      "promptValue": "9:16",
+      "category": "aspectRatios"
+    },
+    {
+      "id": "16-9",
+      "label": "16:9",
+      "promptValue": "16:9",
+      "category": "aspectRatios"
+    },
+    {
+      "id": "21-9",
+      "label": "21:9",
+      "promptValue": "21:9",
+      "category": "aspectRatios"
+    }
+  ],
+  "animeShowStyles": [
+    {
+      "id": "attack-on-giants",
+      "label": "Attack on Giants",
+      "promptValue": "Attack on Giants",
+      "category": "animeShowStyles",
+      "pre": "Attack on Titan dark fantasy military style anime.",
+      "post": "Featuring thick simple outlines, desaturated earthy tones, cel-shaded cinematic lighting, light bloom and shallow depth of field. No line art on painted backgrounds. Gritty, serious atmosphere with a high-budget professional animation aesthetic."
+    },
+    {
+      "id": "beyond-the-journey",
+      "label": "Beyond the Journey",
+      "promptValue": "Beyond the Journey",
+      "category": "animeShowStyles",
+      "pre": "Frieren: Beyond Journey's End high-fantasy melancholic style anime.",
+      "post": "Featuring characters with elegant delicate simple line art and cel shaded colors. With soft painterly backgrounds with no outlines, natural diffused lighting, and. A peaceful, nostalgic color palette and a premium modern-feature animation finish."
+    },
+    {
+      "id": "charmcaptor",
+      "label": "Charmcaptor",
+      "promptValue": "Charmcaptor",
+      "category": "animeShowStyles",
+      "pre": "Cardcaptor Sakura whimsical magical girl style anime.",
+      "post": "Featuring bright pastel colors, delicate ornate line art, and a whimsical atmosphere. Soft lighting and a polished, magical-girl animation aesthetic."
+    },
+    {
+      "id": "cowboy-spaceman",
+      "label": "Cowboy Spaceman",
+      "promptValue": "Cowboy Spaceman",
+      "category": "animeShowStyles",
+      "pre": "Cowboy Bebop retro space-noir style anime.",
+      "post": "Featuring desaturated vintage colors, detailed mechanical designs, and sophisticated hand-drawn line art. Noir-inspired shadows, cinematic framing, and a classic 1990s cel-animation look."
+    },
+    {
+      "id": "dan-da-boom",
+      "label": "Dan Da Boom",
+      "promptValue": "Dan Da Boom",
+      "category": "animeShowStyles",
+      "pre": "Dan Da Dan hyper-kinetic supernatural style anime.",
+      "post": "Featuring cel-shaded characters, cinematic shading, simple backgrounds and high-energy composition. Premium Sakuga animation aesthetic."
+    },
+    {
+      "id": "edgerunners",
+      "label": "Edgerunners",
+      "promptValue": "Edgerunners",
+      "category": "animeShowStyles",
+      "pre": "Cyberpunk: Edgerunners style anime.",
+      "post": "Featuring mature character proportions, realistic lighting, jagged expressive line art, extreme color contrast, and chromatic aberration.  high-budget digital animation finish."
+    },
+    {
+      "id": "forest-princess",
+      "label": "Forest Princess",
+      "promptValue": "Forest Princess",
+      "category": "animeShowStyles",
+      "pre": "Princess Mononoke Studio Ghibli historical fantasy style anime.",
+      "post": "Featuring simple black outlines for cel-shaded characters with gentle facial styling, no outlines on backgrounds painted with impressionistic soft watercolor-textures, fluffy layered clouds, and a serene storybook aesthetic."
+    },
+    {
+      "id": "ghost-in-the-system",
+      "label": "Ghost in the System",
+      "promptValue": "Ghost in the System",
+      "category": "animeShowStyles",
+      "pre": "Ghost in the Shell: Stand Alone Complex Seinen cyberpunk tactical style anime.",
+      "post": "Featuring mature character proportions, muted tech-heavy colors, and sharp professional line art. Gritty urban atmosphere, realistic lighting, and a high-budget digital animation finish."
+    },
+    {
+      "id": "ghost-watch",
+      "label": "Ghost Watch",
+      "promptValue": "Ghost Watch",
+      "category": "animeShowStyles",
+      "pre": "Yo-kai Watch supernatural kodomo style anime.",
+      "post": "Featuring soft rounded shapes, friendly character designs, and vibrant saturated colors. Gentle line art, easy readability, playful supernatural atmosphere and a cheerful TV-broadcast animation finish."
+    },
+    {
+      "id": "greyblade",
+      "label": "Greyblade",
+      "promptValue": "Greyblade",
+      "category": "animeShowStyles",
+      "pre": "Claymore dark fantasy medieval style Seinen anime.",
+      "post": "Featuring a simple cel-shaded character with cold, desaturated palette, sharp line art, and a grim atmosphere and a classic mid-2000s animation aesthetic."
+    },
+    {
+      "id": "jujitsu-curse-domain",
+      "label": "Jujitsu Curse Domain",
+      "promptValue": "Jujitsu Curse Domain",
+      "category": "animeShowStyles",
+      "pre": "Jujutsu Kaisen modern supernatural action style anime.",
+      "post": "Featuring sharp aggressive thin line art, dynamic shadows, and high-contrast digital lighting. Fluid action composition and a polished contemporary animation finish."
+    },
+    {
+      "id": "lunar-sailor",
+      "label": "Lunar Sailor",
+      "promptValue": "Lunar Sailor",
+      "category": "animeShowStyles",
+      "pre": "Sailor Moon classic 1990s magical girl style anime.",
+      "post": "Featuring soft glowing auras, delicate line art, and hand-painted watercolor-texture backgrounds. Nostalgic 1990s cel-animation finish with retro film grain."
+    },
+    {
+      "id": "modern-mobile-suit",
+      "label": "Modern Mobile Suit",
+      "promptValue": "Modern Mobile Suit",
+      "category": "animeShowStyles",
+      "pre": "Mobile Suit Gundam high-detail modern mecha style anime.",
+      "post": "Featuring sharp digital line art, Cel-shaded characters, complex mechanical layering, and glowing LED accents. Cinematic lighting, smooth metal textures, Low detail 3D Computer generated backgrounds and a high-budget animation aesthetic."
+    },
+    {
+      "id": "neon-revelation",
+      "label": "Neon Revelation",
+      "promptValue": "Neon Revelation",
+      "category": "animeShowStyles",
+      "pre": "Neon Genesis Evangelion 1990s psychological mecha style anime.",
+      "post": "Featuring dramatic high-contrast lighting, simple colors, simple line art, limited shading, and a vintage color palette. Painted background plates. 1990s cel-animation finish with retro film grain."
+    },
+    {
+      "id": "ninja-bandana",
+      "label": "Ninja bandana",
+      "promptValue": "Ninja bandana",
+      "category": "animeShowStyles",
+      "pre": "Naruto ninja action Shonen style anime.",
+      "post": "Featuring bold character design, crisp digital line art, dynamic cel shading, painted backgrounds without outline line art. High-impact visual effects."
+    },
+    {
+      "id": "parasitic",
+      "label": "Parasitic",
+      "promptValue": "Parasitic",
+      "category": "animeShowStyles",
+      "pre": "Parasyte: The Maxim Seinen-action body-horror style anime.",
+      "post": "Featuring clean contemporary line art, grounded anatomical detail, and realistic urban lighting. Sharp contrast and a polished Seinen-action animation finish."
+    },
+    {
+      "id": "pok-collector",
+      "label": "Pok\u00e9 Collector",
+      "promptValue": "Pok\u00e9 Collector",
+      "category": "animeShowStyles",
+      "pre": "Pok\u00e9mon Kodomo monster-collection style anime.",
+      "post": "Featuring soft rounded shapes, friendly character designs, and vibrant saturated colors. Gentle line art, easy readability, and a cheerful TV-broadcast animation finish."
+    },
+    {
+      "id": "proxy-error",
+      "label": "Proxy Error",
+      "promptValue": "Proxy Error",
+      "category": "animeShowStyles",
+      "pre": "Ergo Proxy dystopian psychological Seinen style anime.",
+      "post": "Featuring a desaturated earthy palette, heavy realistic shadows, and thin refined line art. Melancholy atmosphere, mature designs, and a gritty cinematic animation finish."
+    },
+    {
+      "id": "purple-evergarden",
+      "label": "Purple Evergarden",
+      "promptValue": "Purple Evergarden",
+      "category": "animeShowStyles",
+      "pre": "Violet Evergarden Victorian-inspired glossy style anime.",
+      "post": "Featuring extreme detail in textures, soft-focus backgrounds, and glowing god-rays. Refined line art, rich jewel-toned colors, and a breathtakingly polished theatrical animation finish."
+    },
+    {
+      "id": "retro-mobile-suit",
+      "label": "Retro Mobile Suit",
+      "promptValue": "Retro Mobile Suit",
+      "category": "animeShowStyles",
+      "pre": "Mobile Suit Gundam retro 1979 mecha style anime.",
+      "post": "Featuring thick 70s cel-animation line art, a primary color palette (Red, Blue, Yellow), and hand-painted space backgrounds. Vintage film grain and a classic hand-crafted animation aesthetic."
+    },
+    {
+      "id": "solo-level-ascension",
+      "label": "Solo Level Ascension",
+      "promptValue": "Solo Level Ascension",
+      "category": "animeShowStyles",
+      "pre": "Solo Leveling modern high-fantasy action style anime.",
+      "post": "Featuring clean digital line art, vibrant magical particle effects, and high-contrast shading. Dynamic perspective, slick commercial finish, and a high-budget animation look."
+    },
+    {
+      "id": "spiral-horror",
+      "label": "Spiral Horror",
+      "promptValue": "Spiral Horror",
+      "category": "animeShowStyles",
+      "pre": "Junji Ito grotesque monochromatic horror style anime.",
+      "post": "Featuring high-contrast blacks, intricate cross-hatching textures, and sharp anatomical line art. Eerie haunting atmosphere and a crisp horror-animation screenshot finish."
+    },
+    {
+      "id": "street-breaker",
+      "label": "Street Breaker",
+      "promptValue": "Street Breaker",
+      "category": "animeShowStyles",
+      "pre": "Wind Breaker modern delinquent action style anime.",
+      "post": "Featuring crisp digital line art, vibrant street-wear colors, and clean polished shading. High-energy atmosphere and a contemporary TV-anime aesthetic."
+    },
+    {
+      "id": "tokyo-demon-gloom",
+      "label": "Tokyo Demon Gloom",
+      "promptValue": "Tokyo Demon Gloom",
+      "category": "animeShowStyles",
+      "pre": "Tokyo Ghoul dark urban horror style anime.",
+      "post": "Featuring clean contemporary line art, simple cell-shading, realistic anatomical detail, shallow depth of field, painted background, and dramatic urban lighting. Sharp contrast and a polished Seinen-action animation aesthetic."
+    },
+    {
+      "id": "van-helsing-limited",
+      "label": "Van Helsing Limited",
+      "promptValue": "Van Helsing Limited",
+      "category": "animeShowStyles",
+      "pre": "Hellsing Ultimate gothic Seinen action style anime.",
+      "post": "Featuring high-contrast heavy blacks, sharp aggressive line art, and deep crimson accents. Sinister lighting, ornate architectural detail, and a premium OVA animation finish."
+    },
+    {
+      "id": "your-title",
+      "label": "Your Title",
+      "promptValue": "Your Title",
+      "category": "animeShowStyles",
+      "pre": "Your Name modern cinematic glossy style anime.",
+      "post": "Featuring high-end lighting effects, lens flares, and incredibly detailed painterly backgrounds. Crisp line art, lush color gradients, and a premium theatrical animation finish."
+    }
+  ],
+  "westernAnimationStyles": [
+    {
+      "id": "2d-3d-hybrid-animation",
+      "label": "2D-3D Hybrid Animation",
+      "promptValue": "2D-3D Hybrid Animation",
+      "category": "westernAnimationStyles",
+      "pre": "Fortiche Production / Riot Games 3D Aesthetic animation.",
+      "post": "Featuring 3D models with hand-painted digital textures, visible brushstrokes, and dramatic theatrical lighting with deep teal and neon violet shadows. Backgrounds look like matte oil paintings but characters and props like 3D game models. Gritty, high-end steampunk-fantasy aesthetic."
+    },
+    {
+      "id": "3d-family-film",
+      "label": "3D Family Film",
+      "promptValue": "3D Family Film",
+      "category": "westernAnimationStyles",
+      "pre": "A modern Disney 3D-inspired animation.",
+      "post": "Featuring smooth 3D stylization, glossy lighting, soft skin rendering, and high-end family-film CG. Polished modern-feature aesthetic."
+    },
+    {
+      "id": "60-s-puppetshow",
+      "label": "60's Puppetshow",
+      "promptValue": "60's Puppetshow",
+      "category": "westernAnimationStyles",
+      "pre": "60s Thunderbirds Supermarionation style animation.",
+      "post": "Featuring sculpted doll-like facial features, glossy painted surfaces, and miniature-set textures. Handcrafted 1960s television-production aesthetic."
+    },
+    {
+      "id": "80s-action-hero",
+      "label": "80s Action Hero",
+      "promptValue": "80s Action Hero",
+      "category": "westernAnimationStyles",
+      "pre": "1980s Sunbow & Marvel G.I Joe style animation.",
+      "post": "Featuring military action styling, thick simple line art, simple colors, simple shading. Simple painted background plates. 1980s Saturday morning cartoon aesthetic, noise grain effect."
+    },
+    {
+      "id": "80s-feline-hero",
+      "label": "80s Feline Hero",
+      "promptValue": "80s Feline Hero",
+      "category": "westernAnimationStyles",
+      "pre": "1980s Rankin/Bass Topcraft Thundercats style animation.",
+      "post": "Featuring Simple colors, simple line art, no shading, and a bright dramatic palette. Painted background plates. 1980s Saturday morning cartoon aesthetic, noise grain effect."
+    },
+    {
+      "id": "90s-family-comedy",
+      "label": "90s Family Comedy",
+      "promptValue": "90s Family Comedy",
+      "category": "westernAnimationStyles",
+      "pre": "Early 90s Klasky Csupo style animation.",
+      "post": "Featuring rounded yellow skinned character designs, clean linework, and flat bright colors and simple backgrounds. TV animation aesthetic."
+    },
+    {
+      "id": "90s-renaissance-animation",
+      "label": "90s Renaissance Animation",
+      "promptValue": "90s Renaissance Animation",
+      "category": "westernAnimationStyles",
+      "pre": "90s Renaissance-inspired 2D animation.",
+      "post": "Featuring elegant character appeal, rich color treatments, and polished finishes. Romantic fantasy-feature aesthetic."
+    },
+    {
+      "id": "2000s-action-animation",
+      "label": "2000s Action Animation",
+      "promptValue": "2000s Action Animation",
+      "category": "westernAnimationStyles",
+      "pre": "Man of Action animation style.",
+      "post": "Featuring clean simple action line art, simple flat colors. 2000s sci-fi cartoon animation aesthetic."
+    },
+    {
+      "id": "bento-box-style",
+      "label": "Bento Box Style",
+      "promptValue": "Bento Box Style",
+      "category": "westernAnimationStyles",
+      "pre": "Bento Box Animated Sitcom style animation.",
+      "post": "Featuring simple rounded designs, flat color fields, and deadpan facial styling. Awkward 2D-sitcom aesthetic."
+    },
+    {
+      "id": "blue-sky-style",
+      "label": "Blue Sky style",
+      "promptValue": "Blue Sky style",
+      "category": "westernAnimationStyles",
+      "pre": "Blue Sky Studios 3D Animation style.",
+      "post": "Featuring rounded CG caricature, playful polished rendering, and bright family-film colors. Glossy animated-feature aesthetic."
+    },
+    {
+      "id": "burtonesque-stop-motion",
+      "label": "Burtonesque Stop Motion",
+      "promptValue": "Burtonesque Stop Motion",
+      "category": "westernAnimationStyles",
+      "pre": "Burtonesque Gothic Stop Motion animation style.",
+      "post": "Featuring spindly limbs, curled silhouettes, desaturated color palette, and striped decorative elegance. Whimsical dark-fantasy aesthetic."
+    },
+    {
+      "id": "classic-animated-movie",
+      "label": "Classic Animated Movie",
+      "promptValue": "Classic Animated Movie",
+      "category": "westernAnimationStyles",
+      "pre": "Disney Classic-inspired 2D animation.",
+      "post": "Featuring soft design appeal, rounded forms, and clean theatrical line art. Balanced theatrical-animation aesthetic."
+    },
+    {
+      "id": "classic-fantasy-hero",
+      "label": "Classic Fantasy Hero",
+      "promptValue": "Classic Fantasy Hero",
+      "category": "westernAnimationStyles",
+      "pre": "1980s Filmation Associates style animation.",
+      "post": "Featuring thick black outlines, Simple colors, simple line art, muscular anatomy. No line art on background. 1980s Saturday morning cartoon aesthetic, VHS capture, noise grain effect"
+    },
+    {
+      "id": "classic-mystery-hero",
+      "label": "Classic Mystery Hero",
+      "promptValue": "Classic Mystery Hero",
+      "category": "westernAnimationStyles",
+      "pre": "Hanna-Barbera mystery style animation.",
+      "post": "Featuring dry-brush backgrounds, flat color fields, and clean mid-century shapes. Classic 1980s Saturday-morning aesthetic."
+    },
+    {
+      "id": "claymation",
+      "label": "Claymation",
+      "promptValue": "Claymation",
+      "category": "westernAnimationStyles",
+      "pre": "Wallace & Gromit Claymation style animation.",
+      "post": "Featuring clay-like forms, visible thumbprint textures, and matte tactile materials. Quirky stop-motion aesthetic."
+    },
+    {
+      "id": "cn-gem-style-animation",
+      "label": "CN Gem Style Animation",
+      "promptValue": "CN Gem Style Animation",
+      "category": "westernAnimationStyles",
+      "pre": "Rebecca Sugar / Cartoon Network Aesthetic animation.",
+      "post": "Featuring thick, soft-colored outlines, a palette of pastel pinks, purples, and teals, and expressive, rounded character designs. Backgrounds feature painterly textures with gem-like geometric lens flares. Gentle coming-of-age fantasy aesthetic."
+    },
+    {
+      "id": "cn-mixed-media-animation",
+      "label": "CN Mixed Media Animation",
+      "promptValue": "CN Mixed Media Animation",
+      "category": "westernAnimationStyles",
+      "pre": "Ben Bocquelet / Mixed-Media Cartoon Network animation Aesthetic.",
+      "post": "Featuring 2D characters with simple clean bold outlines and round eyes. The characters and elements are composited with shadow casts against real-world 3D environments. Quirky, experimental character shapes, flat bright colors and shading. Mixed-media animation aesthetic."
+    },
+    {
+      "id": "cutout-style-comedy",
+      "label": "Cutout Style Comedy",
+      "promptValue": "Cutout Style Comedy",
+      "category": "westernAnimationStyles",
+      "pre": "Paper-cutout South Park Studios animation style.",
+      "post": "Featuring flat paper-like shapes, simple facial features, and bold color blocks. Crude iconic comedy aesthetic."
+    },
+    {
+      "id": "dark-knight-animation",
+      "label": "Dark Knight Animation",
+      "promptValue": "Dark Knight Animation",
+      "category": "westernAnimationStyles",
+      "pre": "Warner Bros Dark Deco style animation.",
+      "post": "Featuring angular shapes, noir lighting, and a limited moody cel palette. 90s gothic-superhero aesthetic."
+    },
+    {
+      "id": "don-bluth-style",
+      "label": "Don Bluth Style",
+      "promptValue": "Don Bluth Style",
+      "category": "westernAnimationStyles",
+      "pre": "Don Bluth Productions style animation.",
+      "post": "Featuring expressive facial designs, dark atmospheric tones, and elegant cel-animation. Theatrical release old school aesthetic."
+    },
+    {
+      "id": "dreamworks-style",
+      "label": "Dreamworks Style",
+      "promptValue": "Dreamworks Style",
+      "category": "westernAnimationStyles",
+      "pre": "DreamWorks PDI style animation.",
+      "post": "Featuring sharp caricature, broad facial styling, glossy rendering, and cinematic lighting. Commercial feature-film aesthetic."
+    },
+    {
+      "id": "flash-animation",
+      "label": "Flash Animation",
+      "promptValue": "Flash Animation",
+      "category": "westernAnimationStyles",
+      "pre": "Early 2000s Flash / Newgrounds animation style.",
+      "post": "Featuring hard vector lines, flat fills, and edgy digital shapes. Early internet-animation aesthetic."
+    },
+    {
+      "id": "fleischer-rubber-hose-style",
+      "label": "Fleischer Rubber-Hose style.",
+      "promptValue": "Fleischer Rubber-Hose style.",
+      "category": "westernAnimationStyles",
+      "pre": "Fleischer Rubber-Hose style animation.",
+      "post": "Featuring bouncy limbs, black-and-white 1930s styling, and surreal proportions. Vintage early-animation aesthetic."
+    },
+    {
+      "id": "gameplay-footage",
+      "label": "Gameplay Footage",
+      "promptValue": "Gameplay Footage",
+      "category": "westernAnimationStyles",
+      "pre": "Modern Third-Person Action Video Game animation.",
+      "post": "Featuring a dynamic user interface. High-fidelity real-time rendering, motion blur, particle effects and \"shaky-cam\"  physics. Immersive AAA gaming aesthetic."
+    },
+    {
+      "id": "illumination-entertainment",
+      "label": "Illumination Entertainment",
+      "promptValue": "Illumination Entertainment",
+      "category": "westernAnimationStyles",
+      "pre": "Illumination Entertainment style animation.",
+      "post": "Featuring simplified shapes, bright colors, and soft glossy rendering. Mass-market cartoon aesthetic."
+    },
+    {
+      "id": "klasky-csupo-90s-style",
+      "label": "Klasky Csupo 90s style.",
+      "promptValue": "Klasky Csupo 90s style.",
+      "category": "westernAnimationStyles",
+      "pre": "Klasky Csupo 90s style animation.",
+      "post": "Featuring exaggerated facial styling, jagged linework, and retro cable-cartoon saturation. 90s grunge-cartoon aesthetic."
+    },
+    {
+      "id": "laika-stop-motion",
+      "label": "Laika Stop Motion",
+      "promptValue": "Laika Stop Motion",
+      "category": "westernAnimationStyles",
+      "pre": "Laika Stop-Motion style animation.",
+      "post": "Featuring handmade textures, tactile fabrics, and miniature-world material realism. Eerie handcrafted aesthetic."
+    },
+    {
+      "id": "ligne-claire-style",
+      "label": "Ligne claire style",
+      "promptValue": "Ligne claire style",
+      "category": "westernAnimationStyles",
+      "pre": "A Tintin comic-inspired animation style.",
+      "post": "Featuring Ligne claire contours, flatter color blocks, crisp comic polish, clean readable design, restrained shading, French comic graphic aesthetic."
+    },
+    {
+      "id": "looney-animation",
+      "label": "Looney Animation",
+      "promptValue": "Looney Animation",
+      "category": "westernAnimationStyles",
+      "pre": "Looney Tunes-inspired theatrical animation.",
+      "post": "Featuring exaggerated cartoon design, elastic shapes, and bold inked outlines. Golden-age animated movie aesthetic."
+    },
+    {
+      "id": "manhwa-webtoon-style",
+      "label": "Manhwa Webtoon style.",
+      "promptValue": "Manhwa Webtoon style.",
+      "category": "westernAnimationStyles",
+      "pre": "Manhwa Webtoon style animation.",
+      "post": "Featuring clean digital linework, smooth gradient shading, and polished character rendering. Glossy web-illustration aesthetic."
+    },
+    {
+      "id": "minimalist-cinematic-cartoon",
+      "label": "Minimalist Cinematic Cartoon",
+      "promptValue": "Minimalist Cinematic Cartoon",
+      "category": "westernAnimationStyles",
+      "pre": "Genndy Tartakovsky style animation.",
+      "post": "Featuring minimalist compositions, graphic shapes, and bold negative space. Cinematic animation aesthetic."
+    },
+    {
+      "id": "modern-cn-animation",
+      "label": "Modern CN Animation",
+      "promptValue": "Modern CN Animation",
+      "category": "westernAnimationStyles",
+      "pre": "Cartoon Network Modern style animation.",
+      "post": "Featuring flattened graphic shapes, bold outlines, and minimal background detail. Modern television-cartoon aesthetic."
+    },
+    {
+      "id": "modern-mystery-cartoon",
+      "label": "Modern Mystery Cartoon",
+      "promptValue": "Modern Mystery Cartoon",
+      "category": "westernAnimationStyles",
+      "pre": "Disney XD Alex Hirsch Mystery-Cartoon style animation.",
+      "post": "Featuring quirky character shapes with large round or oval eyes, warm cel-like colors, and a playful supernatural atmosphere. Whimsical mystery-adventure aesthetic."
+    },
+    {
+      "id": "modern-sci-fi-comedy",
+      "label": "Modern Sci-Fi Comedy",
+      "promptValue": "Modern Sci-Fi Comedy",
+      "category": "westernAnimationStyles",
+      "pre": "Modern Adult Swim loose-line style animation.",
+      "post": "Featuring rounded facial styling, simple colors, shading, weird gadget design, and slick digital finishes. Irreverent cosmic-comedy aesthetic."
+    },
+    {
+      "id": "pixar-style",
+      "label": "Pixar Style",
+      "promptValue": "Pixar Style",
+      "category": "westernAnimationStyles",
+      "pre": "Pixar Animation Studios 3D style.",
+      "post": "Featuring expressive eyes, readable silhouettes, and gentle surface rendering. Premium family-film CG aesthetic."
+    },
+    {
+      "id": "pixel-art",
+      "label": "Pixel Art",
+      "promptValue": "Pixel Art",
+      "category": "westernAnimationStyles",
+      "pre": "16-bit SNES JRPG Aesthetic animation.",
+      "post": "Featuring hand-placed pixel clusters, a limited 32-color palette, dithering for shadows, and charmingly chunky character proportions. Fluid 2D sprite animation aesthetic, high-contrast pixel art."
+    },
+    {
+      "id": "rankin-bass-stop-motion",
+      "label": "Rankin/Bass Stop Motion",
+      "promptValue": "Rankin/Bass Stop Motion",
+      "category": "westernAnimationStyles",
+      "pre": "Rankin/Bass Holiday Stop Motion style animation.",
+      "post": "Featuring soft retro fantasy styling, painted charm, and a muted television palette. Vintage fantasy-cartoon aesthetic. Captured with the look of a Ektachrome E100 film"
+    },
+    {
+      "id": "retro-video-game-cinematic",
+      "label": "Retro Video Game Cinematic",
+      "promptValue": "Retro Video Game Cinematic",
+      "category": "westernAnimationStyles",
+      "pre": "Mid-2000s Playstation 2 Cinematic animation.",
+      "post": "Featuring low-polygon geometry with low-quality baked texture maps, slight jagged edges (aliasing), fixed-camera composition, and bloom-heavy lighting. Early cinematic 3D gaming aesthetic."
+    },
+    {
+      "id": "rubberhose-video-game-style",
+      "label": "Rubberhose video game style",
+      "promptValue": "Rubberhose video game style",
+      "category": "westernAnimationStyles",
+      "pre": "Studio MDHR style animation.",
+      "post": "Featuring inked outlines, aged cel colors, and a 1930s rubber-hose design language. Retro game-cartoon aesthetic."
+    },
+    {
+      "id": "soviet-animation-style",
+      "label": "Soviet Animation Style",
+      "promptValue": "Soviet Animation Style",
+      "category": "westernAnimationStyles",
+      "pre": "Soyuzmultfilm animation style.",
+      "post": "Featuring textured backgrounds, simple character design and unusual color palettes, and surreal illustrative styling. Vintage Eastern-European Soviet Era aesthetic."
+    },
+    {
+      "id": "stop-motion-paper-collage-style",
+      "label": "Stop-Motion Paper Collage style.",
+      "promptValue": "Stop-Motion Paper Collage style.",
+      "category": "westernAnimationStyles",
+      "pre": "Stop-Motion Paper Collage style animation.",
+      "post": "Featuring layered matte paper shapes, handcrafted graphic construction, and tactile depth. Collage-like silhouette aesthetic."
+    },
+    {
+      "id": "tmnt-classic",
+      "label": "TMNT Classic",
+      "promptValue": "TMNT Classic",
+      "category": "westernAnimationStyles",
+      "pre": "1980s Murakami-Wolf-Swenson style animation.",
+      "post": "Featuring thick black outlines, bright flat cel palettes, simple colors, simple lineart and expressive TV-cartoon faces. VHS Low Quality, 1980s Saturday morning cartoon aesthetic."
+    },
+    {
+      "id": "transforming-robots",
+      "label": "Transforming Robots",
+      "promptValue": "Transforming Robots",
+      "category": "westernAnimationStyles",
+      "pre": "Toei Animation / Sunbow aesthetic.",
+      "post": "Featuring thin black outlines, Simple colors, simple line art, sharp geometric cel-shading, 1984 Takara-inspired design, 1980s Saturday morning cartoon aesthetic, VHS capture, noise grain effect."
+    },
+    {
+      "id": "trnka-puppet-animation-style",
+      "label": "Trnka Puppet-Animation style.",
+      "promptValue": "Trnka Puppet-Animation style.",
+      "category": "westernAnimationStyles",
+      "pre": "Trnka Puppet-Animation style.",
+      "post": "Featuring folk-art textures, sculpted forms, and uncanny handcrafted surfaces. Surreal handmade-puppet aesthetic."
+    },
+    {
+      "id": "underwater-comedy-animation",
+      "label": "Underwater Comedy Animation",
+      "promptValue": "Underwater Comedy Animation",
+      "category": "westernAnimationStyles",
+      "pre": "United Plankton / Stephen Hillenburg Aesthetic animation.",
+      "post": "Featuring thick, slightly wobbly ink outlines, characters are simple flat color with vibrant tropical saturated colors, and hand-painted \"flower sky\" backgrounds with watercolor textures. Distorted, rubbery facial expressions with a lo-fi charm."
+    },
+    {
+      "id": "upa-hubley-style",
+      "label": "UPA Hubley Style",
+      "promptValue": "UPA Hubley Style",
+      "category": "westernAnimationStyles",
+      "pre": "UPA 1950s John Hubley style animation.",
+      "post": "Featuring flat design, thick simple outlines for characters, minimal mid-century geometry, and restrained color blocks. Modernist graphic aesthetic."
+    }
+  ]
+}

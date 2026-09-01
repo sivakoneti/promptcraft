@@ -1,0 +1,2 @@
+{"ts": "2026-09-01T05:20:45+00:00", "type": "progress", "actor": "agent", "message": "Implemented Promptcraft CLI engine and standalone Bun binary for AI agents"}
+{"ts": "2026-09-01T05:21:11+00:00", "type": "progress", "actor": "agent", "message": "Verified full test suite and compiled CLI binary", "ref": "SPC-001"}
