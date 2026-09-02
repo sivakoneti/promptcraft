@@ -21,6 +21,5 @@ Deliver a complete, high-performance Promptcraft CLI engine and agent interface 
 
 Enables AI agents to query 500+ cinematic presets, compose photo/anime/edit/video prompts, generate Kling multi-shot timelines, resolve reference slots, and synchronize prompt fragments deterministically.
 
-## Specs
-
 - [SPC-001: Promptcraft CLI Engine and Agent Interface](../specs/SPC-001-promptcraft-cli-engine-and-agent-interface.md)
+- [SPC-002: Cinematic Camera Movements Catalog Integration](../specs/SPC-002-cinematic-camera-movements-catalog-integration.md)

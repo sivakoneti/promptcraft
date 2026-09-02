@@ -4,8 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
-
 ## [Unreleased]
+
+## [1.1.0] - 2026-09-02
+
+### Added
+- Expanded cinematic camera movement catalog from 26 baseline movements to 50 movements across 7 kinematic categories (`engine/library/cinematic-movements.ts`).
+- Added kinematic recipes (`Movement`, `Speed`, `Framing`, `End`) and alias resolution for all camera movements.
+- Added catalog search and CLI video assembly support for extended movements (e.g. `Snorricam`, `First-person view`, `Pass-through objects`, `Earth zoom out`, `Tilt-shift`).
+- Added automated tests in `engine/src/cli.test.ts` bringing total test suite to 64 passing tests.
+- Authored Tenx specification `SPC-002: Cinematic Camera Movements Catalog Integration`.
 
 ## [1.0.0] - 2026-09-01
 
