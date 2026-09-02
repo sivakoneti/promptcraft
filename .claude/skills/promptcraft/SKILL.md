@@ -35,11 +35,26 @@ Mode       Mode                     Mode                     Mode       Timeline
 | **`anime`** | 2D/3D anime, manga, western animation, stylized comics | `--subject`, `--anime-genre`, `--anime-show`, `--western-style`, `--lighting`, `--aspect` | Niji, Midjourney, NovelAI, SDXL Anime |
 | **`edit`** | Modifying an existing image (in-painting, outfit swap, background change) | `--action` / `--subjectAction`, `references` (with global ref), `--lighting`, `--aspect` | Midjourney Inpaint, Flux Kontext, SD Inpaint |
 | **`video`** | Single continuous video clip with camera motion and autofill | `--video-prompt`, `--movement`, `--env`, `--mood`, `references` | Kling 1.5/2.0, Veo 2, Sora, Gen-3, Luma |
-| **`director`** | Multi-shot sequential scene cuts with per-shot durations | `shots: [{ note, durationHint }]` | Kling Director Mode, Veo multi-shot |
+### 1. 16 Curated Catalog Dimensions
+- **Shots & Angles** (24): `bird-s-eye-view`, `close-up`, `cutaway-shot`, `dutch-angle`, `entire-body`, `establishing-shot`, `extreme-close-up`, `worm-s-eye-view`...
+- **Cameras** (49): `arri-alexa-65`, `red-v-raptor-8k`, `imax-70mm`, `hasselblad-500c`, `leica-m6`, `sony-fx9`...
+- **Lenses** (12): `anamorphic-cinema-lens`, `helios-44-2-swirly-bokeh`, `catadioptric-mirror-lens`, `fisheye-lens`...
+- **Focal Lengths** (9): `8mm-fisheye`, `14mm-ultra-wide`, `24mm-wide-angle`, `35mm-wide`, `50mm-standard`, `85mm-portrait`...
+- **Film Stocks** (30): `kodak-vision3-500t`, `kodak-portra-400`, `cinestill-800t`, `fujifilm-eterna`, `agfa-vista`...
+- **Lighting & Mood** (29): `backlighting-rim-lighting`, `blue-hour`, `chiaroscuro-lighting`, `golden-hour`, `neon-lit`...
+- **Movie Aesthetics** (110): `blade-runner-2049`, `the-matrix`, `dune`, `alien`, `2001-a-space-odyssey`, `interstellar`...
+- **Photographer Styles** (99): `annie-leibovitz`, `gregory-crewdson`, `alec-soth`, `sebastiao-salgado`...
+- **Anime & Show Styles** (97): `cyberpunk`, `battle-shonen-anime`, `demon-slayer`, `evangelion`, `studio-ghibli`, `spider-verse`...
 
----
-
-## 2. Handling User-Supplied Images & Multi-Character References
+### 2. Video Camera Movements (50 Cinematic Movements Across 7 Categories)
+Verbatim keyword insertions & full prompting recipes at precise character offsets:
+- **Pan / Tilt**: `Static shot`, `Pan right/left`, `Whip pan right/left`, `Tilt up/down`
+- **Zoom / Lens**: `Slow zoom in/out`, `Fast zoom in/out`, `Crash zoom in/out`, `Dolly zoom` (Vertigo), `Pull focus` (Rack focus)
+- **Physical Moves**: `Truck right/left`, `Pedestal up/down`, `Slider right/left`, `Push past / pass-by`, `Arc right/left`, `Orbit clockwise/counterclockwise`
+- **Dolly & Tracking**: `Dolly in/out`, `Tracking shot`, `Follow shot` (OTS), `Reverse tracking` (walk-and-talk), `Side tracking`, `Low tracking`, `Vehicle tracking`, `Chase shot`
+- **Human Camera**: `Handheld shot` (natural shake), `Body-mounted camera / Snorricam` (torso locked)
+- **Drone / Crane**: `Crane up/down`, `Drone push in`, `Drone pull back`, `Helicopter shot`
+- **VFX Specials**: `First-person view` (FPV), `Tilt-shift` (miniature), `Infinite zoom`, `Earth zoom out`, `Pass-through objects` (portal/keyhole), `Time-lapse`, `Shot Switch`, `Slow Motion`
 
 When a user provides reference images (characters, scenes, outfits, global visual anchors), follow this exact reference binding protocol:
 

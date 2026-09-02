@@ -72,4 +72,10 @@ export {
   type AssembleVideoOptions,
   type VideoMovementPromptOption,
 } from './video.js';
+export {
+  CINEMATIC_CAMERA_MOVEMENTS,
+  CINEMATIC_MOVEMENTS_COUNT,
+  getCinematicMovement,
+  type CinematicMovementEntry,
+} from '../library/cinematic-movements.js';
 

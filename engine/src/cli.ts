@@ -34,6 +34,7 @@ import {
   type VideoState,
   type DirectorShot,
 } from './video.js';
+import { CINEMATIC_CAMERA_MOVEMENTS, getCinematicMovement } from '../library/cinematic-movements.js';
 import { resolveReferences, type ReferenceSlotInput } from './references.js';
 import { sync } from './sync.js';
 import { embeddedPresetLibrary } from './library-data.js';
@@ -322,8 +323,14 @@ export function handleCapabilities(): CliOutput {
           },
         },
       ],
-      videoMovementsCount: VIDEO_MOVEMENTS.length,
-      videoMovements: VIDEO_MOVEMENTS.map((m) => ({ label: m.label, promptKeyword: m.promptKeyword })),
+      videoMovementsCount: CINEMATIC_CAMERA_MOVEMENTS.length,
+      videoMovements: CINEMATIC_CAMERA_MOVEMENTS.map((m) => ({
+        id: m.id,
+        label: m.label,
+        category: m.category,
+        promptKeyword: m.promptKeyword,
+        fullPromptRecipe: m.fullPromptRecipe,
+      })),
       catalogs: catalogSummary,
     },
   };
@@ -345,11 +352,11 @@ export function handleCatalog(
     };
   }
 
-  if (sub === 'movements') {
+  if (sub === 'movements' || sub === 'cinematicMovements') {
     return {
       status: 'ok',
       action: 'catalog.movements',
-      data: VIDEO_MOVEMENTS,
+      data: CINEMATIC_CAMERA_MOVEMENTS,
     };
   }
 
@@ -362,11 +369,11 @@ export function handleCatalog(
       };
     }
 
-    if (category === 'movements' || category === 'videoMovements') {
+    if (category === 'movements' || category === 'videoMovements' || category === 'cinematicMovements') {
       return {
         status: 'ok',
         action: 'catalog.list',
-        data: VIDEO_MOVEMENTS,
+        data: CINEMATIC_CAMERA_MOVEMENTS,
       };
     }
 
@@ -418,18 +425,24 @@ export function handleCatalog(
       }
     }
 
-    // Search video movements
-    for (const m of VIDEO_MOVEMENTS) {
-      if (m.label.toLowerCase().includes(q) || m.promptKeyword.toLowerCase().includes(q)) {
+    // Search cinematic camera movements (including aliases and categories)
+    for (const m of CINEMATIC_CAMERA_MOVEMENTS) {
+      if (
+        m.id.toLowerCase().includes(q) ||
+        m.label.toLowerCase().includes(q) ||
+        m.category.toLowerCase().includes(q) ||
+        m.promptKeyword.toLowerCase().includes(q) ||
+        m.fullPromptRecipe.toLowerCase().includes(q) ||
+        m.aliases.some((a) => a.toLowerCase().includes(q))
+      ) {
         results.push({
-          category: 'movements',
-          id: m.label,
+          category: `movements/${m.category}`,
+          id: m.id,
           label: m.label,
           promptValue: m.promptKeyword,
         });
       }
     }
-
     return {
       status: 'ok',
       action: 'catalog.search',

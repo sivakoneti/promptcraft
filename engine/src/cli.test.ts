@@ -14,8 +14,8 @@ describe('Promptcraft CLI Engine', () => {
       catalogs: Record<string, { count: number }>;
     };
     expect(data.version).toBe('1.0.0');
-    expect(data.videoMovementsCount).toBe(26);
-    expect(data.videoMovements.length).toBe(26);
+    expect(data.videoMovementsCount).toBe(50);
+    expect(data.videoMovements.length).toBe(50);
     expect(data.actions.map((a) => a.name)).toContain('assemble');
     expect(data.actions.map((a) => a.name)).toContain('assemble_video');
     expect(data.actions.map((a) => a.name)).toContain('director_timeline');
@@ -45,6 +45,30 @@ describe('Promptcraft CLI Engine', () => {
     expect(items.length).toBe(24);
     expect(items.some((i) => i.id === 'bird-s-eye-view')).toBe(true);
   });
+  test('catalog search finds matches across extended cinematic movements', () => {
+    const res = handleCatalog(['search', 'snorricam'], {});
+    expect(res.status).toBe('ok');
+    const data = res.data as { count: number; results: Array<{ id: string; category: string }> };
+    expect(data.count).toBeGreaterThan(0);
+    expect(data.results.some((r) => r.id === 'snorricam')).toBe(true);
+  });
+
+  test('executeAction video works with newly added cinematic movements like Snorricam and FPV', () => {
+    const snorri = executeAction('assemble_video', {
+      videoPrompt: 'panicking protagonist running through subway tunnel',
+      movementLabel: 'Snorricam',
+    });
+    expect(snorri.status).toBe('ok');
+    expect(snorri.prompt).toContain('body-mounted Snorricam locked to subject torso');
+
+    const fpv = executeAction('assemble_video', {
+      videoPrompt: 'parkour runner leaping between rooftops',
+      movementLabel: 'First-person view',
+    });
+    expect(fpv.status).toBe('ok');
+    expect(fpv.prompt).toContain('first-person POV view with hands visible');
+  });
+
 
   test('catalog search finds matches in catalogs and movements', () => {
     const res = handleCatalog(['search', 'blade runner'], {});

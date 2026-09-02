@@ -33,6 +33,7 @@ import {
   VIDEO_MOVEMENTS,
   type VideoMovementPromptOption,
 } from '../library/video-movements.js';
+import { getCinematicMovement } from '../library/cinematic-movements.js';
 import {
   resolveReferences,
   type ReferenceLabelMode,
@@ -246,7 +247,9 @@ export function assembleVideo(
     ? buildDirectorTimeline(directorShots).timelinePrompt
     : insertMovementKeyword(
         state.videoPrompt,
-        getMovementByLabel(state.movementLabel)?.promptKeyword ?? '',
+        getMovementByLabel(state.movementLabel)?.promptKeyword ??
+          getCinematicMovement(state.movementLabel)?.promptKeyword ??
+          '',
         state.movementCursor,
       );
 
