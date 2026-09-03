@@ -8,16 +8,58 @@ import type { PromptState, PresetLibrary } from './state.js';
 
 // ─── Lookup helpers (inline per ts-no-tiny-functions rule) ─────────────────────
 
-function lookupPromptValue(
+const COMMON_ALIASES: Record<string, string> = {
+  'neon-lit': 'neon-lighting',
+  'neon': 'neon-lighting',
+  'neutral-lighting': 'soft-lighting',
+  'neutral': 'soft-lighting',
+  'anamorphic': 'anamorphic-cinema-lens',
+  'anamorphic-prime': 'anamorphic-cinema-lens',
+  'master-prime': 'anamorphic-cinema-lens',
+  'swirly-bokeh': 'helios-44-2-swirly-bokeh',
+  'close-up': 'close-up',
+  'close up': 'close-up',
+  'closeup': 'close-up',
+  'wide-shot': 'wide-angle',
+  'wide': 'wide-angle',
+  '70mm': 'kodak-vision3-imax',
+  'imax': 'kodak-vision3-imax',
+  '35mm': '35mm-film-camera',
+};
+export function lookupPromptValue(
   library: PresetLibrary,
   category: keyof Omit<PresetLibrary, 'version'>,
   id: string,
 ): string | null {
   if (!id) return null;
-  const entry = (library[category] as Array<{ id: string; promptValue: string }>).find(
-    (e) => e.id === id,
-  );
-  return entry?.promptValue ?? null;
+  const items = (library[category] || []) as Array<{ id: string; label: string; promptValue: string }>;
+  const normalized = id.trim().toLowerCase();
+
+  // 1. Exact ID
+  let match = items.find((e) => e.id.toLowerCase() === normalized);
+  if (match) return match.promptValue;
+
+  // 2. Common aliases
+  if (COMMON_ALIASES[normalized]) {
+    const aliasId = COMMON_ALIASES[normalized];
+    match = items.find((e) => e.id.toLowerCase() === aliasId);
+    if (match) return match.promptValue;
+  }
+
+  // 3. Slug match
+  const slug = normalized.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  match = items.find((e) => e.id.toLowerCase() === slug);
+  if (match) return match.promptValue;
+
+  // 4. Exact label match
+  match = items.find((e) => e.label.toLowerCase() === normalized);
+  if (match) return match.promptValue;
+
+  // 5. Prefix match
+  match = items.find((e) => e.id.toLowerCase().startsWith(slug) || e.label.toLowerCase().startsWith(normalized));
+  if (match) return match.promptValue;
+
+  return null;
 }
 
 // ─── G2: Subject sentence (FR-002 piece #1) ────────────────────────────────────

@@ -38,6 +38,11 @@ import { CINEMATIC_CAMERA_MOVEMENTS, getCinematicMovement } from '../library/cin
 import { resolveReferences, type ReferenceSlotInput } from './references.js';
 import { sync } from './sync.js';
 import { embeddedPresetLibrary } from './library-data.js';
+import { PromptIRSchema } from './compiler/ir.js';
+import { compileMidjourney, compileFlux, compileVideo } from './compiler/compilers.js';
+import { lintPromptIR } from './compiler/linter.js';
+import { HybridSearchEngine } from './search/hybrid.js';
+import { McpStdioServer } from './mcp/server.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -170,10 +175,15 @@ const VALID_COMMANDS: Record<string, true> = {
   sync: true,
   catalog: true,
   capabilities: true,
+  suggest: true,
   validate: true,
   help: true,
   '--help': true,
   '-h': true,
+  compile: true,
+  lint: true,
+  mcp: true,
+  hybrid_search: true,
 };
 
 function parseCliArgs(args: string[]): {
@@ -336,6 +346,80 @@ export function handleCapabilities(): CliOutput {
   };
 }
 
+export const CATALOG_SYNONYMS: Record<string, string[]> = {
+  // Anime & Manga franchises and creators
+  evangelion: ['neon-revelation', 'retro-mobile-suit', 'modern-mobile-suit'],
+  eva: ['neon-revelation'],
+  ghibli: ['ghibli-like-fantasy', 'forest-princess'],
+  miyazaki: ['ghibli-like-fantasy', 'forest-princess'],
+  mononoke: ['forest-princess'],
+  frieren: ['beyond-the-journey'],
+  titan: ['attack-on-giants'],
+  shingeki: ['attack-on-giants'],
+  cyberpunk: ['edgerunners', 'ghost-in-the-system', 'blade-runner', 'blade-runner-2049', 'the-matrix', 'neon-lit', 'neon-lighting'],
+  edgerunner: ['edgerunners'],
+  'ghost in the shell': ['ghost-in-the-system'],
+  naruto: ['ninja-bandana'],
+  jujutsu: ['jujitsu-curse-domain'],
+  'sailor moon': ['lunar-sailor'],
+  cardcaptor: ['charmcaptor'],
+  'cowboy bebop': ['cowboy-spaceman'],
+  bebop: ['cowboy-spaceman'],
+  claymore: ['greyblade'],
+  'ergo proxy': ['proxy-error'],
+  'violet evergarden': ['purple-evergarden'],
+  gundam: ['retro-mobile-suit', 'modern-mobile-suit'],
+  'solo leveling': ['solo-level-ascension'],
+  'junji ito': ['spiral-horror'],
+  uzumaki: ['spiral-horror'],
+  'tokyo ghoul': ['tokyo-demon-gloom'],
+  hellsing: ['van-helsing-limited'],
+  'your name': ['your-title'],
+  pokemon: ['pok-collector'],
+  disney: ['3d-family-film', 'classic-animated-movie', 'modern-mystery-cartoon'],
+  pixar: ['pixar-style'],
+  dreamworks: ['dreamworks-style'],
+  'spider-verse': ['2d-3d-hybrid-animation'],
+  arcane: ['2d-3d-hybrid-animation'],
+  fortiche: ['2d-3d-hybrid-animation'],
+  batman: ['dark-knight-animation'],
+  tintin: ['ligne-claire-style'],
+  'looney tunes': ['looney-animation'],
+  spongebob: ['underwater-comedy-animation'],
+  'rick and morty': ['modern-sci-fi-comedy'],
+  'gravity falls': ['modern-mystery-cartoon'],
+  cuphead: ['rubberhose-video-game-style'],
+  'steven universe': ['cn-gem-style-animation'],
+  gumball: ['cn-mixed-media-animation'],
+  'samurai jack': ['minimalist-cinematic-cartoon'],
+  tartakovsky: ['minimalist-cinematic-cartoon'],
+  coraline: ['laika-stop-motion'],
+  'tim burton': ['burtonesque-stop-motion'],
+
+  // Cinematic Directors, Movies, and Camera Tech
+  hitchcock: ['dolly-zoom'],
+  vertigo: ['dolly-zoom'],
+  kubrick: ['2001-a-space-odyssey'],
+  matrix: ['the-matrix'],
+  'blade runner': ['blade-runner', 'blade-runner-2049'],
+  dune: ['dune'],
+  interstellar: ['interstellar'],
+  imax: ['kodak-vision3-imax', 'arri-alexa-65', 'red-v-raptor-8k'],
+  '70mm': ['kodak-vision3-imax', 'arri-alexa-65', 'red-v-raptor-8k'],
+  '35mm': ['35mm-film-camera', 'kodak-portra-400', 'cinestill-800t'],
+  anamorphic: ['anamorphic-cinema-lens'],
+  bokeh: ['helios-44-2-swirly-bokeh', '85mm-portrait'],
+  'wide angle': ['14mm-ultra-wide', '24mm-wide-angle', '35mm-wide'],
+  drone: ['drone-photography', 'drone-push-in', 'drone-pull-back', 'helicopter-shot'],
+  fpv: ['fpv', 'drone-push-in'],
+  'slow motion': ['slow-motion'],
+  'time lapse': ['time-lapse'],
+  'dutch angle': ['dutch-angle'],
+  'golden hour': ['golden-hour'],
+  neon: ['neon-lit', 'neon-lighting', 'blade-runner-2049', 'the-matrix', 'edgerunners'],
+  noir: ['chiaroscuro-lighting', 'black-and-white', 'blade-runner', 'the-maltese-falcon', 'chinatown'],
+};
+
 export function handleCatalog(
   positionals: string[],
   flags: Record<string, string | boolean | string[]>,
@@ -401,24 +485,51 @@ export function handleCatalog(
       };
     }
 
-    const q = query.toLowerCase();
-    const results: Array<{ category: string; id: string; label: string; promptValue?: string }> = [];
+    const categoryFilter = flags.category as string | undefined;
+    const q = query.trim().toLowerCase();
+    const terms = q.split(/\s+/).filter(Boolean);
+    const results: Array<{ category: string; id: string; label: string; promptValue?: string; description?: string; score: number }> = [];
 
-    // Search library catalogs
+    // Check synonyms
+    const synonymTargetIds = new Set<string>();
+    for (const [key, targets] of Object.entries(CATALOG_SYNONYMS)) {
+      if (q === key || q.includes(key) || key.includes(q)) {
+        for (const id of targets) synonymTargetIds.add(id);
+      }
+    }
+
+    // Search library catalogs (including pre, post, and categories)
     for (const [catName, catItems] of Object.entries(library)) {
+      if (categoryFilter && catName !== categoryFilter) continue;
       if (Array.isArray(catItems)) {
-        const presets: BasePreset[] = catItems;
-        for (const item of presets) {
-          if (
-            item.id.toLowerCase().includes(q) ||
-            item.label.toLowerCase().includes(q) ||
-            (item.promptValue && item.promptValue.toLowerCase().includes(q))
-          ) {
+        for (const item of catItems as Array<BasePreset & { pre?: string; post?: string }>) {
+          const id = item.id.toLowerCase();
+          const label = item.label.toLowerCase();
+          const pv = (item.promptValue || '').toLowerCase();
+          const pre = (item.pre || '').toLowerCase();
+          const post = (item.post || '').toLowerCase();
+          const fullBlob = `${id} ${label} ${pv} ${pre} ${post} ${catName.toLowerCase()}`;
+
+          let score = 0;
+          if (id === q) score += 100;
+          else if (label === q) score += 90;
+          else if (synonymTargetIds.has(item.id)) score += 85;
+          else if (id.includes(q)) score += 60;
+          else if (label.includes(q)) score += 50;
+          else if (pv.includes(q)) score += 40;
+          else if (pre.includes(q)) score += 35;
+          else if (post.includes(q)) score += 25;
+          else if (terms.length > 1 && terms.every((t) => fullBlob.includes(t))) score += 20;
+          else if (terms.length > 1 && terms.some((t) => id.includes(t) || label.includes(t))) score += 10;
+
+          if (score > 0) {
             results.push({
               category: catName,
               id: item.id,
               label: item.label,
-              promptValue: item.promptValue,
+              promptValue: item.promptValue || item.label,
+              description: item.pre ? `${item.pre} ${item.post}` : (item.promptValue !== item.label ? item.promptValue : undefined),
+              score,
             });
           }
         }
@@ -426,23 +537,44 @@ export function handleCatalog(
     }
 
     // Search cinematic camera movements (including aliases and categories)
-    for (const m of CINEMATIC_CAMERA_MOVEMENTS) {
-      if (
-        m.id.toLowerCase().includes(q) ||
-        m.label.toLowerCase().includes(q) ||
-        m.category.toLowerCase().includes(q) ||
-        m.promptKeyword.toLowerCase().includes(q) ||
-        m.fullPromptRecipe.toLowerCase().includes(q) ||
-        m.aliases.some((a) => a.toLowerCase().includes(q))
-      ) {
-        results.push({
-          category: `movements/${m.category}`,
-          id: m.id,
-          label: m.label,
-          promptValue: m.promptKeyword,
-        });
+    if (!categoryFilter || categoryFilter === 'movements' || categoryFilter.startsWith('movements/')) {
+      for (const m of CINEMATIC_CAMERA_MOVEMENTS) {
+        const id = m.id.toLowerCase();
+        const label = m.label.toLowerCase();
+        const cat = m.category.toLowerCase();
+        const kw = m.promptKeyword.toLowerCase();
+        const recipe = m.fullPromptRecipe.toLowerCase();
+        const aliases = m.aliases.map((a) => a.toLowerCase());
+        const fullBlob = `${id} ${label} ${cat} ${kw} ${recipe} ${aliases.join(' ')}`;
+
+        let score = 0;
+        if (id === q) score += 100;
+        else if (label === q) score += 90;
+        else if (synonymTargetIds.has(m.id)) score += 85;
+        else if (aliases.includes(q)) score += 80;
+        else if (id.includes(q)) score += 60;
+        else if (label.includes(q)) score += 50;
+        else if (kw.includes(q)) score += 45;
+        else if (aliases.some((a) => a.includes(q))) score += 40;
+        else if (recipe.includes(q)) score += 30;
+        else if (terms.length > 1 && terms.every((t) => fullBlob.includes(t))) score += 20;
+        else if (terms.length > 1 && terms.some((t) => id.includes(t) || label.includes(t))) score += 10;
+
+        if (score > 0) {
+          results.push({
+            category: `movements/${m.category}`,
+            id: m.id,
+            label: m.label,
+            promptValue: m.promptKeyword,
+            description: m.fullPromptRecipe,
+            score,
+          });
+        }
       }
     }
+
+    results.sort((a, b) => b.score - a.score);
+
     return {
       status: 'ok',
       action: 'catalog.search',
@@ -453,6 +585,100 @@ export function handleCatalog(
   return {
     status: 'error',
     error: `Unknown catalog subcommand '${sub}'. Use categories, list <cat>, search <query>, or movements.`,
+  };
+}
+
+export function handleSuggest(intent: string): CliOutput {
+  const q = intent.trim().toLowerCase();
+  if (!q) {
+    return { status: 'error', error: 'Specify an intent or theme to suggest presets for.' };
+  }
+
+  const words = q.replace(/[^a-z0-9\s-]/g, ' ').split(/\s+/).filter((w) => w.length >= 3);
+
+  // Find matched synonym targets
+  const synonymTargetIds = new Set<string>();
+  for (const [key, targets] of Object.entries(CATALOG_SYNONYMS)) {
+    if (q === key || q.includes(key) || key.includes(q)) {
+      for (const id of targets) synonymTargetIds.add(id);
+    }
+  }
+
+  const scoreItem = (item: BasePreset & { pre?: string; post?: string }, cat: string) => {
+    const id = item.id.toLowerCase();
+    const label = item.label.toLowerCase();
+    const pv = (item.promptValue || '').toLowerCase();
+    const pre = (item.pre || '').toLowerCase();
+    const post = (item.post || '').toLowerCase();
+    const text = `${id} ${label} ${pv} ${pre} ${post}`;
+
+    let score = 0;
+    if (id === q || label === q) score += 100;
+    if (synonymTargetIds.has(item.id)) score += 80;
+    for (const w of words) {
+      if (id === w || label === w) score += 40;
+      else if (id.includes(w)) score += 20;
+      else if (label.includes(w)) score += 15;
+      else if (pv.includes(w)) score += 10;
+      else if (pre.includes(w) || post.includes(w)) score += 8;
+    }
+    return score;
+  };
+
+  const recipe: Record<string, { id: string; label: string; score: number }> = {};
+  const targetCategories = [
+    'shots',
+    'lighting',
+    'cameras',
+    'lenses',
+    'filmStocks',
+    'movieLooks',
+    'animeShowStyles',
+    'westernAnimationStyles',
+  ];
+
+  for (const cat of targetCategories) {
+    const items = (library[cat as keyof PresetLibrary] || []) as Array<BasePreset & { pre?: string; post?: string }>;
+    let best: BasePreset | null = null;
+    let maxScore = 0;
+    for (const item of items) {
+      const s = scoreItem(item, cat);
+      if (s > maxScore) {
+        maxScore = s;
+        best = item;
+      }
+    }
+    if (best && maxScore >= 15) {
+      recipe[cat] = { id: best.id, label: best.label, score: maxScore };
+    }
+  }
+
+  // Movements
+  let bestMov: (typeof CINEMATIC_CAMERA_MOVEMENTS)[number] | null = null;
+  let maxMovScore = 0;
+  for (const m of CINEMATIC_CAMERA_MOVEMENTS) {
+    const aliases = m.aliases || [];
+    const text = `${m.id} ${m.label} ${m.category} ${m.promptKeyword} ${m.fullPromptRecipe} ${aliases.join(' ')}`.toLowerCase();
+    let score = 0;
+    if (synonymTargetIds.has(m.id)) score += 80;
+    for (const w of words) {
+      if (m.id.includes(w) || m.label.toLowerCase().includes(w)) score += 25;
+      else if (aliases.some((a) => a.toLowerCase().includes(w))) score += 20;
+      else if (text.includes(w)) score += 10;
+    }
+    if (score > maxMovScore) {
+      maxMovScore = score;
+      bestMov = m;
+    }
+  }
+  if (bestMov && maxMovScore >= 15) {
+    recipe.movement = { id: bestMov.id, label: bestMov.label, score: maxMovScore };
+  }
+
+  return {
+    status: 'ok',
+    action: 'suggest',
+    data: { intent, recipe },
   };
 }
 
@@ -570,8 +796,59 @@ export function executeAction(action: string, payload: Record<string, unknown>):
       };
     }
 
+    case 'suggest': {
+      const intent = String(payload.intent || payload.query || payload.prompt || '');
+      return handleSuggest(intent);
+    }
+
+    case 'catalog': {
+      const subcommand = String(payload.subcommand || payload.sub || (payload.query ? 'search' : payload.category ? 'list' : 'categories'));
+      const positionals: string[] = [subcommand];
+      if (subcommand === 'list' && payload.category) {
+        positionals.push(String(payload.category));
+      } else if (subcommand === 'search' && payload.query) {
+        positionals.push(String(payload.query));
+      }
+      const flags: Record<string, string | boolean | string[]> = {};
+      if (payload.category) flags.category = String(payload.category);
+      if (payload.query) flags.query = String(payload.query);
+      return handleCatalog(positionals, flags);
+    }
+
     case 'capabilities': {
       return handleCapabilities();
+    }
+
+    case 'compile': {
+      try {
+        const ir = PromptIRSchema.parse(payload.ir || payload);
+        let res;
+        if (ir.target === 'midjourney') res = compileMidjourney(ir, library);
+        else if (ir.target === 'kling' || ir.target === 'veo' || ir.target === 'sora') res = compileVideo(ir, ir.target);
+        else res = compileFlux(ir, library);
+        return { status: 'ok', action: 'compile', prompt: res.positivePrompt, data: res };
+      } catch (err: unknown) {
+        return { status: 'error', action: 'compile', error: err instanceof Error ? err.message : String(err) };
+      }
+    }
+
+    case 'lint': {
+      try {
+        const ir = PromptIRSchema.parse(payload.ir || payload);
+        const report = lintPromptIR(ir);
+        return { status: 'ok', action: 'lint', data: report };
+      } catch (err: unknown) {
+        return { status: 'error', action: 'lint', error: err instanceof Error ? err.message : String(err) };
+      }
+    }
+
+    case 'hybrid_search': {
+      const engine = new HybridSearchEngine(library);
+      const query = String(payload.query || payload.q || '');
+      const category = payload.category as string | undefined;
+      const limit = typeof payload.limit === 'number' ? payload.limit : 15;
+      const results = engine.search(query, { category, limit });
+      return { status: 'ok', action: 'hybrid_search', data: { query, count: results.length, results } };
     }
 
     case 'validate': {
@@ -599,11 +876,16 @@ export function executeAction(action: string, payload: Record<string, unknown>):
   }
 }
 
-export function main(): void {
+export async function main(): Promise<void> {
   const rawArgs = process.argv.slice(2);
 
   if (rawArgs.includes('-h') || rawArgs.includes('--help') || rawArgs[0] === 'help') {
     printHelp();
+    return;
+  }
+  if (rawArgs[0] === 'mcp') {
+    const server = new McpStdioServer(library);
+    await server.start();
     return;
   }
 
@@ -630,6 +912,15 @@ export function main(): void {
   if (command === 'catalog') {
     const raw = Boolean(flags.raw);
     const res = handleCatalog(positionals, flags);
+    outputResult(res, raw);
+    if (res.status === 'error') process.exit(1);
+    return;
+  }
+
+  if (command === 'suggest') {
+    const raw = Boolean(flags.raw);
+    const intent = positionals.join(' ') || (flags.intent as string) || (flags.query as string) || '';
+    const res = handleSuggest(intent);
     outputResult(res, raw);
     if (res.status === 'error') process.exit(1);
     return;

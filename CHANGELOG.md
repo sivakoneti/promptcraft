@@ -4,7 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
+
 ## [Unreleased]
+
+### Added
+- Enhanced preset discovery with natural language suggest engine, full-text catalog indexing, complete anime mode formatting, and agent skill guide updates (SPC-003)
+- Shipped Frontier Prompt Compiler with model-specific target compilers (Midjourney, Flux, Kling, Veo), PromptIR schema, diagnostic optical linter, BM25 hybrid search, and native Model Context Protocol (MCP) stdio server (EPC-002)
 
 ## [1.1.0] - 2026-09-02
 

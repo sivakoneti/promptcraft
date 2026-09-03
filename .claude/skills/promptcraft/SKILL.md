@@ -1,168 +1,131 @@
 ---
 name: promptcraft
-description: Use when building, generating, optimizing, or editing AI prompts for text-to-image (Midjourney, Flux, Stable Diffusion) or video generation (Kling, Veo, Sora, Gen-3), especially when selecting camera optics, lighting, anime/styles, camera movements, multi-character consistency, or multi-shot director timelines.
+description: Use when building, generating, optimizing, compiling, or linting AI prompts for text-to-image (Midjourney, Flux, Imagen 3, Stable Diffusion) or video generation (Kling, Veo, Sora, Gen-3). Supports both target-specific compilation, linter validation, and zero-dependency MCP stdio integration.
 ---
 
-# Promptcraft Skill
+# Promptcraft Skill & Frontier Prompt Compiler
 
-Deterministic, zero-hallucination prompt synthesis engine and CLI (`./bin/promptcraft`) for generative image and video models.
-
----
-
-## Decision Flowchart: Selecting Mode & Strategy
-
-```
-                          User Request / Generation Task
-                                       │
-        ┌──────────────────────────────┼──────────────────────────────┐
-        ▼                              ▼                              ▼
-  Image Generation              Image Modification             Video Generation
-        │                              │                              │
-  Is it anime/manga?             User supplied image?         Single or Multi-Shot?
-  ┌─────┴─────┐                        │                        ┌─────┴─────┐
-  ▼           ▼                        ▼                        ▼           ▼
-[photo]    [anime]                  [edit]                   [video]    [director]
-Mode       Mode                     Mode                     Mode       Timeline
-```
+Frontier prompt synthesis compiler, optical linter, semantic search engine, and native Model Context Protocol (MCP) server (`promptcraft` on `$PATH`).
 
 ---
 
-## 1. Mode Selection Matrix
+## 1. Native MCP Integration (Recommended for AI Agents)
 
-| Mode | When to Use | Key Flags / Fields | Target Models |
-|---|---|---|---|
-| **`photo`** | Realistic portraits, cinematic film stills, landscapes, architecture | `--subject`, `--shot`, `--lighting`, `--camera`, `--lens`, `--film`, `--movie-look`, `--photographer`, `--aspect` | Flux, Midjourney, SDXL, Imagen 3 |
-| **`anime`** | 2D/3D anime, manga, western animation, stylized comics | `--subject`, `--anime-genre`, `--anime-show`, `--western-style`, `--lighting`, `--aspect` | Niji, Midjourney, NovelAI, SDXL Anime |
-| **`edit`** | Modifying an existing image (in-painting, outfit swap, background change) | `--action` / `--subjectAction`, `references` (with global ref), `--lighting`, `--aspect` | Midjourney Inpaint, Flux Kontext, SD Inpaint |
-| **`video`** | Single continuous video clip with camera motion and autofill | `--video-prompt`, `--movement`, `--env`, `--mood`, `references` | Kling 1.5/2.0, Veo 2, Sora, Gen-3, Luma |
-### 1. 16 Curated Catalog Dimensions
-- **Shots & Angles** (24): `bird-s-eye-view`, `close-up`, `cutaway-shot`, `dutch-angle`, `entire-body`, `establishing-shot`, `extreme-close-up`, `worm-s-eye-view`...
-- **Cameras** (49): `arri-alexa-65`, `red-v-raptor-8k`, `imax-70mm`, `hasselblad-500c`, `leica-m6`, `sony-fx9`...
-- **Lenses** (12): `anamorphic-cinema-lens`, `helios-44-2-swirly-bokeh`, `catadioptric-mirror-lens`, `fisheye-lens`...
-- **Focal Lengths** (9): `8mm-fisheye`, `14mm-ultra-wide`, `24mm-wide-angle`, `35mm-wide`, `50mm-standard`, `85mm-portrait`...
-- **Film Stocks** (30): `kodak-vision3-500t`, `kodak-portra-400`, `cinestill-800t`, `fujifilm-eterna`, `agfa-vista`...
-- **Lighting & Mood** (29): `backlighting-rim-lighting`, `blue-hour`, `chiaroscuro-lighting`, `golden-hour`, `neon-lit`...
-- **Movie Aesthetics** (110): `blade-runner-2049`, `the-matrix`, `dune`, `alien`, `2001-a-space-odyssey`, `interstellar`...
-- **Photographer Styles** (99): `annie-leibovitz`, `gregory-crewdson`, `alec-soth`, `sebastiao-salgado`...
-- **Anime & Show Styles** (97): `cyberpunk`, `battle-shonen-anime`, `demon-slayer`, `evangelion`, `studio-ghibli`, `spider-verse`...
+Instead of shelling out to bash and quoting command-line arguments, agents can connect directly to Promptcraft's native Model Context Protocol (MCP) stdio server:
 
-### 2. Video Camera Movements (50 Cinematic Movements Across 7 Categories)
-Verbatim keyword insertions & full prompting recipes at precise character offsets:
-- **Pan / Tilt**: `Static shot`, `Pan right/left`, `Whip pan right/left`, `Tilt up/down`
-- **Zoom / Lens**: `Slow zoom in/out`, `Fast zoom in/out`, `Crash zoom in/out`, `Dolly zoom` (Vertigo), `Pull focus` (Rack focus)
-- **Physical Moves**: `Truck right/left`, `Pedestal up/down`, `Slider right/left`, `Push past / pass-by`, `Arc right/left`, `Orbit clockwise/counterclockwise`
-- **Dolly & Tracking**: `Dolly in/out`, `Tracking shot`, `Follow shot` (OTS), `Reverse tracking` (walk-and-talk), `Side tracking`, `Low tracking`, `Vehicle tracking`, `Chase shot`
-- **Human Camera**: `Handheld shot` (natural shake), `Body-mounted camera / Snorricam` (torso locked)
-- **Drone / Crane**: `Crane up/down`, `Drone push in`, `Drone pull back`, `Helicopter shot`
-- **VFX Specials**: `First-person view` (FPV), `Tilt-shift` (miniature), `Infinite zoom`, `Earth zoom out`, `Pass-through objects` (portal/keyhole), `Time-lapse`, `Shot Switch`, `Slow Motion`
-
-When a user provides reference images (characters, scenes, outfits, global visual anchors), follow this exact reference binding protocol:
-
-### Reference Hierarchy (Category Priority)
-1. `global (1)`: Source image / overall visual style anchor.
-2. `face (2)`: Character facial identity.
-3. `scene (3)`: Environment / background plate.
-4. `outfit (4)`: Costume / clothing reference.
-5. `object (5)`: Handheld prop or key vehicle/asset.
-6. `anonymous (6)`: Generic unclassified reference image.
-
-### Reference Slot Syntax
-```bash
-echo '{
-  "action": "resolve_references",
-  "slots": [
-    { "type": "face", "characterIndex": 0, "image": "protagonist_face.png" },
-    { "type": "outfit", "characterIndex": 0, "image": "cyber_jacket.png" },
-    { "type": "face", "characterIndex": 1, "image": "antagonist_face.png" },
-    { "type": "scene", "characterIndex": null, "image": "tokyo_alley.png" },
-    { "type": "global", "characterIndex": null, "image": "master_palette.png" }
-  ],
-  "options": {
-    "order": "generate",
-    "maxReferenceImages": 4
+```json
+{
+  "mcpServers": {
+    "promptcraft": {
+      "command": "promptcraft",
+      "args": ["mcp"]
+    }
   }
-}' | ./bin/promptcraft
+}
 ```
-**Synthesized Output Sentence:**
-```text
-Create a new image by combining the provided elements: image_1 as Character1 face reference; image_2 as Character2 face reference; image_3 as scene style reference; image_4 as global visual reference. Keep character appearances consistent with the references.
-```
+
+### Native Tools Exposed over MCP:
+1. `compile_prompt({ target, subject, action, environment, optics, lighting, style, motion, aspectRatio })`
+2. `lint_prompt({ promptIR })`
+3. `search_catalog({ query, category, limit })`
 
 ---
 
-## 3. Video Prompting Protocols
+## 2. Target Compilers: Model-Specific Prompt Optimization
 
-### Single Clip: Continuous Motion Beats
-Use temporal transition words (`Initially -> then -> finally`) + a catalog camera movement:
-```bash
-./bin/promptcraft video \
-  --video-prompt "Initially the cyber-samurai stands motionless in rain, then swiftly unsheathes a glowing katana, and finishes by slicing an incoming drone in slow motion" \
-  --movement "Slow Motion" \
-  --env "rainy neo-Tokyo alley" \
-  --mood "high adrenaline" \
-  --raw
-```
+Never use generic strings for all foundation models. Modern image and video models have vastly different text encoders (CLIP vs T5-XXL vs Multimodal video decoders):
 
-### Multi-Shot: Kling-Compliant Director Timeline
-For discrete scene transitions with timed shots (enforces 3–15s total clamp, $\le$ 6 shots, $\le$ 512 chars/shot):
+| Target | Target Text Encoder | Syntax Characteristics Generated by Promptcraft |
+|---|---|---|
+| **`midjourney`** | Dual CLIP + custom ranking | Dense descriptive keywords, camera shot headers, and trailing parameter flags (`--ar 16:9 --style raw --v 6.1 --no text, blurry`). |
+| **`flux`** / **`imagen-3`** | T5-XXL (dense language) | Natural language descriptive prose sentences with full subject, environment, physical lighting, and optical aperture depth-of-field narrative. |
+| **`kling`** / **`veo`** | Video diffusion transformer | Temporal beat structuring (`1: Shot [4s] 2: Shot [3s]`), physical camera motion keywords (`dolly-zoom`, `orbit-clockwise`, `slow-motion`). |
+
+### Compiling Prompts via CLI / JSON IPC:
 ```bash
 echo '{
-  "action": "director_timeline",
-  "shots": [
-    { "note": "Low angle tracking shot of android sprinting through neon alley", "durationHint": "4" },
-    { "note": "Close up on optical sensors locking onto target", "durationHint": "3" },
-    { "note": "Drone pull-back revealing surrounding security perimeter", "durationHint": "5" }
+  "action": "compile",
+  "target": "midjourney",
+  "subject": "cyberpunk detective examining holographic data",
+  "optics": { "camera": "arri-alexa-65", "shotType": "close-up" },
+  "style": { "movieLook": "blade-runner-2049" },
+  "aspectRatio": "21:9"
+}' | promptcraft
+```
+**Compiled Output:**
+```text
+cyberpunk detective examining holographic data, With the visual aesthetic of the movie Blade Runner 2049 with amber desert tones, cyan shadows, clean contrast, minimal grain, Close up shot, shot on ARRI ALEXA 65 --ar 21:9 --style raw --v 6.1 --no text, watermark, signature, blurry
+```
+
+### Compiling for Flux.1 (T5-XXL Prose):
+```bash
+echo '{
+  "action": "compile",
+  "target": "flux",
+  "subject": "young sorceress",
+  "action": "channeling blue ethereal flame",
+  "environment": "ancient stone sanctuary",
+  "lighting": { "setup": "chiaroscuro-lighting", "mood": "mystical" },
+  "optics": { "camera": "leica-m3", "lens": "helios-44-2-swirly-bokeh", "fStop": "1.4" },
+  "aspectRatio": "4:3"
+}' | promptcraft
+```
+**Compiled Output:**
+```text
+A detailed, high-resolution photograph capturing young sorceress, actively channeling blue ethereal flame, situated within ancient stone sanctuary. The scene is illuminated by Chiaroscuro Lighting, evoking a mystical atmosphere. Captured on a Leica M3, paired with a Helios 44-2 Swirly Bokeh, at f/1.4. The image has immaculate clarity with no digital artifacts, text, or subtitles.
+```
+
+---
+
+## 3. Prompt Linter & Diagnostic Pre-Flight Checks
+
+Before submitting prompts to cloud generation APIs, check for token budget overflows and optical contradictions:
+
+```bash
+echo '{
+  "action": "lint",
+  "subject": "bird on tree branch",
+  "optics": {
+    "lens": "fisheye-lens",
+    "focalLength": "200mm-super-telephoto"
+  }
+}' | promptcraft
+```
+**Diagnostics Returned:**
+```json
+{
+  "valid": false,
+  "estimatedTokens": 3,
+  "tokenBudget": 512,
+  "diagnostics": [
+    {
+      "severity": "error",
+      "code": "OPTICAL_CONFLICT",
+      "message": "Contradictory optics: Fisheye lens (fisheye-lens) cannot be combined with telephoto focal length (200mm-super-telephoto).",
+      "field": "optics"
+    }
   ]
-}' | ./bin/promptcraft
+}
 ```
 
 ---
 
-## 4. Preset Catalog Discovery (Zero-Hallucination)
+## 4. Hybrid Semantic Search (BM25 + N-Gram Similarity)
 
-Never fabricate camera, lens, or style names. Always discover or verify IDs from the catalog:
+Find presets across 566 dimensions and 50 camera movements without needing exact spelling:
 
 ```bash
-# 1. Discover capabilities & catalog summary counts
-./bin/promptcraft capabilities
-
-# 2. Search presets across 500+ items
-./bin/promptcraft catalog search "blade runner"
-./bin/promptcraft catalog search "anamorphic"
-./bin/promptcraft catalog search "demon slayer"
-
-# 3. List items in specific category
-./bin/promptcraft catalog list cameras
-./bin/promptcraft catalog list lighting
-./bin/promptcraft catalog list movements
+# Search using BM25 and fuzzy character trigrams
+echo '{"action":"hybrid_search","query":"dolly zoom Hitchcock vertigo"}' | promptcraft
+echo '{"action":"hybrid_search","query":"evangelion mecha launch"}' | promptcraft
+echo '{"action":"hybrid_search","query":"anamorphic lens bokeh"}' | promptcraft
 ```
 
 ---
 
-## 5. Live Fragment Synchronization (`sync`)
-
-When refining a prompt based on user feedback (e.g. changing lighting from studio to neon), never re-prompt from scratch:
-```bash
-./bin/promptcraft sync \
-  --prev "A photographic image of a warrior. The scene is illuminated by studio lighting. The image should be in a 16:9 format." \
-  --next "A photographic image of a warrior. The scene is illuminated by dramatic neon backlight. The image should be in a 16:9 format." \
-  --raw
-```
-
----
-
-## 6. CLI Quick Reference
+## 5. One-Shot Natural Language Recipe Suggestion
 
 ```bash
-# Flag-based Photo Mode
-./bin/promptcraft photo --subject "<text>" --shot close-up --lighting neon-lit --movie-look blade-runner-2049 --aspect 21:9 --raw
-
-# Flag-based Anime Mode
-./bin/promptcraft anime --subject "<text>" --anime-genre cyberpunk --anime-show evangelion --aspect 16:9 --raw
-
-# Flag-based Video Mode
-./bin/promptcraft video --video-prompt "<text>" --movement "Orbit" --env "<text>" --raw
-
-# JSON IPC over stdin (Recommended for subagents)
-echo '{"action":"assemble","mode":"photo","subject":"astronaut on Mars","shotId":"wide-shot"}' | ./bin/promptcraft
+promptcraft suggest "cyberpunk neon detective in rainy tokyo"
 ```
+Recommends camera, lens, lighting, movie aesthetic, and movement in a single call.

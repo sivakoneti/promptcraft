@@ -23,3 +23,4 @@ Enables AI agents to query 500+ cinematic presets, compose photo/anime/edit/vide
 
 - [SPC-001: Promptcraft CLI Engine and Agent Interface](../specs/SPC-001-promptcraft-cli-engine-and-agent-interface.md)
 - [SPC-002: Cinematic Camera Movements Catalog Integration](../specs/SPC-002-cinematic-camera-movements-catalog-integration.md)
+- [SPC-003: Agent Usability and Preset Catalog Discovery Fixes](../specs/SPC-003-agent-usability-and-preset-catalog-discovery-fix.md)

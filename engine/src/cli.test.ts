@@ -169,4 +169,37 @@ describe('Promptcraft CLI Engine', () => {
     expect(res.status).toBe('ok');
     expect(res.prompt).toBe(next);
   });
+
+  test('executeAction catalog list and search via JSON IPC', () => {
+    const listRes = executeAction('catalog', { category: 'movieLooks' });
+    expect(listRes.status).toBe('ok');
+    expect(Array.isArray(listRes.data)).toBe(true);
+    expect((listRes.data as unknown[]).length).toBeGreaterThan(50);
+
+    const searchRes = executeAction('catalog', { query: 'evangelion' });
+    expect(searchRes.status).toBe('ok');
+    const searchData = searchRes.data as { query: string; count: number; results: Array<{ id: string }> };
+    expect(searchData.count).toBeGreaterThan(0);
+    expect(searchData.results.some((r) => r.id === 'neon-revelation')).toBe(true);
+  });
+
+  test('executeAction anime mode formats catalog style pre and post fragments', () => {
+    const res = executeAction('anime', {
+      subject: 'sorcerer',
+      animeShowStyleId: 'neon-revelation',
+    });
+    expect(res.status).toBe('ok');
+    expect(res.prompt).toContain('Neon Genesis Evangelion');
+    expect(res.prompt).toContain('An animation style image of sorcerer.');
+    expect(res.prompt).toContain('cel-animation finish with retro film grain.');
+  });
+
+  test('executeAction suggest returns ranked cinematic recipe from natural language', () => {
+    const res = executeAction('suggest', { intent: 'cyberpunk neon detective in rain' });
+    expect(res.status).toBe('ok');
+    const data = res.data as { intent: string; recipe: Record<string, { id: string; label: string }> };
+    expect(data.recipe.lighting).toBeDefined();
+    expect(data.recipe.lighting.id).toContain('neon');
+    expect(data.recipe.animeShowStyles?.id).toBe('edgerunners');
+  });
 });

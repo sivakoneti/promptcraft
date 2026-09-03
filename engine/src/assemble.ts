@@ -53,18 +53,38 @@ export function assembleEdit(state: PromptState, library: PresetLibrary): string
 
 export function assembleAnime(state: PromptState, library: PresetLibrary): string {
   // Check if any anime/western style is selected (first match wins per EXTRACTION.md §3 Animate)
-  const hasAnimeStyle =
-    state.westernAnimationStyleId || state.animeGenreId || state.animeShowStyleId;
+  const findStyle = (id: string, list: Array<{ id: string; label: string; pre: string; post: string }>) => {
+    if (!id) return undefined;
+    const norm = id.trim().toLowerCase();
+    const slug = norm.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    return list.find((e) => e.id.toLowerCase() === norm || e.id.toLowerCase() === slug || e.label.toLowerCase() === norm);
+  };
 
-  if (hasAnimeStyle) {
+  const westernStylePreset = findStyle(state.westernAnimationStyleId, library.westernAnimationStyles);
+  const animeGenrePreset = findStyle(state.animeGenreId, library.animeGenres);
+  const animeShowPreset = findStyle(state.animeShowStyleId, library.animeShowStyles);
+
+  const matchedStyle = westernStylePreset || animeGenrePreset || animeShowPreset;
+
+  if (matchedStyle) {
     // With catalog-picked style: prePrompt + subject/shot sentence + fs + postPrompt + Sd + zr + noText
-    // For now, use simplified assembly; full pre/post wrapping requires library lookup of anime entries
-    const subjectSentence = buildSubjectSentence(state, library);
+    const shotValue = state.shotId ? (library.shots.find((s) => s.id === state.shotId)?.promptValue ?? null) : null;
+    const subject = state.subjectAction || 'a subject';
+    const envSuffix = state.environment ? `, set in ${state.environment}` : '';
+    let shotClause = '';
+    if (shotValue) {
+      shotClause = state.candidShot
+        ? `a ${shotValue}, where the subject is unaware they are on camera, of `
+        : `a ${shotValue} of `;
+    }
+    const subjectSentence = `An animation style image of ${shotClause}${subject}${envSuffix}.`;
     const lightingMood = buildLightingMood(state, library);
 
     const fragments = [
+      matchedStyle.pre,
       subjectSentence,
       lightingMood,
+      matchedStyle.post,
       buildAspectRatio(state),
     ];
 
@@ -72,22 +92,16 @@ export function assembleAnime(state: PromptState, library: PresetLibrary): strin
       fragments.push(NO_TEXT_GUARD);
     }
 
-    return fragments.filter((f) => f.length > 0).join(' ');
+    return fragments.filter((f) => f && f.length > 0).join(' ');
   }
 
-  // Without anime style: fallback template per EXTRACTION.md §3
+  // Without catalog-picked anime style: fallback template per EXTRACTION.md §3
   // "An animation style image of" + "In the style of {genre}," + subject sentence + Sd + fs + zr + noText
-  const genre = state.animeGenreId
-    ? library.animeGenres.find((e) => e.id === state.animeGenreId)?.label
-    : '';
-  const westernStyle = state.westernAnimationStyleId
-    ? library.westernAnimationStyles.find((e) => e.id === state.westernAnimationStyleId)?.label
-    : '';
-  const showStyle = state.animeShowStyleId
-    ? library.animeShowStyles.find((e) => e.id === state.animeShowStyleId)?.label
-    : '';
+  const genre = state.animeGenreId || '';
+  const westernStyle = state.westernAnimationStyleId || '';
+  const showStyle = state.animeShowStyleId || '';
 
-  const sdFallback = `Western animation style: ${westernStyle || ''}. Anime genre: ${genre || ''}. Anime show style: ${showStyle || ''}.`;
+  const sdFallback = `Western animation style: ${westernStyle}. Anime genre: ${genre}. Anime show style: ${showStyle}.`;
 
   const fragments = [
     'An animation style image of',
@@ -102,7 +116,7 @@ export function assembleAnime(state: PromptState, library: PresetLibrary): strin
     fragments.push(NO_TEXT_GUARD);
   }
 
-  return fragments.filter((f) => f.length > 0).join(' ');
+  return fragments.filter((f) => f && f.length > 0).join(' ');
 }
 
 // ─── Unified entry point ────────────────────────────────────────────────────────

@@ -5,3 +5,18 @@
 {"ts": "2026-09-01T11:11:09+00:00", "type": "progress", "actor": "agent", "message": "Created comprehensive promptcraft skill guide for AI agents in .claude/skills/promptcraft/SKILL.md", "ref": "SPC-001"}
 {"ts": "2026-09-02T03:03:09+00:00", "type": "progress", "actor": "agent", "message": "Integrated 50 cinematic camera movements with full recipes and aliases into promptcraft engine", "ref": "SPC-001"}
 {"ts": "2026-09-02T03:05:11+00:00", "type": "progress", "actor": "agent", "message": "Completed SPC-002: Created spec, updated changelog to 1.1.0, and verified validation gates", "ref": "SPC-002"}
+{"ts": "2026-09-03T04:24:35+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-003-T1: in_progress -> done", "ref": "SPC-003"}
+{"ts": "2026-09-03T04:24:39+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-003-T2: todo -> done", "ref": "SPC-003"}
+{"ts": "2026-09-03T04:24:41+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-003-T3: todo -> done", "ref": "SPC-003"}
+{"ts": "2026-09-03T04:24:44+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-003-T4: todo -> done", "ref": "SPC-003"}
+{"ts": "2026-09-03T04:25:01+00:00", "type": "progress", "actor": "agent", "message": "Resolved agent usability issues: added suggest recipe recommendation, deep catalog search across pre/post and synonyms, full anime mode styling, JSON IPC catalog action, and updated global SKILL.md guide.", "ref": "SPC-003"}
+{"ts": "2026-09-03T04:29:09+00:00", "type": "progress", "actor": "agent", "message": "Added tolerant preset resolution and alias mapping in fragments.ts and assemble.ts so slight agent variations resolve accurately without silent drops", "ref": "SPC-003"}
+{"ts": "2026-09-03T04:35:02+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-004-T1: in_progress -> done", "ref": "SPC-004"}
+{"ts": "2026-09-03T04:35:08+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-004-T2: todo -> done", "ref": "SPC-004"}
+{"ts": "2026-09-03T04:35:12+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-004-T3: todo -> done", "ref": "SPC-004"}
+{"ts": "2026-09-03T04:35:16+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-004-T4: todo -> done", "ref": "SPC-004"}
+{"ts": "2026-09-03T04:35:25+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-005-T1: todo -> done", "ref": "SPC-005"}
+{"ts": "2026-09-03T04:35:28+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-005-T2: todo -> done", "ref": "SPC-005"}
+{"ts": "2026-09-03T04:35:31+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-005-T3: todo -> done", "ref": "SPC-005"}
+{"ts": "2026-09-03T04:35:37+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-005-T4: todo -> done", "ref": "SPC-005"}
+{"ts": "2026-09-03T04:35:51+00:00", "type": "progress", "actor": "agent", "message": "Completed EPC-002: Shipped PromptIR, target compilers (Midjourney, Flux, Kling, Veo), optical conflict linter, BM25 hybrid search, and native MCP stdio server.", "ref": "EPC-002"}
