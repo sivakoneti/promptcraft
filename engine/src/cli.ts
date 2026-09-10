@@ -39,7 +39,7 @@ import { resolveReferences, type ReferenceSlotInput } from './references.js';
 import { sync } from './sync.js';
 import { embeddedPresetLibrary } from './library-data.js';
 import { PromptIRSchema } from './compiler/ir.js';
-import { compileMidjourney, compileFlux, compileVideo } from './compiler/compilers.js';
+import { compilePrompt, compileMidjourney, compileFlux, compileVideo } from './compiler/compilers.js';
 import { lintPromptIR } from './compiler/linter.js';
 import { HybridSearchEngine } from './search/hybrid.js';
 import { McpStdioServer } from './mcp/server.js';
@@ -822,10 +822,7 @@ export function executeAction(action: string, payload: Record<string, unknown>):
     case 'compile': {
       try {
         const ir = PromptIRSchema.parse(payload.ir || payload);
-        let res;
-        if (ir.target === 'midjourney') res = compileMidjourney(ir, library);
-        else if (ir.target === 'kling' || ir.target === 'veo' || ir.target === 'sora') res = compileVideo(ir, ir.target);
-        else res = compileFlux(ir, library);
+        const res = compilePrompt(ir, library);
         return { status: 'ok', action: 'compile', prompt: res.positivePrompt, data: res };
       } catch (err: unknown) {
         return { status: 'error', action: 'compile', error: err instanceof Error ? err.message : String(err) };

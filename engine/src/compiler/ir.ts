@@ -8,6 +8,8 @@ export const ModelTargetSchema = z.enum([
   'kling',
   'veo',
   'sora',
+  'runway',
+  'wan',
   'generic',
 ]);
 
@@ -57,6 +59,47 @@ export const MotionIRSchema = z.object({
   })).optional(),
 });
 export type MotionIR = z.infer<typeof MotionIRSchema>;
+export const VideoPhysicsIRSchema = z.object({
+  forces: z.array(z.string()).optional(),
+  massAndInertia: z.string().optional(),
+  causalChain: z.string().optional(),
+  materialProperties: z.string().optional(),
+  invariance: z.array(z.string()).optional(),
+});
+export type VideoPhysicsIR = z.infer<typeof VideoPhysicsIRSchema>;
+
+export const SpatialBlockingIRSchema = z.object({
+  foreground: z.string().optional(),
+  midground: z.string().optional(),
+  background: z.string().optional(),
+  rackFocus: z.string().optional(),
+  trajectory: z.string().optional(),
+});
+export type SpatialBlockingIR = z.infer<typeof SpatialBlockingIRSchema>;
+
+export const CameraKinematicsIRSchema = z.object({
+  rig: z.enum(['steadicam', 'tripod', 'technocrane', 'handheld', 'fpv-drone', 'dolly-track']).optional(),
+  primaryVector: z.string().optional(),
+  secondaryDrift: z.string().optional(),
+  shutterAngle: z.enum(['180-degree', '90-degree', '360-degree']).optional(),
+  speedRamp: z.string().optional(),
+});
+export type CameraKinematicsIR = z.infer<typeof CameraKinematicsIRSchema>;
+
+export const AnchorFramesIRSchema = z.object({
+  frame0State: z.string().optional(),
+  transitionVector: z.string().optional(),
+  continuityLock: z.boolean().optional(),
+});
+export type AnchorFramesIR = z.infer<typeof AnchorFramesIRSchema>;
+
+export const ActionChoreographyIRSchema = z.object({
+  anticipation: z.string().optional(),
+  execution: z.string().optional(),
+  settle: z.string().optional(),
+  audioFoley: z.string().optional(),
+});
+export type ActionChoreographyIR = z.infer<typeof ActionChoreographyIRSchema>;
 
 export const PromptIRSchema = z.object({
   target: ModelTargetSchema.default('generic'),
@@ -67,6 +110,11 @@ export const PromptIRSchema = z.object({
   lighting: LightingIRSchema.optional(),
   style: StyleIRSchema.optional(),
   motion: MotionIRSchema.optional(),
+  physics: VideoPhysicsIRSchema.optional(),
+  spatial: SpatialBlockingIRSchema.optional(),
+  kinematics: CameraKinematicsIRSchema.optional(),
+  anchoring: AnchorFramesIRSchema.optional(),
+  actionChoreography: ActionChoreographyIRSchema.optional(),
   aspectRatio: AspectRatioSchema.default('16:9'),
   negativePrompt: z.string().optional(),
   seed: z.number().optional(),

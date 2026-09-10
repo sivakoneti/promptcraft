@@ -1,7 +1,7 @@
 import { createInterface } from 'node:readline';
 import type { PresetLibrary } from '../state.js';
 import { PromptIRSchema } from '../compiler/ir.js';
-import { compileMidjourney, compileFlux, compileVideo } from '../compiler/compilers.js';
+import { compilePrompt } from '../compiler/compilers.js';
 import { lintPromptIR } from '../compiler/linter.js';
 import { HybridSearchEngine } from '../search/hybrid.js';
 export interface McpToolDefinition {
@@ -13,11 +13,11 @@ export interface McpToolDefinition {
 export const MCP_TOOLS: McpToolDefinition[] = [
   {
     name: 'compile_prompt',
-    description: 'Compile high-level scene semantics and optics into model-optimized prompt syntax (Midjourney, Flux, Kling, Veo).',
+    description: 'Compile high-level scene semantics, optics, physics, and spatial blocking into model-optimized prompt syntax (Midjourney, Flux, Kling, Runway, Wan, Veo, Sora).',
     inputSchema: {
       type: 'object',
       properties: {
-        target: { type: 'string', enum: ['midjourney', 'flux', 'kling', 'veo', 'generic'], description: 'Target model architecture' },
+        target: { type: 'string', enum: ['midjourney', 'flux', 'kling', 'veo', 'sora', 'runway', 'wan', 'generic'], description: 'Target model architecture' },
         subject: { type: 'string', description: 'Subject or core entity' },
         action: { type: 'string', description: 'Subject action or dynamic interaction' },
         environment: { type: 'string', description: 'Scene setting or background' },
@@ -51,6 +51,42 @@ export const MCP_TOOLS: McpToolDefinition[] = [
           properties: {
             movement: { type: 'string', description: 'Camera movement ID or label' },
             speed: { type: 'string', enum: ['slow', 'normal', 'fast', 'freeze'] },
+          },
+        },
+        physics: {
+          type: 'object',
+          properties: {
+            forces: { type: 'array', items: { type: 'string' }, description: 'Physical forces (e.g. 40mph wind, heavy gravity)' },
+            massAndInertia: { type: 'string', description: 'Mass and inertia specification' },
+            causalChain: { type: 'string', description: 'Cause and effect sequence upon collision or impact' },
+            invariance: { type: 'array', items: { type: 'string' }, description: 'Properties that must not warp or morph' },
+          },
+        },
+        spatial: {
+          type: 'object',
+          properties: {
+            foreground: { type: 'string', description: 'Near depth plane elements (high parallax)' },
+            midground: { type: 'string', description: 'Action depth plane (focus subject)' },
+            background: { type: 'string', description: 'Far depth plane (atmospheric anchor)' },
+            rackFocus: { type: 'string', description: 'Dynamic focus pull transition' },
+          },
+        },
+        kinematics: {
+          type: 'object',
+          properties: {
+            rig: { type: 'string', enum: ['steadicam', 'tripod', 'technocrane', 'handheld', 'fpv-drone', 'dolly-track'] },
+            primaryVector: { type: 'string', description: 'Primary dominant camera vector' },
+            secondaryDrift: { type: 'string', description: 'Subtle secondary camera drift' },
+            shutterAngle: { type: 'string', enum: ['180-degree', '90-degree', '360-degree'] },
+          },
+        },
+        actionChoreography: {
+          type: 'object',
+          properties: {
+            anticipation: { type: 'string', description: 'Beat 1 (0-1.2s): Storing energy or preparing motion' },
+            execution: { type: 'string', description: 'Beat 2 (1.2-2.8s): Explosive kinetic execution' },
+            settle: { type: 'string', description: 'Beat 3 (2.8-5.0s): Recoil, follow-through, or dissipation' },
+            audioFoley: { type: 'string', description: 'Native audio Foley sound effects' },
           },
         },
         aspectRatio: { type: 'string', enum: ['16:9', '9:16', '1:1', '4:3', '21:9'], default: '16:9' },
@@ -97,9 +133,7 @@ export class McpStdioServer {
     switch (toolName) {
       case 'compile_prompt': {
         const ir = PromptIRSchema.parse(args);
-        if (ir.target === 'midjourney') return compileMidjourney(ir, this.library);
-        if (ir.target === 'kling' || ir.target === 'veo') return compileVideo(ir, ir.target);
-        return compileFlux(ir, this.library);
+        return compilePrompt(ir, this.library);
       }
       case 'lint_prompt': {
         const ir = PromptIRSchema.parse(args.promptIR || args);

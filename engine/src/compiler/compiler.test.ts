@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest';
 import { PromptIRSchema } from './ir.js';
-import { compileMidjourney, compileFlux, compileVideo } from './compilers.js';
+import { compilePrompt, compileMidjourney, compileFlux, compileVideo, compileRunway, compileKling, compileWan, compileVeo } from './compilers.js';
 import { lintPromptIR } from './linter.js';
 import { embeddedPresetLibrary } from '../library-data.js';
 
@@ -64,11 +64,168 @@ describe('Frontier Prompt Compiler', () => {
         ],
       },
     });
-    const result = compileVideo(ir, 'kling');
+    const result = compileVideo(ir, 'kling', embeddedPresetLibrary);
     expect(result.positivePrompt).toBe('1: Tracking shot following vehicle from side angle [4s] 2: Close-up on burning rubber tires with sparks [3s]');
     expect(result.parameters.duration).toBe(7);
   });
 
+  test('compiles Runway Gen-4 channel syntax with physics and kinematics', () => {
+    const ir = PromptIRSchema.parse({
+      target: 'runway',
+      subject: 'armored knight',
+      action: 'sprinting through mud',
+      environment: 'castle courtyard at dusk',
+      optics: { camera: 'arri-alexa-65', lens: 'anamorphic-cinema-lens', shotType: 'medium-shot' },
+      spatial: {
+        foreground: 'blurred raindrops on lens',
+        midground: 'knight sprinting',
+        background: 'looming fortress gates',
+      },
+      physics: {
+        massAndInertia: 'heavy steel plate armor with momentum',
+        forces: ['30mph headwind', 'heavy mud suction'],
+        causalChain: 'boots displace mud chunks that spray backward',
+        invariance: ['rigid armor geometry'],
+      },
+      kinematics: {
+        rig: 'steadicam',
+        primaryVector: 'forward tracking push-in',
+        shutterAngle: '180-degree',
+      },
+      actionChoreography: {
+        anticipation: 'low stance gathering explosive energy',
+        execution: 'heavy sprint forward',
+        settle: 'sliding to a controlled halt',
+      },
+    });
+    const result = compileRunway(ir, embeddedPresetLibrary);
+    expect(result.target).toBe('runway');
+    expect(result.positivePrompt).toContain('CAMERA: Rig: steadicam');
+    expect(result.positivePrompt).toContain('Shot on ARRI ALEXA 65');
+    expect(result.positivePrompt).toContain('180-degree shutter');
+    expect(result.positivePrompt).toContain('SUBJECT: armored knight');
+    expect(result.positivePrompt).toContain('SCENE: castle courtyard at dusk');
+    expect(result.positivePrompt).toContain('Foreground: blurred raindrops on lens');
+    expect(result.positivePrompt).toContain('PHYSICS: Mass & Inertia: heavy steel plate armor with momentum');
+    expect(result.positivePrompt).toContain('Forces: 30mph headwind, heavy mud suction');
+  });
+
+  test('compiles Kling multi-beat action with Foley audio and cinematic movement', () => {
+    const ir = PromptIRSchema.parse({
+      target: 'kling',
+      subject: 'samurai',
+      optics: { shotType: 'close-up' },
+      environment: 'bamboo forest rain',
+      motion: { movement: 'dolly-zoom' },
+      actionChoreography: {
+        anticipation: 'tightens grip on katana hilt',
+        execution: 'instantaneous horizontal slash',
+        settle: 'blade halts with rigid inertial damping',
+        audioFoley: 'sharp metallic ring of blade unsheathing, heavy rain roar',
+      },
+      physics: {
+        causalChain: 'blade splits water droplets in mid-air',
+        invariance: ['rigid blade geometry', 'anatomical stability'],
+      },
+    });
+    const result = compileKling(ir, embeddedPresetLibrary);
+    expect(result.target).toBe('kling');
+    expect(result.positivePrompt).toContain('1:');
+    expect(result.positivePrompt).toContain('2: instantaneous horizontal slash');
+    expect(result.positivePrompt).toContain('Dolly zoom');
+    expect(result.positivePrompt).toContain('AUDIO: sharp metallic ring of blade unsheathing, heavy rain roar.');
+    expect(result.positivePrompt).toContain('Invariance: rigid blade geometry, anatomical stability.');
+  });
+
+  test('compiles Wan 2.1 causal prose with 3-plane spatial depth and negative physics', () => {
+    const ir = PromptIRSchema.parse({
+      target: 'wan',
+      subject: 'cybernetic ninja',
+      action: 'leaping between skyscrapers',
+      environment: 'rainy neon city',
+      spatial: {
+        foreground: 'wet rooftop aerial antennas with sparks',
+        midground: 'ninja mid-flight',
+        background: 'distant mega-structures shrouded in fog',
+        rackFocus: 'shift focus from foreground antenna to leaping ninja',
+      },
+      physics: {
+        massAndInertia: 'heavy mechanical limbs compressing upon launch',
+        causalChain: 'roof gravel kicks outward upon launch under gravity',
+      },
+      kinematics: {
+        rig: 'fpv-drone',
+        primaryVector: 'high-speed forward chase',
+      },
+    });
+    const result = compileWan(ir, embeddedPresetLibrary);
+    expect(result.target).toBe('wan');
+    expect(result.positivePrompt).toContain('The scene is composed with distinct depth planes:');
+    expect(result.positivePrompt).toContain('in the foreground, wet rooftop aerial antennas with sparks');
+    expect(result.positivePrompt).toContain('Dynamic focus: shift focus from foreground antenna to leaping ninja');
+    expect(result.positivePrompt).toContain('Camera kinematics: on a fpv-drone rig');
+    expect(result.positivePrompt).toContain('Maintain physical consistency: no morphing, no rubberized physics');
+    expect(result.negativePrompt).toContain('morphing, melting, rubber physics');
+  });
+
+  test('compiles Veo 3.1 technical cinematographic optical specifications', () => {
+    const ir = PromptIRSchema.parse({
+      target: 'veo',
+      subject: 'lone astronaut',
+      action: 'surveying alien crater',
+      environment: 'desolate red moon at twilight',
+      optics: {
+        camera: 'arri-alexa-65',
+        lens: 'anamorphic-cinema-lens',
+        fStop: '2.8',
+        shotType: 'wide-shot',
+      },
+      kinematics: {
+        rig: 'technocrane',
+        primaryVector: 'sweeping slow crane down',
+        shutterAngle: '180-degree',
+      },
+      lighting: { setup: 'volumetric-lighting' },
+    });
+    const result = compileVeo(ir, embeddedPresetLibrary);
+    expect(result.target).toBe('veo');
+    expect(result.positivePrompt).toContain('Wide shot of lone astronaut surveying alien crater.');
+    expect(result.positivePrompt).toContain('Optical parameters: ARRI ALEXA 65, Anamorphic Cinema Lens, f/2.8, 180-degree shutter angle.');
+    expect(result.positivePrompt).toContain('Camera movement: Rig: technocrane, sweeping slow crane down.');
+    expect(result.positivePrompt).toContain('Lighting: Volumetric Lighting with visible light beams through haze.');
+  });
+
+  test('linter catches multi-axis camera conflicts (pan + tilt + zoom + orbit)', () => {
+    const ir = PromptIRSchema.parse({
+      target: 'kling',
+      subject: 'race car',
+      motion: { movement: 'orbit' },
+      kinematics: {
+        primaryVector: 'fast horizontal pan right',
+        secondaryDrift: 'steep tilt up and zoom',
+      },
+    });
+    const report = lintPromptIR(ir);
+    expect(report.valid).toBe(false);
+    expect(report.diagnostics.some((d) => d.code === 'MULTI_AXIS_CONFLICT')).toBe(true);
+  });
+
+  test('linter warns on violent action without physical grounding', () => {
+    const ir = PromptIRSchema.parse({
+      target: 'kling',
+      subject: 'two fighters',
+      action: 'brutal sword fight clash and strike',
+    });
+    const report = lintPromptIR(ir);
+    expect(report.diagnostics.some((d) => d.code === 'MISSING_INERTIA')).toBe(true);
+  });
+
+  test('compilePrompt top-level router routes to correct target', () => {
+    const ir = PromptIRSchema.parse({ target: 'wan', subject: 'drone flying' });
+    const res = compilePrompt(ir, embeddedPresetLibrary);
+    expect(res.target).toBe('wan');
+    expect(res.negativePrompt).toBeDefined();
+  });
   test('linter catches optical conflicts (fisheye + telephoto)', () => {
     const ir = PromptIRSchema.parse({
       subject: 'bird on wire',

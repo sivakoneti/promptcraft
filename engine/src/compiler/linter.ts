@@ -54,7 +54,55 @@ export function lintPromptIR(ir: PromptIR): LintReport {
     });
   }
 
-  // 4. Token budget estimation (approximation ~ 0.75 words per token)
+  // 4. Video-specific linting: Multi-axis camera conflict check
+  const motionMoves: string[] = [];
+  if (ir.motion?.movement) motionMoves.push(ir.motion.movement.toLowerCase());
+  if (ir.kinematics?.primaryVector) motionMoves.push(ir.kinematics.primaryVector.toLowerCase());
+  if (ir.kinematics?.secondaryDrift) motionMoves.push(ir.kinematics.secondaryDrift.toLowerCase());
+
+  const allMotionText = motionMoves.join(' ');
+  let axisCount = 0;
+  if (allMotionText.includes('pan') || allMotionText.includes('truck')) axisCount++;
+  if (allMotionText.includes('tilt') || allMotionText.includes('pedestal') || allMotionText.includes('crane')) axisCount++;
+  if (allMotionText.includes('dolly') || allMotionText.includes('zoom') || allMotionText.includes('push')) axisCount++;
+  if (allMotionText.includes('orbit') || allMotionText.includes('roll') || allMotionText.includes('arc')) axisCount++;
+
+  if (axisCount >= 3) {
+    diagnostics.push({
+      severity: 'error',
+      code: 'MULTI_AXIS_CONFLICT',
+      message: `Camera kinematics attempt ${axisCount} simultaneous vector axes (${motionMoves.join(', ')}). Stacking >= 3 simultaneous axes causes severe latent tearing and geometric distortion in video diffusion models.`,
+      field: 'kinematics',
+    });
+  }
+
+  // 5. Video-specific linting: Missing inertia on violent kinetic action
+  const isVideoTarget = ['kling', 'veo', 'sora', 'runway', 'wan'].includes(ir.target);
+  if (isVideoTarget) {
+    const actionText = [
+      ir.action,
+      ir.actionChoreography?.execution,
+    ].filter(Boolean).join(' ').toLowerCase();
+
+    const violentKeywords = ['fight', 'slash', 'crash', 'explode', 'slam', 'sprint', 'strike', 'punch', 'drift'];
+    const hasViolentAction = violentKeywords.some((w) => actionText.includes(w));
+    const hasPhysicsGrounding = Boolean(
+      ir.physics?.massAndInertia ||
+      ir.physics?.causalChain ||
+      (ir.physics?.forces && ir.physics.forces.length > 0)
+    );
+
+    if (hasViolentAction && !hasPhysicsGrounding) {
+      diagnostics.push({
+        severity: 'warning',
+        code: 'MISSING_INERTIA',
+        message: `Kinetic action detected ('${actionText}') without physical mass, forces, or causal impact specification. Video models risk generating weightless, rubberized, or ungrounded motion.`,
+        field: 'physics',
+      });
+    }
+  }
+
+  // 6. Token budget estimation (approximation ~ 0.75 words per token)
   const fullText = [
     ir.subject,
     ir.action,

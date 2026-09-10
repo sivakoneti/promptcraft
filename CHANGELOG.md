@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Added
 - Enhanced preset discovery with natural language suggest engine, full-text catalog indexing, complete anime mode formatting, and agent skill guide updates (SPC-003)
 - Shipped Frontier Prompt Compiler with model-specific target compilers (Midjourney, Flux, Kling, Veo), PromptIR schema, diagnostic optical linter, BM25 hybrid search, and native Model Context Protocol (MCP) stdio server (EPC-002)
+- Add frontier video prompt compilers with physics, spatial 3D blocking, camera kinematics, and target dialects (Kling 3.0, Runway Gen-4, Wan 2.1, Sora 2, Veo 3.1) (SPC-006)
 
 ## [1.1.0] - 2026-09-02
 

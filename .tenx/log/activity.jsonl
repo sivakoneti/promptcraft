@@ -20,3 +20,14 @@
 {"ts": "2026-09-03T04:35:31+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-005-T3: todo -> done", "ref": "SPC-005"}
 {"ts": "2026-09-03T04:35:37+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-005-T4: todo -> done", "ref": "SPC-005"}
 {"ts": "2026-09-03T04:35:51+00:00", "type": "progress", "actor": "agent", "message": "Completed EPC-002: Shipped PromptIR, target compilers (Midjourney, Flux, Kling, Veo), optical conflict linter, BM25 hybrid search, and native MCP stdio server.", "ref": "EPC-002"}
+{"ts": "2026-09-10T05:01:08+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-006-T1: in_progress -> done", "ref": "SPC-006"}
+{"ts": "2026-09-10T05:01:11+00:00", "type": "progress", "actor": "agent", "message": "Extended PromptIR with typed schemas for video physics, spatial 3D blocking, camera kinematics, anchor frames, and action choreography", "ref": "SPC-006"}
+{"ts": "2026-09-10T05:01:17+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-006-T2: todo -> in_progress", "ref": "SPC-006"}
+{"ts": "2026-09-10T05:01:37+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-006-T2: in_progress -> done", "ref": "SPC-006"}
+{"ts": "2026-09-10T05:01:40+00:00", "type": "progress", "actor": "agent", "message": "Implemented model-specific compilers for Kling, Runway, Wan, Sora, and Veo wiring existing preset catalogs", "ref": "SPC-006"}
+{"ts": "2026-09-10T05:01:45+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-006-T3: todo -> in_progress", "ref": "SPC-006"}
+{"ts": "2026-09-10T05:01:57+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-006-T3: in_progress -> done", "ref": "SPC-006"}
+{"ts": "2026-09-10T05:02:00+00:00", "type": "progress", "actor": "agent", "message": "Implemented video kinematic and physics linter rules (MULTI_AXIS_CONFLICT, MISSING_INERTIA)", "ref": "SPC-006"}
+{"ts": "2026-09-10T05:02:03+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-006-T4: todo -> in_progress", "ref": "SPC-006"}
+{"ts": "2026-09-10T05:02:46+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-006-T4: in_progress -> done", "ref": "SPC-006"}
+{"ts": "2026-09-10T05:02:50+00:00", "type": "progress", "actor": "agent", "message": "Updated MCP server and CLI to support all frontier video dimensions, dialects, and compilePrompt", "ref": "SPC-006"}
