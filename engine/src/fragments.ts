@@ -1,192 +1,34 @@
-/**
- * SPC-001 FR-002, FR-004, FR-006, FR-010: Per-fragment pure functions.
- * Each function takes only the fields it needs from PromptState + library lookups.
- * Templates are byte-identical to extraction/EXTRACTION.md §3.
- */
-
+/** Compatibility fragment helpers using the same semantics as full assembly. */
 import type { PromptState, PresetLibrary } from './state.js';
-
-// ─── Lookup helpers (inline per ts-no-tiny-functions rule) ─────────────────────
-
-const COMMON_ALIASES: Record<string, string> = {
-  'neon-lit': 'neon-lighting',
-  'neon': 'neon-lighting',
-  'neutral-lighting': 'soft-lighting',
-  'neutral': 'soft-lighting',
-  'anamorphic': 'anamorphic-cinema-lens',
-  'anamorphic-prime': 'anamorphic-cinema-lens',
-  'master-prime': 'anamorphic-cinema-lens',
-  'swirly-bokeh': 'helios-44-2-swirly-bokeh',
-  'close-up': 'close-up',
-  'close up': 'close-up',
-  'closeup': 'close-up',
-  'wide-shot': 'wide-angle',
-  'wide': 'wide-angle',
-  '70mm': 'kodak-vision3-imax',
-  'imax': 'kodak-vision3-imax',
-  '35mm': '35mm-film-camera',
-};
-export function lookupPromptValue(
-  library: PresetLibrary,
-  category: keyof Omit<PresetLibrary, 'version'>,
-  id: string,
-): string | null {
-  if (!id) return null;
-  const items = (library[category] || []) as Array<{ id: string; label: string; promptValue: string }>;
-  const normalized = id.trim().toLowerCase();
-
-  // 1. Exact ID
-  let match = items.find((e) => e.id.toLowerCase() === normalized);
-  if (match) return match.promptValue;
-
-  // 2. Common aliases
-  if (COMMON_ALIASES[normalized]) {
-    const aliasId = COMMON_ALIASES[normalized];
-    match = items.find((e) => e.id.toLowerCase() === aliasId);
-    if (match) return match.promptValue;
-  }
-
-  // 3. Slug match
-  const slug = normalized.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  match = items.find((e) => e.id.toLowerCase() === slug);
-  if (match) return match.promptValue;
-
-  // 4. Exact label match
-  match = items.find((e) => e.label.toLowerCase() === normalized);
-  if (match) return match.promptValue;
-
-  // 5. Prefix match
-  match = items.find((e) => e.id.toLowerCase().startsWith(slug) || e.label.toLowerCase().startsWith(normalized));
-  if (match) return match.promptValue;
-
-  return null;
+import { resolvePreset } from './compiler/catalog.js';
+import { resolveScene } from './compiler/scene.js';
+import { stateToIR } from './compiler/adapter.js';
+import { embeddedPresetLibrary } from './library-data.js';
+export function lookupPromptValue(library: PresetLibrary, category: keyof Omit<PresetLibrary, 'version'>, id: string): string | null {
+  return id?.trim() ? resolvePreset(library, category, id).value : null;
 }
-
-// ─── G2: Subject sentence (FR-002 piece #1) ────────────────────────────────────
-
 export function buildSubjectSentence(state: PromptState, library: PresetLibrary): string {
-  const genre = lookupPromptValue(library, 'genres', state.mode === 'photo' ? '' : '');
-  // Genre is only used in photo mode when explicitly set; for now we omit per source default
-  const shotValue = lookupPromptValue(library, 'shots', state.shotId);
-  const subject = state.subjectAction || 'a subject';
-  const envSuffix = state.environment ? `, set in ${state.environment}` : '';
-
-  if (state.showNewAnglePrompt && shotValue) {
-    // Narrative-angle variant (EXTRACTION.md §3 piece 1b)
-    const candidClause = state.candidShot
-      ? ', where the subject is unaware they are on camera'
-      : '';
-    return `A photographic image of a ${shotValue}${candidClause}, in this new angle what would the viewer see? Show us: ${subject}${envSuffix}.`;
-  }
-
-  // Standard photo mode
-  let shotClause = '';
-  if (shotValue) {
-    if (state.candidShot) {
-      shotClause = `a ${shotValue}, where the subject is unaware they are on camera, of `;
-    } else {
-      // Direction handling: directions map label -> prompt fragment
-      // For simplicity, direction is embedded in shot value or handled separately
-      shotClause = `a ${shotValue} of `;
-    }
-  }
-
-  const prefix = genre
-    ? `A photographic image in the style of ${genre} of`
-    : 'A photographic image of';
-
-  return `${prefix} ${shotClause}${subject}${envSuffix}.`;
+  return resolveScene(stateToIR(state), library).sections.subject.join(' ');
 }
-
-// ─── fs: Lighting/Mood (FR-002 piece #2) ────────────────────────────────────────
-
 export function buildLightingMood(state: PromptState, library: PresetLibrary): string {
-  const lighting = lookupPromptValue(library, 'lighting', state.lightingId);
-  const mood = state.mood || null;
-
-  if (lighting && mood) {
-    return `The scene is illuminated by ${lighting}, creating a ${mood} atmosphere.`;
-  }
-  if (lighting) {
-    return `The scene is illuminated by ${lighting}.`;
-  }
-  if (mood) {
-    return `A ${mood} atmosphere.`;
-  }
-  return '';
+  return resolveScene(stateToIR(state), library).sections.lighting.join(' ');
 }
-
-// ─── Dx: Camera gear (FR-004) ───────────────────────────────────────────────────
-
 export function buildCameraGear(state: PromptState, library: PresetLibrary): string {
-  const camera = lookupPromptValue(library, 'cameras', state.cameraId);
-  if (!camera) return '';
-
-  const focal = lookupPromptValue(library, 'focalLengths', '');
-  const lensRaw = lookupPromptValue(library, 'lenses', state.lensId);
-  const film = lookupPromptValue(library, 'filmStocks', state.filmId);
-
-  // Strip trailing ' lens' from lens name before fStop suffix per FR-004
-  let lensPart = '';
-  if (lensRaw) {
-    const stripped = lensRaw.replace(/\s+lens$/i, '');
-    lensPart = state.fStop ? `${stripped} f/${state.fStop} lens` : stripped;
-  }
-
-  const parts: string[] = [`Captured with the look of a ${camera}`];
-  if (focal || lensPart) {
-    const gearDetail = [focal, lensPart].filter(Boolean).join(' ');
-    parts.push(gearDetail);
-  }
-  if (film) {
-    parts.push(`${film} film`);
-  }
-
-  return parts.join(', ') + '.';
+  return resolveScene(stateToIR(state), library).sections.optics.join(' ');
 }
-
-// ─── Ox: Photographer style (FR-010) ────────────────────────────────────────────
-
 export function buildPhotographerStyle(state: PromptState, library: PresetLibrary): string {
-  const pv = lookupPromptValue(library, 'photographers', state.photographerId);
-  if (!pv) return '';
-  // promptValue already contains "In the style of photographer {name}, {style}."
-  return pv;
+  return lookupPromptValue(library, 'photographers', state.photographerId) || '';
 }
-
-// ─── Lx: Movie look (FR-010) ────────────────────────────────────────────────────
-
 export function buildMovieLook(state: PromptState, library: PresetLibrary): string {
-  const pv = lookupPromptValue(library, 'movieLooks', state.movieLookId);
-  if (!pv) return '';
-  // promptValue already contains "With the visual aesthetic of the movie {name} ..."
-  return pv;
+  return lookupPromptValue(library, 'movieLooks', state.movieLookId) || '';
 }
-
-// ─── Kx: Filters (FR-002 piece #6) ──────────────────────────────────────────────
-
 export function buildFilters(state: PromptState, library: PresetLibrary): string {
-  if (state.filters.length === 0) return '';
-  const names = state.filters
-    .map((fid) => lookupPromptValue(library, 'filters', fid))
-    .filter(Boolean);
-  if (names.length === 0) return '';
-  return `Applied effect(s): ${names.join(', ')}.`;
+  return resolveScene(stateToIR(state), library).sections.style.find(s => s.startsWith('Applied effect(s):')) || '';
 }
-
-// ─── Face guard (FR-002 piece #7, fixed) ────────────────────────────────────────
-
-export const FACE_GUARD = "Don't blur faces randomly.";
-
-// ─── zr: Aspect ratio (FR-002 piece #8) ─────────────────────────────────────────
-
 export function buildAspectRatio(state: PromptState): string {
   if (!state.aspectRatio) return '';
-  return `The image should be in a ${state.aspectRatio} format.`;
+  const ratio = resolveScene(stateToIR(state), embeddedPresetLibrary).ir.aspectRatio;
+  return `The ${state.mode === 'video' ? 'video' : 'image'} should be in a ${ratio} format.`;
 }
-
-// ─── noText guard (FR-006) ──────────────────────────────────────────────────────
-
-export const NO_TEXT_GUARD =
-  'Generate the image with no subtitles, captions, or text overlays.';
-
+export const FACE_GUARD = "Don't blur faces randomly.";
+export const NO_TEXT_GUARD = 'Generate the image with no subtitles, captions, or text overlays.';

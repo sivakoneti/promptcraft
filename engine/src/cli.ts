@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { SCENE_CAPABILITIES } from './compiler/capabilities.js';
 /**
  * Promptcraft CLI engine for AI Agents and Human Operators
  *
@@ -15,7 +16,7 @@
  */
 
 import { readFileSync, existsSync } from 'node:fs';
-import { join, dirname } from 'node:path';
+import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   createDefaultState,
@@ -25,11 +26,13 @@ import {
   type PromptMode,
   type BasePreset,
 } from './state.js';
-import { assemble, assemblePhoto, assembleAnime, assembleEdit } from './assemble.js';
+import { assembleDetailed } from './assemble.js';
+import { normalizeState, stateToIR, PromptStateInputSchema } from './compiler/adapter.js';
+import { promptIRJsonSchema, promptStateJsonSchema } from './compiler/discovery.js';
+import { TARGET_CAPABILITIES } from './compiler/render.js';
+import { ReferenceOptionsSchema } from './compiler/ir.js';
 import {
-  assembleVideo,
   buildDirectorTimeline,
-  createDefaultVideoState,
   VIDEO_MOVEMENTS,
   type VideoState,
   type DirectorShot,
@@ -38,8 +41,8 @@ import { CINEMATIC_CAMERA_MOVEMENTS, getCinematicMovement } from '../library/cin
 import { resolveReferences, type ReferenceSlotInput } from './references.js';
 import { sync } from './sync.js';
 import { embeddedPresetLibrary } from './library-data.js';
-import { PromptIRSchema } from './compiler/ir.js';
-import { compilePrompt, compileMidjourney, compileFlux, compileVideo } from './compiler/compilers.js';
+import { PromptIRSchema, type PromptIR } from './compiler/ir.js';
+import { compilePrompt } from './compiler/compilers.js';
 import { lintPromptIR } from './compiler/linter.js';
 import { HybridSearchEngine } from './search/hybrid.js';
 import { McpStdioServer } from './mcp/server.js';
@@ -51,7 +54,7 @@ function getPresetLibrary(): PresetLibrary {
   if (existsSync(localPath)) {
     try {
       const data = JSON.parse(readFileSync(localPath, 'utf-8'));
-      return data as PresetLibrary;
+      return validateLibrary(data);
     } catch {
       return embeddedPresetLibrary;
     }
@@ -85,7 +88,10 @@ CORE COMMANDS:
   anime [options]               Assemble anime/western animation prompt
   edit [options]                Assemble edit/in-painting prompt
   video [options]               Assemble video prompt with camera movement & autofill
-  director [options]            Build Kling director multi-shot timeline
+  director [options]            Build a validated Director multi-shot timeline
+  compile [options]             Compile PromptIR JSON or flags to a target dialect
+  lint [options]                Check emitted text, presets and scene contradictions
+  mcp                           Serve tools over MCP stdio
   references [options]          Resolve reference slots with category priority pruning
   sync [options]                Re-sync modified prompt fragments in-place
   catalog [subcommand]          Explore available catalogs (shots, lighting, cameras, film, anime, movements...)
@@ -94,6 +100,15 @@ CORE COMMANDS:
   help                          Show this help message
 
 ASSEMBLE FLAGS:
+  --target <name>               Target dialect (see capabilities)
+  --focal-length <id>           Focal-length preset or custom value
+  --direction <id>              Subject view direction preset
+  --genre <id>                  Image genre preset
+  --style-mode <name>           photo|anime|western-animation|illustration|cinematic
+  --art-style <text>            Custom art direction
+  --negative <text>             Elements to exclude
+  --seed <integer>              Seed hint returned in parameters
+  --quality <number>            Midjourney quality flag; diagnosed on other targets
   --mode <photo|anime|edit|video>
   --subject <text>              Subject description
   --action <text>               Subject action / primary action
@@ -101,15 +116,15 @@ ASSEMBLE FLAGS:
   --mood <text>                 Mood / atmosphere description
   --shot <id>                   Shot ID (e.g. bird-s-eye-view, close-up, wide-shot...)
   --lighting <id>               Lighting ID (e.g. golden-hour, dramatic-cinematic, neon-lit...)
-  --camera <id>                 Camera ID (e.g. arri-alexa-65, red-v-raptor-8k, imax-70mm...)
-  --lens <id>                   Lens ID (e.g. anamorphic-prime, master-prime, vintage-warm...)
+  --camera <id>                 Camera ID (e.g. arri-alexa-65, red-digital-cinema-camera...)
+  --lens <id>                   Lens ID (e.g. anamorphic-cinema-lens, helios-44-2-swirly-bokeh...)
   --f-stop <value>              f-stop value (e.g. f/1.4, f/2.8)
   --film <id>                   Film stock ID (e.g. kodak-vision3-500t, fujifilm-eterna...)
   --filter <ids...>             Filter IDs (comma-separated or multiple --filter flags)
   --movie-look <id>             Movie look ID (e.g. blade-runner-2049, the-matrix, dune...)
   --photographer <id>           Photographer style ID (e.g. gregory-crewdson, annie-leibovitz...)
-  --anime-genre <id>            Anime genre ID (e.g. cyberpunk, shonen, studio-ghibli...)
-  --anime-show <id>             Anime show style ID (e.g. evangelion, demon-slayer...)
+  --anime-genre <id>            Anime genre ID (e.g. 3d-anime, cyberpunk...)
+  --anime-show <id>             Anime show style ID (e.g. neon-revelation, demon-hunter...)
   --western-style <id>          Western animation style ID (e.g. pixar-3d, spider-verse...)
   --aspect <ratio>              Aspect ratio (default: 16:9)
   --no-text                     Add no-text / textless guard
@@ -132,7 +147,7 @@ EXAMPLES:
   promptcraft photo --subject "cyberpunk detective in rain" --shot close-up --lighting neon-lit --movie-look blade-runner-2049
 
   # Assemble anime prompt:
-  promptcraft anime --subject "sorcerer casting blue flame" --anime-genre cyberpunk --anime-show evangelion
+  promptcraft anime --subject "sorcerer casting blue flame" --anime-genre cyberpunk --anime-show neon-revelation
 
   # Assemble video prompt:
   promptcraft video --subject "sports car drifting" --movement "Orbit" --env "neon city wet asphalt"
@@ -149,6 +164,8 @@ EXAMPLES:
 export function outputResult(result: CliOutput, raw = false): void {
   if (raw && result.status === 'ok') {
     if (typeof result.prompt === 'string') {
+      const diagnostics = (result.data as { diagnostics?: unknown[] } | undefined)?.diagnostics;
+      if (diagnostics?.length) process.stderr.write(JSON.stringify({ diagnostics }) + '\n');
       process.stdout.write(result.prompt + '\n');
       return;
     }
@@ -201,35 +218,28 @@ function parseCliArgs(args: string[]): {
     i = 1;
   }
 
+  const booleanFlags = new Set(['raw', 'no-text', 'candid', 'new-angle', 'director-mode']);
+  const valueFlags = new Set(['mode', 'subject', 'action', 'env', 'mood', 'shot', 'lighting', 'camera', 'lens', 'f-stop', 'film', 'filter', 'movie-look', 'photographer', 'anime-genre', 'anime-show', 'western-style', 'aspect', 'video-prompt', 'movement', 'state', 'target', 'focal-length', 'direction', 'genre', 'style-mode', 'art-style', 'negative', 'seed', 'quality', 'note', 'prompt', 'duration', 'prev', 'prev-text', 'next', 'next-text', 'category', 'query', 'intent']);
   while (i < args.length) {
     const arg = args[i];
     if (arg.startsWith('--')) {
       const key = arg.slice(2);
       const next = args[i + 1];
-      if (next !== undefined && !next.startsWith('--')) {
-        if (flags[key] !== undefined) {
-          const current = flags[key];
-          if (Array.isArray(current)) {
-            current.push(next);
-          } else if (typeof current === 'string') {
-            flags[key] = [current, next];
-          }
-        } else {
-          flags[key] = next;
-        }
-        i += 2;
+      if (booleanFlags.has(key) || (key === 'json' && (!next || !next.trim().startsWith('{')))) {
+        flags[key] = next === 'false' ? false : true;
+        i += next === 'true' || next === 'false' ? 2 : 1;
       } else {
-        flags[key] = true;
-        i += 1;
+        if (!valueFlags.has(key) && key !== 'json') throw new Error(`Unknown option --${key}`);
+        if (next === undefined || next.startsWith('--')) throw new Error(`Option --${key} requires a value`);
+        if (flags[key] !== undefined) {
+          if (key !== 'filter') throw new Error(`Option --${key} may only be supplied once`);
+          const current = flags[key];
+          flags[key] = Array.isArray(current) ? [...current, next] : [String(current), next];
+        } else flags[key] = next;
+        i += 2;
       }
-    } else if (arg.startsWith('-')) {
-      const key = arg.slice(1);
-      flags[key] = true;
-      i += 1;
-    } else {
-      positionals.push(arg);
-      i += 1;
-    }
+    } else if (arg.startsWith('-')) throw new Error(`Unknown option ${arg}`);
+    else { positionals.push(arg); i += 1; }
   }
 
   return { command, flags, positionals };
@@ -254,11 +264,16 @@ export function handleCapabilities(): CliOutput {
     status: 'ok',
     action: 'capabilities',
     data: {
-      version: '1.0.0',
+      version: '1.2.0',
+      schemas: { promptIR: promptIRJsonSchema, state: promptStateJsonSchema },
+      targets: TARGET_CAPABILITIES, sceneCapabilities: SCENE_CAPABILITIES,
       actions: [
+        { name: 'compile', description: 'Compile PromptIR with automatic diagnostics', inputSchema: promptIRJsonSchema },
+        { name: 'lint', description: 'Lint the emitted prompt after preset expansion', inputSchema: promptIRJsonSchema },
         {
           name: 'assemble',
           description: 'Assemble photographic, anime, edit, or video prompts deterministically',
+          inputSchema: promptStateJsonSchema,
           parameters: {
             mode: 'photo | anime | edit | video',
             subject: 'string',
@@ -286,7 +301,8 @@ export function handleCapabilities(): CliOutput {
         },
         {
           name: 'assemble_video',
-          description: 'Assemble video prompts with camera movements, autofill, and reference slots',
+          description: 'Assemble video prompts with presets, spatial controls and Director inheritance',
+          inputSchema: promptStateJsonSchema,
           parameters: {
             videoPrompt: 'string',
             movementLabel: 'movement label from VIDEO_MOVEMENTS (26 movements)',
@@ -302,7 +318,7 @@ export function handleCapabilities(): CliOutput {
         },
         {
           name: 'director_timeline',
-          description: 'Construct Kling-compliant multi-shot timeline prompt and structured normalized shots',
+          description: 'Construct a coherent timeline using configurable engine limits; accepts shared state or ir and per-shot overrides',
           parameters: {
             shots: 'array of { shotId?, note: string, durationHint?: string }',
             fallbackDuration: 'optional string duration',
@@ -626,16 +642,7 @@ export function handleSuggest(intent: string): CliOutput {
   };
 
   const recipe: Record<string, { id: string; label: string; score: number }> = {};
-  const targetCategories = [
-    'shots',
-    'lighting',
-    'cameras',
-    'lenses',
-    'filmStocks',
-    'movieLooks',
-    'animeShowStyles',
-    'westernAnimationStyles',
-  ];
+  const targetCategories = Object.keys(library).filter(key => key !== 'version');
 
   for (const cat of targetCategories) {
     const items = (library[cat as keyof PresetLibrary] || []) as Array<BasePreset & { pre?: string; post?: string }>;
@@ -683,88 +690,37 @@ export function handleSuggest(intent: string): CliOutput {
 }
 
 export function executeAction(action: string, payload: Record<string, unknown>): CliOutput {
+  try { return executeValidatedAction(action, payload); }
+  catch (err) { return { status: 'error', action, error: err instanceof Error ? err.message : String(err) }; }
+}
+function executeValidatedAction(action: string, payload: Record<string, unknown>): CliOutput {
   switch (action) {
     case 'assemble':
     case 'assemble_prompt':
     case 'photo':
     case 'anime':
-    case 'edit': {
-      const mode = (payload.mode as PromptMode) || (action === 'anime' ? 'anime' : action === 'edit' ? 'edit' : 'photo');
-      const stateObj = (payload.state || payload) as Partial<PromptState>;
-      const subjectText = typeof stateObj.subjectAction === 'string' && stateObj.subjectAction.length > 0
-        ? stateObj.subjectAction
-        : typeof stateObj.subject === 'string' && stateObj.subject.length > 0
-          ? stateObj.subject
-          : typeof payload.subjectAction === 'string' && payload.subjectAction.length > 0
-            ? payload.subjectAction
-            : typeof payload.subject === 'string' && payload.subject.length > 0
-              ? payload.subject
-              : '';
-
-      const state: PromptState = {
-        ...createDefaultState(),
-        ...stateObj,
-        subject: subjectText,
-        subjectAction: subjectText,
-        mode,
-      };
-
-      let prompt = '';
-      if (mode === 'photo') {
-        prompt = assemblePhoto(state, library);
-      } else if (mode === 'anime') {
-        prompt = assembleAnime(state, library);
-      } else if (mode === 'edit') {
-        prompt = assembleEdit(state, library);
-      } else {
-        prompt = assemble(state, library);
-      }
-
-      return {
-        status: 'ok',
-        action: 'assemble',
-        prompt,
-        data: { prompt, state },
-      };
-    }
-
+    case 'edit':
     case 'video':
     case 'assemble_video': {
-      const stateObj = (payload.videoState || payload.state || payload) as Partial<VideoState>;
-      const subjectText = typeof stateObj.subjectAction === 'string' && stateObj.subjectAction.length > 0
-        ? stateObj.subjectAction
-        : typeof stateObj.subject === 'string' && stateObj.subject.length > 0
-          ? stateObj.subject
-          : typeof payload.subjectAction === 'string' && payload.subjectAction.length > 0
-            ? payload.subjectAction
-            : typeof payload.subject === 'string' && payload.subject.length > 0
-              ? payload.subject
-              : '';
-
-      const videoState: VideoState = {
-        ...createDefaultVideoState(),
-        ...stateObj,
-        subject: subjectText,
-        subjectAction: subjectText,
-        mode: 'video',
-      };
-      const options = (payload.options || {}) as Record<string, unknown>;
-      const prompt = assembleVideo(videoState, library, options);
-      return {
-        status: 'ok',
-        action: 'assemble_video',
-        prompt,
-        data: { prompt, videoState },
-      };
+      const { action: dispatchAction, raw, options, state, videoState, ...flat } = payload;
+      const source = (videoState || state || flat) as Record<string, unknown>;
+      const selectedMode = action === 'video' || action === 'assemble_video' ? 'video' : ['photo', 'anime', 'edit'].includes(action) ? action : payload.mode || source.mode || 'photo';
+      const normalized = normalizeState({ ...source, mode: selectedMode });
+      const compiled = options ? compilePrompt({ ...stateToIR(normalized), referenceOptions: { ...normalized.referenceOptions, ...ReferenceOptionsSchema.parse(options) } }, library) : assembleDetailed(normalized, library);
+      return { status: compiled.valid ? 'ok' : 'error', action: selectedMode === 'video' ? 'assemble_video' : 'assemble', prompt: compiled.positivePrompt,
+        ...(compiled.valid ? {} : { error: 'Prompt contains validation errors; inspect data.diagnostics.' }),
+        data: { ...compiled, prompt: compiled.positivePrompt, state: normalized, videoState: selectedMode === 'video' ? normalized : undefined } };
     }
 
     case 'director':
     case 'director_timeline': {
       const shots = (payload.shots || payload.directorShots || []) as ReadonlyArray<DirectorShot>;
       const fallbackDuration = payload.fallbackDuration as string | undefined;
-      const res = buildDirectorTimeline(shots, fallbackDuration);
+      const scene = payload.ir ? PromptIRSchema.parse(payload.ir) : payload.state ? stateToIR(normalizeState({ ...(payload.state as Record<string, unknown>), mode: 'video' })) : undefined;
+      const res = buildDirectorTimeline(shots, fallbackDuration, { scene, library, timelineOptions: payload.timelineOptions as PromptIR['timelineOptions'] });
       return {
-        status: 'ok',
+        status: res.diagnostics.some(d => d.severity === 'error') ? 'error' : 'ok',
+        ...(res.diagnostics.some(d => d.severity === 'error') ? { error: 'Director scene contains validation errors; inspect data.diagnostics.' } : {}),
         action: 'director_timeline',
         prompt: res.timelinePrompt,
         data: res,
@@ -821,9 +777,10 @@ export function executeAction(action: string, payload: Record<string, unknown>):
 
     case 'compile': {
       try {
-        const ir = PromptIRSchema.parse(payload.ir || payload);
+        const { action: dispatcher, raw, ...flat } = payload;
+        const ir = PromptIRSchema.parse(payload.ir || { ...flat, ...(dispatcher && !['compile', 'lint'].includes(String(dispatcher)) ? { action: dispatcher } : {}) });
         const res = compilePrompt(ir, library);
-        return { status: 'ok', action: 'compile', prompt: res.positivePrompt, data: res };
+        return { status: res.valid ? 'ok' : 'error', action: 'compile', prompt: res.positivePrompt, data: res, ...(res.valid ? {} : { error: 'Prompt contains validation errors; inspect data.diagnostics.' }) };
       } catch (err: unknown) {
         return { status: 'error', action: 'compile', error: err instanceof Error ? err.message : String(err) };
       }
@@ -831,8 +788,9 @@ export function executeAction(action: string, payload: Record<string, unknown>):
 
     case 'lint': {
       try {
-        const ir = PromptIRSchema.parse(payload.ir || payload);
-        const report = lintPromptIR(ir);
+        const { action: dispatcher, raw, ...flat } = payload;
+        const ir = PromptIRSchema.parse(payload.ir || { ...flat, ...(dispatcher && !['compile', 'lint'].includes(String(dispatcher)) ? { action: dispatcher } : {}) });
+        const report = lintPromptIR(ir, library);
         return { status: 'ok', action: 'lint', data: report };
       } catch (err: unknown) {
         return { status: 'error', action: 'lint', error: err instanceof Error ? err.message : String(err) };
@@ -855,6 +813,10 @@ export function executeAction(action: string, payload: Record<string, unknown>):
           const validated = validateLibrary(payload.library || payload.data);
           return { status: 'ok', action: 'validate', data: { valid: true, version: validated.version } };
         }
+        const { action: _, type: ignored, ...flat } = payload;
+        if (type === 'ir') PromptIRSchema.parse(payload.ir || payload.data || flat);
+        else if (type === 'state') PromptStateInputSchema.parse(payload.state || payload.data || flat);
+        else throw new Error(`Unknown validation type: ${type}`);
         return { status: 'ok', action: 'validate', data: { valid: true } };
       } catch (err: unknown) {
         return {
@@ -932,7 +894,7 @@ export async function main(): Promise<void> {
   if (payloadStr.trim()) {
     try {
       const input = JSON.parse(payloadStr) as Record<string, unknown>;
-      const action = (input.action as string | undefined) || (command !== 'assemble' ? command : 'assemble');
+      const action = command !== 'assemble' ? command : (input.action as string | undefined) || 'assemble';
       const raw = Boolean(flags.raw || input.raw);
       const res = executeAction(action, input);
       outputResult(res, raw);
@@ -962,15 +924,7 @@ export async function main(): Promise<void> {
     const nextText = String(flags.next || flags['next-text'] || positionals[1] || '');
     const res = executeAction('sync', { prevText, nextText });
     outputResult(res, raw);
-    return;
-  }
-
-  if (command === 'director') {
-    const shotNote = String(flags.note || flags.prompt || positionals.join(' ') || '');
-    const durationHint = typeof flags.duration === 'string' ? flags.duration : '5';
-    const shots: DirectorShot[] = shotNote ? [{ note: shotNote, durationHint }] : [];
-    const res = executeAction('director_timeline', { shots });
-    outputResult(res, raw);
+    if (res.status === 'error') process.exitCode = 1;
     return;
   }
 
@@ -980,26 +934,17 @@ export async function main(): Promise<void> {
       ? flags.action
       : (positionals.join(' ') || '');
 
-  if (mode === 'video' || command === 'video') {
-    const videoState: Partial<VideoState> = {
-      subject: subjectVal,
-      subjectAction: subjectVal,
-      environment: typeof flags.env === 'string' ? flags.env : '',
-      mood: typeof flags.mood === 'string' ? flags.mood : '',
-      videoPrompt: typeof flags['video-prompt'] === 'string' ? flags['video-prompt'] : (positionals.join(' ') || ''),
-      movementLabel: typeof flags.movement === 'string' ? flags.movement : '',
-      directorMode: Boolean(flags['director-mode']),
-      aspectRatio: typeof flags.aspect === 'string' ? flags.aspect : '16:9',
-      directorShots: [],
-      references: [],
-    };
-    const res = executeAction('assemble_video', { videoState });
-    outputResult(res, raw);
-    return;
-  }
-
   const promptState: Partial<PromptState> = {
     mode,
+    target: typeof flags.target === 'string' ? flags.target as PromptIR['target'] : undefined,
+    styleMode: typeof flags['style-mode'] === 'string' ? flags['style-mode'] as NonNullable<PromptIR['style']>['mode'] : undefined,
+    artStyle: typeof flags['art-style'] === 'string' ? flags['art-style'] : '',
+    negativePrompt: typeof flags.negative === 'string' ? flags.negative : '',
+    seed: typeof flags.seed === 'string' ? Number(flags.seed) : undefined,
+    quality: typeof flags.quality === 'string' ? Number(flags.quality) : undefined,
+    focalLengthId: typeof flags['focal-length'] === 'string' ? flags['focal-length'] : '',
+    directionId: typeof flags.direction === 'string' ? flags.direction : '',
+    genreId: typeof flags.genre === 'string' ? flags.genre : '',
     subject: subjectVal,
     subjectAction: subjectVal,
     environment: typeof flags.env === 'string' ? flags.env : '',
@@ -1023,10 +968,52 @@ export async function main(): Promise<void> {
     references: [],
   };
 
+  if (command === 'director' || command === 'director_timeline') {
+    const shotNote = String(flags.note || flags.prompt || positionals.join(' ') || '');
+    const durationHint = typeof flags.duration === 'string' ? flags.duration : '5';
+    const shots: DirectorShot[] = shotNote ? [{ note: shotNote, durationHint }] : [];
+    const res = executeAction('director_timeline', { shots, state: { ...promptState, mode: 'video', subject: typeof flags.subject === 'string' ? flags.subject : '', subjectAction: typeof flags.subject === 'string' ? flags.subject : '' } });
+    outputResult(res, raw);
+    if (res.status === 'error') process.exitCode = 1;
+    return;
+  }
+
+  if (command === 'compile' || command === 'lint') {
+    const ir = stateToIR(normalizeState({ ...promptState, target: typeof flags.target === 'string' ? flags.target : 'generic', mode: flags.mode || (['kling', 'veo', 'sora', 'runway', 'wan'].includes(String(flags.target)) ? 'video' : mode),
+      movementLabel: typeof flags.movement === 'string' ? flags.movement : '',
+    }));
+    if (typeof flags.action === 'string' && flags.subject) ir.action = flags.action;
+    const res = executeAction(command, { ir });
+    outputResult(res, raw);
+    if (res.status === 'error') process.exitCode = 1;
+    return;
+  }
+
+  if (mode === 'video' || command === 'video' || command === 'assemble_video') {
+    const videoState: Partial<VideoState> = {
+      ...promptState,
+      subject: subjectVal,
+      subjectAction: subjectVal,
+      environment: typeof flags.env === 'string' ? flags.env : '',
+      mood: typeof flags.mood === 'string' ? flags.mood : '',
+      videoPrompt: typeof flags['video-prompt'] === 'string' ? flags['video-prompt'] : (positionals.join(' ') || ''),
+      movementLabel: typeof flags.movement === 'string' ? flags.movement : '',
+      directorMode: Boolean(flags['director-mode']),
+      aspectRatio: typeof flags.aspect === 'string' ? flags.aspect : '16:9',
+      directorShots: [],
+      references: [],
+    };
+    const res = executeAction('assemble_video', { videoState });
+    outputResult(res, raw);
+    if (res.status === 'error') process.exitCode = 1;
+    return;
+  }
+
   const res = executeAction(command === 'assemble' ? 'assemble' : command, { state: promptState, mode });
   outputResult(res, raw);
+  if (res.status === 'error') process.exitCode = 1;
 }
 
-if (import.meta.main || process.argv[1]?.endsWith('cli.ts') || process.argv[1]?.endsWith('promptcraft')) {
-  main();
+if (import.meta.main || (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url))) {
+  main().catch(err => { outputResult({ status: 'error', error: err instanceof Error ? err.message : String(err) }); process.exitCode = 1; });
 }

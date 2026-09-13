@@ -7,10 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-09-13
+
 ### Added
-- Enhanced preset discovery with natural language suggest engine, full-text catalog indexing, complete anime mode formatting, and agent skill guide updates (SPC-003)
-- Shipped Frontier Prompt Compiler with model-specific target compilers (Midjourney, Flux, Kling, Veo), PromptIR schema, diagnostic optical linter, BM25 hybrid search, and native Model Context Protocol (MCP) stdio server (EPC-002)
-- Add frontier video prompt compilers with physics, spatial 3D blocking, camera kinematics, and target dialects (Kling 3.0, Runway Gen-4, Wan 2.1, Sora 2, Veo 3.1) (SPC-006)
+- Unified prompt assembly across modes (`photo`, `anime`, `edit`, `video`) and targets using a shared normalized scene representation (SPC-007, EPC-004).
+- Complete resolution of all 15 preset catalog categories with exact ID, label, and unambiguous alias matching.
+- Full video spatial depth (`foreground`, `midground`, `background`, `trajectory`, `rackFocus`), physics, kinematics, anchoring, and 3-beat action timeline preservation across all supported video targets (Kling, Veo, Sora, Runway, Wan, generic).
+- Director mode timeline inheritance with per-shot overrides, coherent timeline math (`duration = sum(shots)`), and explicit dropped shot diagnostics.
+- Target identity preservation and dialect compiler routing without silent substitutions.
+- Automatic post-expansion linting and capability diagnostics.
+- Multi-shot reference resolution and tracking (`referenceResolution` and `shotReferences`).
+- Strict JSON Schema parity across CLI flags, stdin IPC, and native MCP server tools.
+- Build verification test suite (`engine/scripts/verify-builds.mjs`) for standalone executable and Node bundles outside the repository.
+- Expanded automated test suite to 364 tests and 12,472 assertions.
+- Shipped Frontier Prompt Compiler with model-specific target compilers (Midjourney, Flux, Kling, Veo), PromptIR schema, diagnostic optical linter, BM25 hybrid search, and native Model Context Protocol (MCP) stdio server (EPC-002).
+- Added frontier video prompt compilers with physics, spatial 3D blocking, camera kinematics, and target dialects (Kling 3.0, Runway Gen-4, Wan 2.1, Sora 2, Veo 3.1) (SPC-006).
+- Enhanced preset discovery with natural language suggest engine, full-text catalog indexing, complete anime mode formatting, and agent skill guide updates (SPC-003).
 
 ## [1.1.0] - 2026-09-02
 

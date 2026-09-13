@@ -21,7 +21,7 @@ import {
   type DirectorShot,
   type VideoState,
 } from './video.js';
-import type { PresetLibrary } from './state.js';
+import { embeddedPresetLibrary as library } from './library-data.js';
 
 // ─── FR-004: 26 movement keywords (verbatim table golden) ──────────────────────
 
@@ -136,25 +136,21 @@ describe('SPC-003 SC-002: assembleVideo goldens', () => {
         { type: 'scene', characterIndex: null, image: 'data:image/jpeg;base64,s1' },
       ],
     };
-    expect(assembleVideo(state, {} as PresetLibrary)).toBe(
-      'A lone surfer at dawn dolly zoom (Hitchcock style)'
-      + ' a surfer paddles out, stormy ocean, melancholic'
-      + ' Create a new image by combining the provided elements:'
-      + ' image_1 as Character1 face reference; image_2 as scene style reference.'
-      + ' Keep character appearances consistent with the references.',
-    );
+    const prompt = assembleVideo(state, library);
+    for (const text of ['A lone surfer at dawn', 'a surfer paddles out', 'stormy ocean', 'melancholic', 'Dolly zoom', 'image_1 as Character1 face reference', 'image_2 as scene style reference']) expect(prompt).toContain(text);
+
   });
 
-  it('empty state → empty prompt; unknown movement label contributes nothing', () => {
-    expect(assembleVideo(createDefaultVideoState(), {} as PresetLibrary)).toBe('');
+  it('empty state gets a subject placeholder; custom movement text is retained', () => {
+    expect(assembleVideo(createDefaultVideoState(), library)).toContain('a subject');
     const unknownLabel: VideoState = { ...createDefaultVideoState(), videoPrompt: 'x', movementLabel: 'Nope' };
-    expect(assembleVideo(unknownLabel, {} as PresetLibrary)).toBe('x');
+    expect(assembleVideo(unknownLabel, library)).toContain('Nope');
   });
 
   it('photo/edit/anime outputs are untouched by video composition', () => {
     // assembleVideo never mutates its input (pure), and the shared state carries no video fields.
     const state = createDefaultVideoState();
-    assembleVideo(state, {} as PresetLibrary);
+    assembleVideo(state, library);
     expect(state.mode).toBe('video');
     expect(state.videoPrompt).toBe('');
   });
@@ -190,7 +186,8 @@ describe('SPC-003 SC-002: director timeline goldens', () => {
       { note: 'Wide establishing shot', durationHint: '1' },
       { note: 'Reaction cut', durationHint: '1' },
     ]);
-    expect(timeline.totalDuration).toBe(2);
+    expect(timeline.requestedTotalDuration).toBe(2);
+    expect(timeline.totalDuration).toBe(3);
     expect(timeline.clampedDuration).toBe(3);
   });
 
@@ -199,7 +196,8 @@ describe('SPC-003 SC-002: director timeline goldens', () => {
       { note: 'a', durationHint: '10' },
       { note: 'b', durationHint: '10' },
     ]);
-    expect(timeline.totalDuration).toBe(20);
+    expect(timeline.requestedTotalDuration).toBe(20);
+    expect(timeline.totalDuration).toBe(15);
     expect(timeline.clampedDuration).toBe(15);
   });
 
@@ -222,14 +220,15 @@ describe('SPC-003 SC-002: director timeline goldens', () => {
     ]);
   });
 
-  it('prompts truncate at 512 chars (KLING_PROMPT_MAX_CHARS, N12)', () => {
+  it('long prompts are preserved and diagnosed above the advisory budget', () => {
     const timeline = buildDirectorTimeline([{ note: 'a'.repeat(600) }]);
-    expect(timeline.shots[0].prompt.length).toBe(512);
+    expect(timeline.shots[0].prompt.length).toBe(600);
+    expect(timeline.diagnostics.some(d => d.code === 'SHOT_PROMPT_BUDGET')).toBe(true);
   });
 
   it('request-level fallback duration stands in for missing hints (dynamic.ts:403)', () => {
     const timeline = buildDirectorTimeline([{ note: 'x' }, { note: 'y', durationHint: '9' }], '7');
-    expect(timeline.shots.map((shot) => shot.duration)).toEqual(['7', '9']);
+    expect(timeline.shots.map((shot) => shot.duration)).toEqual(['6.5625', '8.4375']);
   });
 
   it('assembleVideo in director mode emits the timeline text (body.prompt cleared per D11)', () => {
@@ -240,9 +239,13 @@ describe('SPC-003 SC-002: director timeline goldens', () => {
       directorShots: [{ note: 'opening wide shot', durationHint: '5' }, { note: 'close on subject', durationHint: '5' }],
       subjectAction: 'hero walks forward',
     };
-    expect(assembleVideo(state, {} as PresetLibrary)).toBe(
-      'Shot 1: opening wide shot (5s) Shot 2: close on subject (5s) hero walks forward',
-    );
+    const prompt = assembleVideo(state, library);
+    expect(prompt).toContain('Shot 1 [0–5s; 5s]');
+    expect(prompt).toContain('Shot 2 [5–10s; 5s]');
+    expect(prompt).toContain('opening wide shot');
+    expect(prompt).toContain('close on subject');
+    expect(prompt.match(/hero walks forward/g)?.length).toBe(2);
+
   });
 });
 

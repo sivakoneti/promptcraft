@@ -3,7 +3,8 @@
  * Pure module — no DOM, no Chrome APIs, no network.
  */
 
-import { z } from 'zod';
+import { z } from 'zod/v4';
+import type { PromptIR } from './compiler/ir.js';
 
 // ─── PromptState (FR-001) ──────────────────────────────────────────────────────
 
@@ -16,6 +17,7 @@ export interface ReferenceSlot {
   characterIndex: number | null;
   /** Base64 data URL or blob reference; empty string = slot reserved but unfilled */
   image: string;
+  sourcePrompt?: string;
 }
 
 export interface PromptState {
@@ -35,6 +37,28 @@ export interface PromptState {
   filters: string[];
   movieLookId: string;
   photographerId: string;
+
+  focalLengthId?: string;
+  directionId?: string;
+  genreId?: string;
+  styleMode?: NonNullable<PromptIR['style']>['mode'];
+  artStyle?: string;
+  target?: PromptIR['target'];
+  spatial?: PromptIR['spatial'];
+  physics?: PromptIR['physics'];
+  kinematics?: PromptIR['kinematics'];
+  anchoring?: PromptIR['anchoring'];
+  actionChoreography?: PromptIR['actionChoreography'];
+  motion?: PromptIR['motion'];
+  negativePrompt?: string;
+  seed?: number;
+  quality?: number;
+  tokenBudget?: number;
+  rawStylize?: boolean;
+  referenceOptions?: PromptIR['referenceOptions'];
+  timelineOptions?: PromptIR['timelineOptions'];
+  timeOfDay?: string;
+  colorTemperature?: string;
 
   // Animate-mode catalogs
   animeGenreId: string;
@@ -129,6 +153,17 @@ export type PresetLibrary = z.infer<typeof PresetLibrarySchema>;
  * Rejects unknown fields via strict parsing.
  */
 export function validateLibrary(data: unknown): PresetLibrary {
-  return PresetLibrarySchema.parse(data);
+  const library = PresetLibrarySchema.parse(data);
+  for (const [category, entries] of Object.entries(library)) {
+    if (!Array.isArray(entries)) continue;
+    const seen = new Set<string>();
+    for (const entry of entries) {
+      const key = entry.id.toLowerCase();
+      if (seen.has(key)) throw new Error(`Duplicate ${category} preset ID: ${entry.id}`);
+      if (entry.category !== category) throw new Error(`Preset ${entry.id} category must be ${category}`);
+      seen.add(key);
+    }
+  }
+  return library;
 }
 

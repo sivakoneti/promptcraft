@@ -1,270 +1,235 @@
-<div align="center">
-
 # Promptcraft
 
-**Production-Grade Prompt Assembly Engine & Agent Interface for Cinematic Image & Video Generation**
+A deterministic TypeScript engine and CLI for assembling image, animation, edit and video prompts from a shared cinematic preset library. It includes Director timelines, spatial blocking, camera motion, physical action, reference-image instructions and automatic diagnostics.
 
-[![CI](https://github.com/sivakoneti/promptcraft/actions/workflows/ci.yml/badge.svg)](https://github.com/sivakoneti/promptcraft/actions)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Runtime: Bun](https://img.shields.io/badge/Built%20with-Bun-f472b6.svg)](https://bun.sh)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178c6.svg)](https://www.typescriptlang.org/)
-[![Tenx Managed](https://img.shields.io/badge/Harness-Tenx%20SDLC-black.svg)](.tenx/)
+Promptcraft produces **prompt text and portable metadata**, not provider API requests. Target names select text dialects. Provider model versions and generation settings are not pinned implicitly, and output quality still depends on the generation model and the scene you describe.
 
-*Deterministic, zero-hallucination prompt synthesis with 16 cinematic preset catalogs, 26 camera movements, multi-character reference resolution, and Kling/Veo multi-shot director timelines.*
+## Quick start
 
-[Quickstart](#quickstart) • [Core Capabilities](#core-capabilities) • [AI Agent Integration](#ai-agent-integration) • [Action Reference](#action-reference) • [Architecture](#architecture) • [Testing & CI](#testing--ci)
-
----
-
-</div>
-
-## Overview
-
-Modern text-to-image and generative video models (Flux, Midjourney, Kling, Veo, Sora, Stable Diffusion) require precise, structured prompt syntax to yield consistent results. Ad-hoc natural language prompts frequently produce inconsistent optics, lighting mismatches, and broken multi-character identities.
-
-**Promptcraft** solves this by providing:
-1. **Deterministic Master Assemblers**: Byte-exact ordering for camera gear, focal lengths, lighting, film stocks, movie looks, and guardrails.
-2. **16 Curated Preset Catalogs**: Over 500+ verified cinematic dimensions embedded directly in binary builds.
-3. **Multi-Character Priority Pruning**: Resolves reference image slots (`face`, `outfit`, `scene`, `global`) by strict priority order.
-4. **Director Multi-Shot Timeline**: Compiles Kling-compliant multi-shot sequences with duration tags (3–15s clamps) and character limits.
-5. **Dual Interface**: Native standalone binary with both CLI flag syntax and structured JSON IPC over `stdin`/`stdout`.
-
----
-
-## Quickstart
-
-### 1. Prerequisites
-- [Bun](https://bun.sh) (v1.1+ recommended)
-
-### 2. Installation & Build
 ```bash
-git clone https://github.com/sivakoneti/promptcraft.git
-cd promptcraft
 bun install
-
-# Compile zero-dependency standalone native executable
+bun test
+bun run typecheck
 bun run build:cli
-# Compiled binary located at: ./bin/promptcraft
-```
-
-### 3. Basic CLI Usage
-
-#### Photographic / Cinematic Prompt
-```bash
-./bin/promptcraft photo \
-  --subject "cyberpunk detective examining glowing holographic data" \
-  --shot close-up \
-  --lighting neon-lit \
-  --camera arri-alexa-65 \
-  --lens anamorphic-cinema-lens \
-  --film kodak-vision3-500t \
-  --movie-look blade-runner-2049 \
-  --aspect 21:9 \
-  --raw
-```
-**Output:**
-```text
-A photographic image of a Close up shot of cyberpunk detective examining glowing holographic data. Captured with the look of a ARRI ALEXA 65, Anamorphic Cinema, Kodak Vision3 500T film. With the visual aesthetic of the movie Blade Runner 2049 with amber desert tones, cyan shadows, clean contrast, minimal grain Don't blur faces randomly. The image should be in a 21:9 format.
-```
-
-#### Video Mode with Camera Movement
-```bash
-./bin/promptcraft video \
-  --video-prompt "hypercar accelerating across rainy bridge" \
-  --movement "Orbit" \
-  --env "neon reflections on wet asphalt at midnight" \
-  --mood "high adrenaline" \
-  --raw
-```
-**Output:**
-```text
-hypercar accelerating across rainy bridge orbit 360 rotation around subject neon reflections on wet asphalt at midnight, high adrenaline
-```
-
----
-
-## Core Capabilities
-
-```
-                       ┌───────────────────────────────────────────────┐
-                       │               Promptcraft Engine              │
-                       └──────────────────────┬────────────────────────┘
-                                              │
-         ┌──────────────────┬─────────────────┼─────────────────┬──────────────────┐
-         ▼                  ▼                 ▼                 ▼                  ▼
-    Photo Mode         Anime Mode         Edit Mode         Video Mode       Director Mode
- (Cinematic Optics)  (Anime & Comics)   (In-Painting)     (26 Movements)   (Kling Multi-Shot)
-         │                  │                 │                 │                  │
-         └──────────────────┴─────────────────┼─────────────────┴──────────────────┘
-                                              │
-                                   ┌──────────┴──────────┐
-                                   │  Reference Engine   │
-                                   │  (Priority Pruning) │
-                                   └──────────┬──────────┘
-                                              ▼
-                                 [Deterministic Formatted Prompt]
-```
-
-### 1. 16 Curated Catalog Dimensions
-- **Shots & Angles** (24): `bird-s-eye-view`, `close-up`, `cutaway-shot`, `dutch-angle`, `entire-body`, `establishing-shot`, `extreme-close-up`, `worm-s-eye-view`...
-- **Cameras** (49): `arri-alexa-65`, `red-v-raptor-8k`, `imax-70mm`, `hasselblad-500c`, `leica-m6`, `sony-fx9`...
-- **Lenses** (12): `anamorphic-cinema-lens`, `helios-44-2-swirly-bokeh`, `catadioptric-mirror-lens`, `fisheye-lens`...
-- **Focal Lengths** (9): `8mm-fisheye`, `14mm-ultra-wide`, `24mm-wide-angle`, `35mm-wide`, `50mm-standard`, `85mm-portrait`...
-- **Film Stocks** (30): `kodak-vision3-500t`, `kodak-portra-400`, `cinestill-800t`, `fujifilm-eterna`, `agfa-vista`...
-- **Lighting & Mood** (29): `backlighting-rim-lighting`, `blue-hour`, `chiaroscuro-lighting`, `golden-hour`, `neon-lit`...
-- **Movie Aesthetics** (110): `blade-runner-2049`, `the-matrix`, `dune`, `alien`, `2001-a-space-odyssey`, `interstellar`...
-- **Photographer Styles** (99): `annie-leibovitz`, `gregory-crewdson`, `alec-soth`, `sebastiao-salgado`...
-- **Anime & Show Styles** (97): `cyberpunk`, `battle-shonen-anime`, `demon-slayer`, `evangelion`, `studio-ghibli`, `spider-verse`...
-
-### 2. Video Camera Movements (26 Movements)
-Verbatim keyword insertions at precise character offsets:
-- `Orbit` $\to$ `orbit 360 rotation around subject`
-- `Dolly in` / `Dolly out` $\to$ `camera dolly in` / `camera dolly out`
-- `Whip Pan` $\to$ `whip pan transition`
-- `Crash Zoom` $\to$ `crash zoom`
-- `Arc Shot` $\to$ `arc shot around subject`
-- `Slow Motion` $\to$ `slow motion moment`
-- `Shot Switch` $\to$ `Shot switch cut to:`
-
-### 3. Multi-Character Reference Resolution
-Ensures character and scene consistency across generation and edit workflows:
-- **Priority Hierarchy**: `global (1)` > `face (2)` > `scene (3)` > `outfit (4)` > `object (5)` > `anonymous (6)`.
-- Automatically caps to target model maximums while retaining overflow in structured metadata.
-- Synthesizes exact binding instructions: `image_1 as Character1 face reference; image_2 as scene style reference...`.
-
----
-
-## AI Agent Integration
-
-Promptcraft is designed from the ground up for agentic execution. Agents interact through JSON over `stdin`/`stdout`.
-
-### Agent Workflow
-
-```
-[Agent boots] ──> [calls `capabilities`] ──> [searches `catalog`] ──> [assembles prompt] ──> [dispatches to model]
-```
-
-### 1. Discover Capabilities
-```bash
 ./bin/promptcraft capabilities
 ```
-Returns machine-readable JSON containing action schemas, catalog counts, and movement tokens.
 
-### 2. Search Presets
+The standalone Linux binary embeds the catalog and does not require the repository or Bun at runtime. You can also run `bun engine/src/cli.ts` directly. The runtime schemas use the `zod/v4` entry point available in Zod 3.25.76 and later compatible 3.x releases.
+
 ```bash
-./bin/promptcraft catalog search "blade runner"
+./bin/promptcraft photo --subject "a cyclist waiting beside a rain-soaked cafe" \
+  --shot medium-shot --lighting neon-lighting --lens anamorphic-cinema-lens
+
+./bin/promptcraft anime --subject "a courier crossing a rooftop" \
+  --anime-show neon-revelation --no-text
+
+./bin/promptcraft edit --subject "replace the coat with a red raincoat" \
+  --lighting soft-lighting --no-text
+
+./bin/promptcraft video --subject "a cyclist rounds a wet corner" \
+  --camera arri-alexa-65 --lens anamorphic-cinema-lens \
+  --lighting neon-lighting --movement "Dolly in" --no-text
 ```
 
-### 3. Multi-Shot Director Timeline Generation
+All four assembly modes use the same catalog resolver. Camera, lens, film, focal length and aperture are independent selections: choosing a lens does not require choosing a camera. `noText` and reference instructions work in every mode. Animation presets supply their complete pre/post descriptions, and animation does not acquire photographic wording by default.
+
+## Compile a structured scene
+
+Use `compile` for nested controls and a target dialect. With an explicit command, JSON `action` is the **scene action**. With no command, use an envelope such as `{"action":"compile","ir":{...}}` to distinguish dispatch from scene content.
+
 ```bash
-echo '{
-  "action": "director_timeline",
-  "shots": [
-    { "note": "Low angle tracking shot of android sprinting through neon alley", "durationHint": "4" },
-    { "note": "Close up on optical sensors locking onto target", "durationHint": "3" },
-    { "note": "Drone pull-back revealing surrounding security perimeter", "durationHint": "5" }
-  ]
-}' | ./bin/promptcraft
+./bin/promptcraft compile --json '{
+  "target": "veo",
+  "subject": "a cyclist in a red raincoat",
+  "action": "brakes gently before turning left",
+  "environment": "a narrow wet street at dusk",
+  "optics": {
+    "camera": "arri-alexa-65",
+    "lens": "anamorphic-cinema-lens",
+    "focalLength": "35mm-wide",
+    "fStop": "f/2.8",
+    "shotType": "medium-shot"
+  },
+  "lighting": {"setup":"neon-lighting", "mood":"quiet anticipation"},
+  "spatial": {
+    "foreground":"rain beads on a parked bicycle",
+    "midground":"the cyclist at the intersection",
+    "background":"a cafe sign reflected on the road",
+    "trajectory":"travels screen-right, slows, then turns away from the camera",
+    "rackFocus":"hold focus on the cyclist as the foreground passes"
+  },
+  "motion": {"movement":"tracking-shot", "speed":"slow"},
+  "physics": {
+    "massAndInertia":"the bicycle leans under its rider while momentum carries it through the turn",
+    "causalChain":"braking slows the wheels, the rider shifts weight, then the bicycle turns"
+  },
+  "anchoring":{"continuityLock":true},
+  "actionChoreography":{
+    "anticipation":"the rider looks into the turn",
+    "execution":"the bicycle follows the curved path",
+    "settle":"the rider straightens and resumes pedaling",
+    "audioFoley":"soft tire hiss and light rainfall"
+  },
+  "aspectRatio":"16:9",
+  "noText":true
+}'
 ```
-**JSON Response:**
+
+`motion.timelineBeats` is an ordered sequence **within a continuous shot**. It never invents cuts or fixed durations. Use `motion.directorShots` for actual cuts.
+
+For coherent prompts, describe one clear subject and action first, then choose the framing and visual style. In video, distinguish the subject's path (`spatial.trajectory`) from the camera's path (`kinematics.primaryVector`). Add depth planes, focus, physical consequences and audio when they matter to the shot. Select compatible presets; the entire library is available, but combining all styles is not a useful default.
+
+## Director mode
+
+Every shot inherits the subject, environment, optics, lighting, style, spatial layout, motion, physics, constraints and references. `overrides` merges nested groups by field. Arrays replace inherited arrays; an empty array clears inherited filters or references. Use explicit `false` to disable an inherited boolean such as `noText` or `continuityLock`.
+
 ```json
 {
-  "status": "ok",
-  "action": "director_timeline",
-  "prompt": "Shot 1: Low angle tracking shot of android sprinting through neon alley (4s) Shot 2: Close up on optical sensors locking onto target (3s) Shot 3: Drone pull-back revealing surrounding security perimeter (5s)",
-  "data": {
-    "shots": [
-      { "index": 1, "prompt": "Low angle tracking shot of android sprinting through neon alley", "duration": "4" },
-      { "index": 2, "prompt": "Close up on optical sensors locking onto target", "duration": "3" },
-      { "index": 3, "prompt": "Drone pull-back revealing surrounding security perimeter", "duration": "5" }
-    ],
-    "shotType": "customize",
-    "totalDuration": 12,
-    "clampedDuration": 12,
-    "timelinePrompt": "Shot 1: Low angle tracking shot of android sprinting through neon alley (4s) Shot 2: Close up on optical sensors locking onto target (3s) Shot 3: Drone pull-back revealing surrounding security perimeter (5s)"
+  "action": "compile",
+  "ir": {
+    "target": "kling",
+    "subject": "a courier in a yellow coat",
+    "environment": "a rain-soaked station platform",
+    "style": {"movieLook":"blade-runner-2049"},
+    "lighting": {"setup":"neon-lighting"},
+    "anchoring": {"continuityLock":true},
+    "motion": {
+      "directorShots": [
+        {
+          "shotId":"arrival",
+          "note":"The courier steps onto the platform and stops beneath a lamp",
+          "duration":4,
+          "overrides":{
+            "optics":{"shotType":"wide-shot"},
+            "spatial":{"foreground":"wet railings","trajectory":"walks left to right"}
+          }
+        },
+        {
+          "shotId":"reaction",
+          "note":"The courier notices a departing train and turns toward it",
+          "duration":3,
+          "overrides":{
+            "optics":{"shotType":"close-up"},
+            "motion":{"movement":"static-shot"}
+          }
+        }
+      ]
+    }
   }
 }
 ```
 
-### 4. Live Fragment Synchronization
-When an agent or user alters only one parameter (e.g. changing lighting or aspect ratio), `sync` patches the prompt in-place:
+Feed this JSON to `promptcraft` on stdin. Each returned shot contains its fully inherited prompt, duration, start/end times and original source index. The same Director behavior works for all video dialects and `generic` with `mode: "video"`.
+
+Timeline limits are **configurable engine policy**, not claims about current provider limits:
+
+- Defaults: at most 6 nonempty shots, total duration between 3 and 15 seconds, advisory 512 characters per expanded shot.
+- Empty shots and shots beyond the limit are diagnosed. Omitted overflow shots are returned in `timeline.droppedShots`.
+- If the selected shots exceed or fall below the duration range, durations scale proportionally. Emitted durations and timeline boundaries agree to microsecond precision. `parameters.duration` describes only emitted shots.
+- Long notes and expanded prompts are preserved in full and warned about. They are never silently sliced at a character boundary.
+- An empty timeline has zero duration; compilation falls back to its shared single scene.
+- Set `timelineOptions` to change `maxShots`, `minTotalDuration`, `maxTotalDuration` or `maxPromptChars`. Invalid limits and nonpositive/nonfinite shot durations are rejected.
+
+The compatibility `director` / `director_timeline` command accepts `shots: [{note, durationHint, overrides?}]`, an optional shared `state` or `ir`, and `timelineOptions`. `durationHint` is a positive numeric string; missing values default to 5. `totalDuration` and `clampedDuration` both report the emitted duration; `requestedTotalDuration` reports the selected shots' original sum.
+
+## Preset discovery and supported fields
+
 ```bash
-./bin/promptcraft sync \
-  --prev "A photographic image of a subject. The scene is illuminated by studio lighting. The image should be in a 16:9 format." \
-  --next "A photographic image of a subject. The scene is illuminated by dramatic neon backlight. The image should be in a 16:9 format." \
-  --raw
+./bin/promptcraft catalog categories
+./bin/promptcraft catalog list focalLengths
+./bin/promptcraft catalog search "anamorphic"
+./bin/promptcraft suggest "rainy cyberpunk street"
+./bin/promptcraft capabilities
 ```
 
----
+There are 15 embedded preset categories plus cinematic movement catalogs. `suggest` returns ranked candidates, not an instruction to combine every candidate.
 
-## Action Reference
-
-| Command / Action | Description | Input Parameters |
+| Category | Assembly state field | Structured IR field |
 |---|---|---|
-| `assemble` / `photo` | Assemble cinematic photo prompt | `subject`, `shotId`, `lightingId`, `cameraId`, `lensId`, `filmId`, `movieLookId`, `photographerId`, `aspectRatio` |
-| `anime` | Assemble anime or western animation prompt | `subject`, `animeGenreId`, `animeShowStyleId`, `westernAnimationStyleId`, `lightingId`, `aspectRatio` |
-| `edit` | Assemble inpainting / modification prompt | `subjectAction`, `lightingId`, `references`, `aspectRatio` |
-| `video` / `assemble_video` | Assemble single-shot video prompt with movement | `videoPrompt`, `movementLabel`, `environment`, `mood`, `references` |
-| `director` / `director_timeline` | Compile Kling multi-shot timeline | `shots: Array<{ note: string, durationHint?: string }>` |
-| `references` / `resolve_references` | Resolve and prune reference slots | `slots: Array<ReferenceSlot>`, `options: { maxReferenceImages, order }` |
-| `sync` | Live prompt fragment patcher | `prevText: string`, `nextText: string` |
-| `catalog` | Explore and search preset database | `subcommand: categories \| list <category> \| search <query>` |
-| `capabilities` | Self-documenting agent catalog schema | None |
+| shots | `shotId` | `optics.shotType` |
+| directions | `directionId` | `optics.viewAngle` |
+| lighting | `lightingId` | `lighting.setup` |
+| cameras | `cameraId` | `optics.camera` |
+| focalLengths | `focalLengthId` | `optics.focalLength` |
+| lenses | `lensId` | `optics.lens` |
+| filmStocks | `filmId` | `optics.filmStock` |
+| genres | `genreId` | `style.genre` |
+| photographers | `photographerId` | `style.photographer` |
+| movieLooks | `movieLookId` | `style.movieLook` |
+| filters | `filters` | `filters` |
+| aspectRatios | `aspectRatio` | `aspectRatio` |
+| animeGenres | `animeGenreId` | `style.animeGenre` |
+| animeShowStyles | `animeShowStyleId` | `style.animeShow` |
+| westernAnimationStyles | `westernAnimationStyleId` | `style.westernStyle` |
 
----
+Resolution uses exact ID, exact label, category-specific alias, slug, then a unique prefix. Ambiguous prefixes and unknown selections are retained as custom text with a diagnostic. For animation, all selected descriptions are preserved; explicitly mixing photographic and animation styles produces a warning.
 
-## Architecture & Project Structure
+Assembly state also accepts `spatial`, `physics`, `kinematics`, `anchoring`, `actionChoreography`, `motion`, `referenceOptions`, `negativePrompt`, `seed`, `quality`, `rawStylize`, `tokenBudget` and `timelineOptions`. `styleMode` selects photo, anime, western-animation, illustration or cinematic rendering, including stylized video. `subjectAction` is a legacy alias for the complete subject description and takes precedence over `subject` when nonempty.
 
+`capabilities.schemas` contains the complete generated input schemas; `sceneCapabilities` describes mode support. Unknown fields are rejected so typos cannot silently disappear.
+
+## Targets, parameters and diagnostics
+
+Supported targets: `midjourney`, `flux`, `sdxl`, `imagen-3`, `kling`, `veo`, `sora`, `runway`, `wan`, `generic`. Each result retains exactly its requested target. `generic` supports every mode. Video targets infer video mode when mode is omitted; explicit image/video target mismatches are errors.
+
+Midjourney emits aspect, optional raw style, seed, quality and negative flags. Runway uses semantic channels; Veo uses blocks; other targets use scene prose, with separate negative descriptions for SDXL and Wan. Custom negatives are placed in prompt text when a dialect has no separate negative channel. Director negatives and guards stay scoped to each shot. `seed` is a portable caller hint; other than rendered flags, returned parameters need mapping to the caller's actual API.
+
+Every compilation returns:
+
+- `positivePrompt`, optional `negativePrompt`, `parameters`, and `target`.
+- `valid`, structured `diagnostics` with severity/code/field, and readable `warnings`.
+- `lint` with diagnostics and estimated emitted token count, after catalog expansion.
+- `timeline` when Director shots were supplied, plus reference resolution and per-shot reference metadata where applicable.
+
+Optical contradictions are errors. Multiple camera axes, conflicting motion, mixed style intent, unknown presets and output-budget overruns are warnings. Temporal-only fields in image modes and unsupported target parameters are explicitly diagnosed. Warnings preserve output; errors set `valid: false` and cause CLI failure status.
+
+The default token budget is an advisory 2048, adjustable with `tokenBudget`. The estimate is `ceil(emitted text characters / 4)`, not a provider tokenizer or hard model limit. Text is not truncated automatically.
+
+`--raw` prints only the prompt on stdout and diagnostics on stderr. Normal CLI output is structured JSON. Use `lint` with the same IR or `validate --json '{"type":"ir","ir":{...}}'` for validation. Complex nested fields are passed through `--json`, `--state`, or stdin; simple controls have flags listed by `help`.
+
+## Reference images
+
+`references` holds entries with `type`, `characterIndex` and `image`, plus optional `sourcePrompt`. Character face/outfit/object entries require a nonnegative character index. Empty image slots are inactive.
+
+Generation order places character references before scene/global references; edit mode puts the global source first. With an explicit `referenceOptions.maxReferenceImages`, priority pruning retains the most important references and returns overflow metadata with a warning. A zero or absent cap means unlimited. No target-specific reference count is guessed. Reference numbering describes the prompt; callers still supply the corresponding assets to their generation service.
+
+## TypeScript and MCP
+
+```ts
+import { PromptIRSchema, compilePrompt, assembleDetailed, createDefaultState } from './engine/src/index.ts';
+import { embeddedPresetLibrary } from './engine/src/library-data.ts';
+
+const ir = PromptIRSchema.parse({ target: 'flux', subject: 'a fox', style: { mode: 'illustration' } });
+const compiled = compilePrompt(ir, embeddedPresetLibrary);
+const assembled = assembleDetailed({ ...createDefaultState(), subject: 'a fox' }, embeddedPresetLibrary);
 ```
-promptcraft/
-├── .github/workflows/ci.yml       # GitHub Actions CI pipeline
-├── .tenx/                         # Tenx SDLC management harness
-│   ├── conventions/CON-001...     # Architecture and coding conventions
-│   ├── docs/DOC-001...            # Deep-dive architecture overview
-│   ├── epics/EPC-001...           # Epic roadmap
-│   └── specs/SPC-001...           # Technical specification & tickets
-├── bin/
-│   └── promptcraft                # Standalone native compiled executable (Bun)
-├── engine/
-│   ├── library/
-│   │   ├── presets.json           # 16 dimension preset catalog definitions
-│   │   └── video-movements.ts     # 26 camera movement keyword catalog
-│   └── src/
-│       ├── assemble.ts            # Master mode assembler
-│       ├── cli.ts                 # Dual interface CLI dispatcher
-│       ├── cli.test.ts            # CLI integration tests
-│       ├── fragments.ts           # Pure fragment generator functions
-│       ├── library-data.ts        # Embedded catalog export for zero-dep binary
-│       ├── references.ts          # Priority-based reference resolution engine
-│       ├── state.ts               # Zod schemas and state definitions
-│       ├── sync.ts                # In-place prompt synchronization
-│       └── video.ts               # Video prompt and director timeline engine
-├── package.json                   # Root scripts and workspace config
-├── CHANGELOG.md                   # Keep-a-Changelog tracking
-├── CONTRIBUTING.md                # Contribution guidelines
-├── SECURITY.md                    # Security policy
-└── LICENSE                        # MIT License
-```
 
----
+`assemble`, `assemblePhoto`, `assembleAnime`, `assembleEdit` and `assembleVideo` remain string-returning convenience functions. These convenience functions throw on error diagnostics. Prefer `assembleDetailed` when callers need warnings, parameters, references or a timeline. Fragment helpers use the shared resolver too.
 
-## Testing & CI
+Run `promptcraft mcp` to expose `compile_prompt`, `assemble_prompt`, `lint_prompt`, `search_catalog` and `capabilities`. Discovery schemas are generated from the runtime Zod schemas, including Director overrides. Tool validation errors are returned as MCP error results; malformed JSON does not terminate the server.
 
-All pull requests and commits are verified against automated test suites running on Bun via GitHub Actions.
+`sync(previousGeneratedBlock, nextGeneratedBlock)` replaces the generated block in every mode. It does not append stale video/anime text or attempt to edit surrounding hand-written content.
+
+## Development and migration
 
 ```bash
-# Run unit, golden-file, and CLI tests
 bun test
-
-# Run TypeScript typechecks
 bun run typecheck
-
-# Validate Tenx SDLC health
-tenx validate
+bun run build:cli
+bun run build:bundle
+bun run verify:builds
 ```
 
----
+The tests cover every preset in every assembly mode; shared fields across every target; video fields, Director inheritance and duration boundaries; schema discovery; actual CLI/MCP transports; reference handling; and deterministic output.
 
-## License
+The reliability update intentionally changes previous template output:
 
-This project is licensed under the terms of the [MIT License](LICENSE).
+- Video and edit now honor presets; photo honors `noText`; camera-free lens/film selections work.
+- Director output inherits scene settings, reports omissions and adjusts shot durations coherently. Long notes remain intact.
+- Kling single-shot action no longer becomes an invented two-shot sequence.
+- Sora/SDXL/Imagen/generic no longer report another target or receive Flux-specific defaults.
+- No Midjourney version flag is inserted implicitly.
+- Unknown fields and invalid durations are errors; ambiguous catalog prefixes no longer pick the first entry.
+- `sync` replaces generated content regardless of mode.
+
+Engineering work is tracked under `.tenx/`; follow `AGENTS.md` and require `tenx validate` to pass before completion.

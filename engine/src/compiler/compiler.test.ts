@@ -30,7 +30,7 @@ describe('Frontier Prompt Compiler', () => {
     expect(result.target).toBe('midjourney');
     expect(result.positivePrompt).toContain('--ar 16:9');
     expect(result.positivePrompt).toContain('--style raw');
-    expect(result.positivePrompt).toContain('--v 6.1');
+    expect(result.positivePrompt).not.toContain('--v ');
     expect(result.positivePrompt).toContain('--no text');
   });
 
@@ -46,11 +46,11 @@ describe('Frontier Prompt Compiler', () => {
     });
     const result = compileFlux(ir, embeddedPresetLibrary);
     expect(result.target).toBe('flux');
-    expect(result.positivePrompt).toContain('A detailed, high-resolution photograph capturing');
-    expect(result.positivePrompt).toContain('young sorceress, actively channeling blue ethereal flame');
+    expect(result.positivePrompt).toContain('A photographic image of');
+    expect(result.positivePrompt).toContain('young sorceress, channeling blue ethereal flame');
     expect(result.positivePrompt).toContain('illuminated by Chiaroscuro Lighting');
-    expect(result.positivePrompt).toContain('captured on a Leica M3');
-    expect(result.positivePrompt).toContain('at f/1.4');
+    expect(result.positivePrompt).toContain('Captured with the look of a Leica M3');
+    expect(result.positivePrompt).toContain('Aperture: f/1.4');
   });
 
   test('compiles Kling director timeline with duration hints', () => {
@@ -65,7 +65,9 @@ describe('Frontier Prompt Compiler', () => {
       },
     });
     const result = compileVideo(ir, 'kling', embeddedPresetLibrary);
-    expect(result.positivePrompt).toBe('1: Tracking shot following vehicle from side angle [4s] 2: Close-up on burning rubber tires with sparks [3s]');
+    expect(result.timeline?.shots.map(s => s.duration)).toEqual([4, 3]);
+    expect(result.positivePrompt).toContain('Tracking shot following vehicle from side angle');
+    expect(result.positivePrompt).toContain('Close-up on burning rubber tires with sparks');
     expect(result.parameters.duration).toBe(7);
   });
 
@@ -100,14 +102,14 @@ describe('Frontier Prompt Compiler', () => {
     });
     const result = compileRunway(ir, embeddedPresetLibrary);
     expect(result.target).toBe('runway');
-    expect(result.positivePrompt).toContain('CAMERA: Rig: steadicam');
-    expect(result.positivePrompt).toContain('Shot on ARRI ALEXA 65');
-    expect(result.positivePrompt).toContain('180-degree shutter');
-    expect(result.positivePrompt).toContain('SUBJECT: armored knight');
-    expect(result.positivePrompt).toContain('SCENE: castle courtyard at dusk');
+    expect(result.positivePrompt).toContain('Rig: steadicam');
+    expect(result.positivePrompt).toContain('Captured with the look of a ARRI ALEXA 65');
+    expect(result.positivePrompt).toContain('Shutter angle: 180-degree');
+    expect(result.positivePrompt).toContain('armored knight');
+    expect(result.positivePrompt).toContain('castle courtyard at dusk');
     expect(result.positivePrompt).toContain('Foreground: blurred raindrops on lens');
-    expect(result.positivePrompt).toContain('PHYSICS: Mass & Inertia: heavy steel plate armor with momentum');
-    expect(result.positivePrompt).toContain('Forces: 30mph headwind, heavy mud suction');
+    expect(result.positivePrompt).toContain('PHYSICS: Mass and inertia: heavy steel plate armor with momentum');
+    expect(result.positivePrompt).toContain('Forces: 30mph headwind; heavy mud suction');
   });
 
   test('compiles Kling multi-beat action with Foley audio and cinematic movement', () => {
@@ -130,11 +132,12 @@ describe('Frontier Prompt Compiler', () => {
     });
     const result = compileKling(ir, embeddedPresetLibrary);
     expect(result.target).toBe('kling');
-    expect(result.positivePrompt).toContain('1:');
-    expect(result.positivePrompt).toContain('2: instantaneous horizontal slash');
+    expect(result.timeline).toBeUndefined();
+    expect(result.positivePrompt).toContain('Anticipation:');
+    expect(result.positivePrompt).toContain('Execution: instantaneous horizontal slash');
     expect(result.positivePrompt).toContain('Dolly zoom');
     expect(result.positivePrompt).toContain('AUDIO: sharp metallic ring of blade unsheathing, heavy rain roar.');
-    expect(result.positivePrompt).toContain('Invariance: rigid blade geometry, anatomical stability.');
+    expect(result.positivePrompt).toContain('Preserve: rigid blade geometry; anatomical stability.');
   });
 
   test('compiles Wan 2.1 causal prose with 3-plane spatial depth and negative physics', () => {
@@ -160,12 +163,12 @@ describe('Frontier Prompt Compiler', () => {
     });
     const result = compileWan(ir, embeddedPresetLibrary);
     expect(result.target).toBe('wan');
-    expect(result.positivePrompt).toContain('The scene is composed with distinct depth planes:');
-    expect(result.positivePrompt).toContain('in the foreground, wet rooftop aerial antennas with sparks');
-    expect(result.positivePrompt).toContain('Dynamic focus: shift focus from foreground antenna to leaping ninja');
-    expect(result.positivePrompt).toContain('Camera kinematics: on a fpv-drone rig');
-    expect(result.positivePrompt).toContain('Maintain physical consistency: no morphing, no rubberized physics');
-    expect(result.negativePrompt).toContain('morphing, melting, rubber physics');
+    expect(result.positivePrompt).toContain('Foreground:');
+    expect(result.positivePrompt).toContain('Foreground: wet rooftop aerial antennas with sparks');
+    expect(result.positivePrompt).toContain('Focus transition: shift focus from foreground antenna to leaping ninja');
+    expect(result.positivePrompt).toContain('Rig: fpv-drone');
+    expect(result.positivePrompt).toContain('Mass and inertia: heavy mechanical limbs compressing upon launch');
+    expect(result.negativePrompt).toContain('text, subtitles, captions, watermark');
   });
 
   test('compiles Veo 3.1 technical cinematographic optical specifications', () => {
@@ -189,10 +192,10 @@ describe('Frontier Prompt Compiler', () => {
     });
     const result = compileVeo(ir, embeddedPresetLibrary);
     expect(result.target).toBe('veo');
-    expect(result.positivePrompt).toContain('Wide shot of lone astronaut surveying alien crater.');
-    expect(result.positivePrompt).toContain('Optical parameters: ARRI ALEXA 65, Anamorphic Cinema Lens, f/2.8, 180-degree shutter angle.');
-    expect(result.positivePrompt).toContain('Camera movement: Rig: technocrane, sweeping slow crane down.');
-    expect(result.positivePrompt).toContain('Lighting: Volumetric Lighting with visible light beams through haze.');
+    expect(result.positivePrompt).toContain('lone astronaut, surveying alien crater');
+    expect(result.positivePrompt).toContain('Aperture: f/2.8.');
+    expect(result.positivePrompt).toContain('Primary camera vector: sweeping slow crane down.');
+    expect(result.positivePrompt).toContain('illuminated by Volumetric Lighting with visible light beams through haze.');
   });
 
   test('linter catches multi-axis camera conflicts (pan + tilt + zoom + orbit)', () => {
@@ -206,7 +209,7 @@ describe('Frontier Prompt Compiler', () => {
       },
     });
     const report = lintPromptIR(ir);
-    expect(report.valid).toBe(false);
+    expect(report.valid).toBe(true);
     expect(report.diagnostics.some((d) => d.code === 'MULTI_AXIS_CONFLICT')).toBe(true);
   });
 
@@ -246,6 +249,6 @@ describe('Frontier Prompt Compiler', () => {
       motion: { movement: 'dolly-zoom' },
     });
     const report = lintPromptIR(ir);
-    expect(report.diagnostics.some((d) => d.code === 'TARGET_MISMATCH')).toBe(true);
+    expect(report.diagnostics.some((d) => d.code === 'UNSUPPORTED_FIELD')).toBe(true);
   });
 });

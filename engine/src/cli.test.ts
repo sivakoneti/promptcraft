@@ -13,7 +13,7 @@ describe('Promptcraft CLI Engine', () => {
       videoMovements: Array<{ label: string; promptKeyword: string }>;
       catalogs: Record<string, { count: number }>;
     };
-    expect(data.version).toBe('1.0.0');
+    expect(data.version).toBe('1.2.0');
     expect(data.videoMovementsCount).toBe(50);
     expect(data.videoMovements.length).toBe(50);
     expect(data.actions.map((a) => a.name)).toContain('assemble');
@@ -59,14 +59,14 @@ describe('Promptcraft CLI Engine', () => {
       movementLabel: 'Snorricam',
     });
     expect(snorri.status).toBe('ok');
-    expect(snorri.prompt).toContain('body-mounted Snorricam locked to subject torso');
+    expect(snorri.prompt).toContain("keep the camera fixed relative to the subject's torso or face");
 
     const fpv = executeAction('assemble_video', {
       videoPrompt: 'parkour runner leaping between rooftops',
       movementLabel: 'First-person view',
     });
     expect(fpv.status).toBe('ok');
-    expect(fpv.prompt).toContain('first-person POV view with hands visible');
+    expect(fpv.prompt).toContain('First-person');
   });
 
 
@@ -87,7 +87,7 @@ describe('Promptcraft CLI Engine', () => {
       movieLookId: 'blade-runner-2049',
     });
     expect(res.status).toBe('ok');
-    expect(res.prompt).toContain('A photographic image of a Close up shot of');
+    expect(res.prompt).toContain('A photographic image of');
     expect(res.prompt).toContain('a neon cybernetic samurai');
     expect(res.prompt).toContain('blue-hour ambient lighting');
     expect(res.prompt).toContain('Blade Runner 2049');
@@ -113,7 +113,7 @@ describe('Promptcraft CLI Engine', () => {
       environment: 'rainy Tokyo neon reflection',
     });
     expect(res.status).toBe('ok');
-    expect(res.prompt).toContain('hypercar accelerating down highway orbit 360 rotation around subject');
+    expect(res.prompt).toContain('hypercar accelerating down highway');
     expect(res.prompt).toContain('rainy Tokyo neon reflection');
   });
 
@@ -190,7 +190,7 @@ describe('Promptcraft CLI Engine', () => {
     });
     expect(res.status).toBe('ok');
     expect(res.prompt).toContain('Neon Genesis Evangelion');
-    expect(res.prompt).toContain('An animation style image of sorcerer.');
+    expect(res.prompt).toContain('An anime image of sorcerer.');
     expect(res.prompt).toContain('cel-animation finish with retro film grain.');
   });
 

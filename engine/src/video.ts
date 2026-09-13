@@ -1,44 +1,20 @@
-/**
- * SPC-003 FR-004, FR-005, FR-006: Video prompt composition engine.
- * Pure module — no DOM, no Chrome APIs, deterministic.
- *
- * Source of truth: extraction/EXTRACTION.md §6 as corrected by
- * extraction/TS_SOURCE_SUPPLEMENT.md (D11, V18, N12, N19) and the reference
- * apps' unminified shared-core (`services/video/adapters/dynamic.ts:392-409,
- * 995-1004`, `model-builders.ts:1114-1133`, `video/catalog/movement.ts`).
- *
- * Key source facts encoded here:
- * - Video prompting is free text per shot; movement keywords are inserted at
- *   the cursor (EXTRACTION §6) — no fixed template wraps the video prompt.
- * - Autofill = `[subjectAction, environment, mood].filter(Boolean).join(', ')`
- *   (EXTRACTION §6; renderer-side, not shared-core).
- * - Director mode: shots filtered to non-empty prompts, prompts trimmed and
- *   sliced to 512 chars (KLING_PROMPT_MAX_CHARS, N12), sliced to max 6 shots,
- *   per-shot duration defaults to 5 s, total duration clamped to 3..15 s,
- *   shot_type defaults to 'customize' (D11, dynamic.ts:995-1004).
- * - The source encodes multi-shot as a STRUCTURED array (`multi_prompt`) and
- *   clears the single prompt (`body.prompt = ''`, D11). No text connector
- *   template exists in the source, so `buildDirectorTimeline().timelinePrompt`
- *   renders the deterministic text form `Shot N: {prompt} ({duration}s)`
- *   (engine-defined; the source-identical structured shots are the contract).
- * - Aspect defaults: the source defines exactly one aspect default — the state
- *   default '16:9' (supplement V23); no video model sets `defaultAspectRatio`.
- */
+/** Video compatibility API backed by the shared scene compiler and timeline policy. */
 
 import type { PresetLibrary, PromptState } from './state.js';
 import { createDefaultState } from './state.js';
+import { stateToIR } from './compiler/adapter.js';
+import { compilePrompt, type CompilationResult } from './compiler/compilers.js';
+import { embeddedPresetLibrary } from './library-data.js';
+import { normalizeTimeline, DEFAULT_TIMELINE_LIMITS } from './compiler/timeline.js';
+import { PromptIRSchema, type PromptIR } from './compiler/ir.js';
+import type { Diagnostic } from './compiler/catalog.js';
 import {
   getMovementByLabel,
   MOVEMENT_COUNT,
   VIDEO_MOVEMENTS,
   type VideoMovementPromptOption,
 } from '../library/video-movements.js';
-import { getCinematicMovement } from '../library/cinematic-movements.js';
-import {
-  resolveReferences,
-  type ReferenceLabelMode,
-  type ReferenceSlotInput,
-} from './references.js';
+import type { ReferenceLabelMode } from './references.js';
 
 export { MOVEMENT_COUNT, VIDEO_MOVEMENTS, getMovementByLabel };
 export type { VideoMovementPromptOption };
@@ -74,12 +50,12 @@ export function buildAutofillSentence(state: PromptState): string {
 /** Source default `klingShotType` (dynamic.ts:997). */
 export const DIRECTOR_SHOT_TYPE = 'customize';
 /** Source KLING_PROMPT_MAX_CHARS (model-builders.ts:1114, N12). */
-export const DIRECTOR_PROMPT_MAX_CHARS = 512;
+export const DIRECTOR_PROMPT_MAX_CHARS = DEFAULT_TIMELINE_LIMITS.maxPromptChars;
 /** Source max shots: `directorShots.slice(0, 6)` (dynamic.ts:997). */
-export const DIRECTOR_MAX_SHOTS = 6;
+export const DIRECTOR_MAX_SHOTS = DEFAULT_TIMELINE_LIMITS.maxShots;
 /** Source duration clamp bounds (clampEvolinkKlingDuration, dynamic.ts:407-409). */
-export const DIRECTOR_MIN_TOTAL_DURATION = 3;
-export const DIRECTOR_MAX_TOTAL_DURATION = 15;
+export const DIRECTOR_MIN_TOTAL_DURATION = DEFAULT_TIMELINE_LIMITS.minTotalDuration;
+export const DIRECTOR_MAX_TOTAL_DURATION = DEFAULT_TIMELINE_LIMITS.maxTotalDuration;
 
 /** Ordered shot list entry per the SPC-003 contract. */
 export interface DirectorShot {
@@ -89,13 +65,14 @@ export interface DirectorShot {
   note?: string;
   /** Per-shot duration hint in seconds as string (source Shot.duration); default '5' */
   durationHint?: string;
+  overrides?: NonNullable<NonNullable<PromptIR['motion']>['directorShots']>[number]['overrides'];
 }
 
 export interface DirectorTimelineShot {
   /** 1-based position AFTER filtering and the 6-shot slice */
   index: number;
   shotId?: string;
-  /** Trimmed, ≤512 chars (source normalizeKlingSinglePrompt behavior) */
+  /** Trimmed text, preserved in full; budget overruns are diagnosed */
   prompt: string;
   /** String duration, default '5' (source Shot.duration) */
   duration: string;
@@ -106,23 +83,17 @@ export interface DirectorTimeline {
   shots: DirectorTimelineShot[];
   /** 'customize' (source klingShotType default, D11) */
   shotType: string;
-  /** Sum of shot durations before the clamp (dynamic.ts:998) */
+  /** Sum of emitted, adjusted shot durations */
   totalDuration: number;
-  /** totalDuration clamped to 3..15 s (clampEvolinkKlingDuration) */
+  /** Compatibility alias for totalDuration */
   clampedDuration: number;
   /** Deterministic text rendering for the target box (engine-defined, see header) */
   timelinePrompt: string;
-}
-
-/** Source `normalizeEvolinkKlingShotDuration` (dynamic.ts:392-395). */
-function normalizeShotDuration(value: unknown): number {
-  const parsed = Number.parseInt(String(value ?? ''), 10);
-  return Number.isFinite(parsed) && parsed > 0 ? parsed : 5;
-}
-
-/** Source `clampEvolinkKlingDuration` (dynamic.ts:407-409). */
-function clampDuration(seconds: number): number {
-  return Math.min(Math.max(seconds, DIRECTOR_MIN_TOTAL_DURATION), DIRECTOR_MAX_TOTAL_DURATION);
+  referenceResolution?: CompilationResult['referenceResolution'];
+  shotReferences?: CompilationResult['shotReferences'];
+  requestedTotalDuration: number;
+  diagnostics: Diagnostic[];
+  droppedShots: Array<{ note: string; duration: number; shotId?: string }>;
 }
 
 /**
@@ -133,24 +104,21 @@ function clampDuration(seconds: number): number {
 export function buildDirectorTimeline(
   shots: ReadonlyArray<DirectorShot>,
   fallbackDuration?: string,
+  options: { scene?: Partial<PromptIR>; library?: PresetLibrary; timelineOptions?: PromptIR['timelineOptions'] } = {},
 ): DirectorTimeline {
-  const normalized = (shots ?? [])
-    .filter((shot) => (shot.note ?? '').trim().length > 0)
-    .slice(0, DIRECTOR_MAX_SHOTS)
-    .map((shot, index) => ({
-      index: index + 1,
-      shotId: shot.shotId,
-      prompt: (shot.note ?? '').trim().slice(0, DIRECTOR_PROMPT_MAX_CHARS),
-      duration: String(normalizeShotDuration(shot.durationHint || fallbackDuration)),
-    }));
-
-  const totalDuration = normalized.reduce((sum, shot) => sum + Number(shot.duration), 0);
-  const clampedDuration = clampDuration(totalDuration);
-  const timelinePrompt = normalized
-    .map((shot) => `Shot ${shot.index}: ${shot.prompt} (${shot.duration}s)`)
-    .join(' ');
-
-  return { shots: normalized, shotType: DIRECTOR_SHOT_TYPE, totalDuration, clampedDuration, timelinePrompt };
+  const inputs = (shots ?? []).map(shot => ({
+    shotId: shot.shotId, note: shot.note || '', overrides: shot.overrides,
+    duration: shot.durationHint?.trim() ? Number(shot.durationHint) : fallbackDuration?.trim() ? Number(fallbackDuration) : 5,
+  }));
+  const plain = normalizeTimeline(inputs, options.timelineOptions || options.scene?.timelineOptions);
+  const compiled = options.scene || (shots ?? []).some(s => s.overrides) ? compilePrompt(PromptIRSchema.parse({ subject: 'a subject', noText: false, ...options.scene, target: options.scene?.target || 'generic', mode: 'video', timelineOptions: options.timelineOptions || options.scene?.timelineOptions, motion: { ...options.scene?.motion, directorShots: inputs } }), options.library || embeddedPresetLibrary) : undefined;
+  const result = compiled?.timeline || plain;
+  const normalized = result.shots.map(s => ({ index: s.index, shotId: s.shotId, prompt: s.prompt, duration: String(s.duration) }));
+  return { shots: normalized, shotType: DIRECTOR_SHOT_TYPE, totalDuration: result.totalDuration,
+    clampedDuration: result.totalDuration, requestedTotalDuration: result.requestedTotalDuration,
+    timelinePrompt: normalized.map(s => `Shot ${s.index}: ${s.prompt} (${s.duration}s)`).join(' '),
+    referenceResolution: compiled?.referenceResolution, shotReferences: compiled?.shotReferences,
+    diagnostics: compiled?.diagnostics || result.diagnostics, droppedShots: result.droppedShots };
 }
 
 // ─── Per-provider aspect defaults (FR-006) ─────────────────────────────────────
@@ -192,7 +160,7 @@ export function resolveVideoAspect(state: PromptState, provider: VideoProvider):
 export interface VideoState extends PromptState {
   /** Free-text video prompt for the current shot (EXTRACTION §6) */
   videoPrompt: string;
-  /** One of the 26 VIDEO_MOVEMENTS labels; its promptKeyword is inserted */
+  /** Movement catalog ID, label, alias or custom camera instruction */
   movementLabel: string;
   /** Character offset in videoPrompt where the keyword is inserted; undefined = append */
   movementCursor?: number;
@@ -222,43 +190,15 @@ export interface AssembleVideoOptions {
   referenceLabelMode?: ReferenceLabelMode;
 }
 
-/**
- * Video prompt composition (FR-004): free-text prompt with the movement
- * keyword inserted + autofill fields + reference sentence, joined with single
- * spaces like the SPC-001 assemblers. Photo/edit/anime outputs are untouched.
- *
- * In director mode the prompt fragment is the deterministic timeline text
- * (`buildDirectorTimeline`); the autofill fields still apply.
- */
+/** Compile video state with shared catalog resolution, spatial semantics and Director inheritance. */
 export function assembleVideo(
   state: VideoState,
   library: PresetLibrary,
   options: AssembleVideoOptions = {},
 ): string {
-  // `library` participates in the barrel signature symmetry with the other
-  // assemblers; video mode has no library-resolved catalogs today (movement
-  // data is the standalone 26-entry table, EXTRACTION §4.15).
-
-  // Source: `directorShots.length > 0` AFTER filtering empty prompts
-  // (getEvolinkKlingDirectorShots) decides multi-shot vs single prompt; an
-  // all-empty shot list falls back to the single prompt (body.prompt kept).
-  const directorShots = state.directorShots.filter((shot) => (shot.note ?? '').trim().length > 0);
-  const prompt = state.directorMode && directorShots.length > 0
-    ? buildDirectorTimeline(directorShots).timelinePrompt
-    : insertMovementKeyword(
-        state.videoPrompt,
-        getMovementByLabel(state.movementLabel)?.promptKeyword ??
-          getCinematicMovement(state.movementLabel)?.promptKeyword ??
-          '',
-        state.movementCursor,
-      );
-
-  const resolution = resolveReferences(state.references as ReferenceSlotInput[], {
-    order: 'generate',
-    maxReferenceImages: options.maxReferenceImages,
-    labelMode: options.referenceLabelMode,
-  });
-
-  const fragments = [prompt, buildAutofillSentence(state), resolution.instruction.display];
-  return fragments.filter((fragment) => fragment.length > 0).join(' ');
+  const ir = stateToIR({ ...state, mode: 'video' });
+  ir.referenceOptions = { ...ir.referenceOptions, ...options };
+  const result = compilePrompt(ir, library);
+  if (!result.valid) throw new Error(result.diagnostics.filter(d => d.severity === 'error').map(d => d.message).join(' '));
+  return result.positivePrompt;
 }
