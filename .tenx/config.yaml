@@ -1,0 +1,9 @@
+# tenx harness configuration
+project: promptcraft
+description: "Pure TypeScript cinematic promptcraft engine and AI agent CLI"
+# code_root: the code repo this harness governs (hooks + AGENTS.md land there).
+# code_root: ..
+# Rule overrides for `tenx validate` (see rules.yaml defaults)
+rules:
+  stale_days: 14
+  quiet_days: 7
