@@ -4712,7 +4712,7 @@ function getMovementByLabel(label) {
 }
 
 // engine/src/compiler/ir.ts
-var ModelTargetSchema = _enum(["midjourney", "flux", "sdxl", "imagen-3", "kling", "veo", "sora", "runway", "wan", "generic"]);
+var ModelTargetSchema = _enum(["midjourney", "flux", "sdxl", "imagen-3", "kling", "veo", "sora", "runway", "wan", "minimax-h3", "generic"]);
 var PromptModeSchema = _enum(["photo", "anime", "edit", "video"]);
 var AspectRatioSchema = _enum(["16:9", "9:16", "1:1", "4:3", "3:4", "21:9", "3:2"]);
 var text = string2().trim().min(1);
@@ -5096,7 +5096,7 @@ function resolvePreset(library, category, input) {
 }
 
 // engine/src/compiler/scene.ts
-var VIDEO_TARGETS = ["kling", "veo", "sora", "runway", "wan"];
+var VIDEO_TARGETS = ["kling", "veo", "sora", "runway", "wan", "minimax-h3"];
 var sentence = (value) => value.trim() ? `${value.trim().replace(/[.\s]+$/, "")}.` : "";
 function resolveScene(input, library) {
   const ir = structuredClone(input);
@@ -5297,8 +5297,13 @@ var TARGET_CAPABILITIES = {
   runway: { medium: "video", format: "camera, subject, scene, physics channels", negativeChannel: false },
   wan: { medium: "video", format: "causal scene prose with negative channel", negativeChannel: true },
   sora: { medium: "video", format: "causal scene prose", negativeChannel: false },
-  veo: { medium: "video", format: "optical and environmental blocks", negativeChannel: false }
+  veo: { medium: "video", format: "optical and environmental blocks", negativeChannel: false },
+  "minimax-h3": { medium: "video", format: "integrated multimodal description with soundscape and score", negativeChannel: false }
 };
+function renderShotVisual(scene) {
+  const { sections: s } = scene;
+  return [...s.subject, ...s.lighting, ...s.optics, ...s.style, ...s.spatial, ...s.anchoring, ...s.motion, ...s.choreography, ...s.physics, ...s.constraints, ...s.references].join(" ");
+}
 function renderScene(scene) {
   const { sections: s, ir } = scene;
   if (ir.target === "runway") {
@@ -5311,6 +5316,19 @@ function renderScene(scene) {
       ["CONSTRAINTS", s.constraints],
       ["REFERENCES", s.references]
     ].filter(([, values]) => values.length).map(([label, values]) => `${label}: ${values.join(" ")}`).concat(s.audio).join(`
+`);
+  }
+  if (ir.target === "minimax-h3") {
+    const visual = renderShotVisual(scene);
+    const soundscape = s.audio.map((a) => a.replace(/^AUDIO:\s*/i, "")).filter(Boolean).join(" ") || undefined;
+    const music = "N/A";
+    const desc = `[Shot 1] ${visual}`;
+    return [
+      `integrated_multimodal_description: ${desc}`,
+      `overall_soundscape: ${soundscape || "N/A"}`,
+      `non_diegetic_music: ${music}`
+    ].join(`
+
 `);
   }
   const chunks = [...s.subject, ...s.lighting, ...s.optics, ...s.style, ...s.spatial, ...s.anchoring, ...s.motion, ...s.choreography, ...s.physics, ...s.constraints, ...s.references, ...s.audio];
@@ -5359,7 +5377,8 @@ function renderCompilation(input, library) {
       diagnostics.push(...shotScene.diagnostics.map((d) => ({ ...d, field: `motion.directorShots.${shot.sourceIndex}.${d.field || "overrides"}` })));
       shotReferences.push({ index: shot.index, resolution: shotScene.referenceResolution });
       const note = sentence(`Shot action: ${shot.prompt}`);
-      let prompt = `${renderScene(shotScene)} ${note}`;
+      const visual = ir.target === "minimax-h3" ? renderShotVisual(shotScene) : renderScene(shotScene);
+      let prompt = `${visual} ${note}`;
       if (shotScene.ir.negativePrompt)
         prompt += ` ${sentence(`Avoid: ${shotScene.ir.negativePrompt}`)}`;
       const budget = ir.timelineOptions?.maxPromptChars || 512;
@@ -5368,8 +5387,29 @@ function renderCompilation(input, library) {
       return { ...shot, prompt };
     });
     if (timeline.shots.length) {
-      positivePrompt = timeline.shots.map((s) => `Shot ${s.index} [${s.start}–${s.end}s; ${s.duration}s]: ${s.prompt}`).join(`
+      if (ir.target === "minimax-h3") {
+        const formatCut = (seconds) => {
+          const m = Math.floor(seconds / 60);
+          const s = seconds % 60;
+          return `${String(m).padStart(2, "0")}:${s.toFixed(3).padStart(6, "0")}`;
+        };
+        const shotBlocks = timeline.shots.map((s, idx) => {
+          const cutPrompt = idx === 0 ? s.prompt : s.prompt.replace(/^A\s+/, "a ").replace(/^An\s+/, "an ");
+          const cutPrefix = idx === 0 ? `[Shot 1]` : `[Shot ${s.index}] At ${formatCut(s.start)}, the camera cuts to`;
+          return `${cutPrefix} ${cutPrompt}`;
+        });
+        const soundscape = scene.sections.audio.map((a) => a.replace(/^AUDIO:\s*/i, "")).filter(Boolean).join(" ") || undefined;
+        positivePrompt = [
+          `integrated_multimodal_description: ${shotBlocks.join(" ")}`,
+          `overall_soundscape: ${soundscape || "N/A"}`,
+          `non_diegetic_music: N/A`
+        ].join(`
+
 `);
+      } else {
+        positivePrompt = timeline.shots.map((s) => `Shot ${s.index} [${s.start}–${s.end}s; ${s.duration}s]: ${s.prompt}`).join(`
+`);
+      }
       parameters.duration = timeline.totalDuration;
     }
   }
@@ -5389,7 +5429,7 @@ function renderCompilation(input, library) {
     if (negativePrompt)
       flags.push(`--no ${negativePrompt}`);
     positivePrompt += ` ${flags.join(" ")}`;
-  } else {
+  } else if (ir.target === "minimax-h3") {} else {
     positivePrompt += ` ${sentence(`The ${ir.mode === "video" ? "video" : "image"} should be in a ${ir.aspectRatio} format`)}`;
   }
   if (ir.mode !== "video" && ir.timelineOptions)
@@ -9055,7 +9095,7 @@ function semanticDiagnostics(ir, library) {
   const fStop = Number(ir.optics?.fStop?.replace(/^f\/?/i, ""));
   if (fStop > 22)
     diagnostics.push({ severity: "warning", code: "EXTREME_FSTOP", field: "optics.fStop", message: `Aperture f/${fStop} suggests pronounced diffraction; check the intended look.` });
-  const video = ir.mode === "video" || !ir.mode && ["kling", "veo", "sora", "runway", "wan"].includes(ir.target);
+  const video = ir.mode === "video" || !ir.mode && ["kling", "veo", "sora", "runway", "wan", "minimax-h3"].includes(ir.target);
   if (video) {
     const motion = [ir.motion?.movement, ir.kinematics?.primaryVector, ir.kinematics?.secondaryDrift].filter(Boolean).join(" ").toLowerCase();
     const axes = [/\b(pan|truck)\b/, /\b(tilt|pedestal|crane)\b/, /\b(dolly|zoom|push)\b/, /\b(orbit|roll|arc)\b/].filter((re) => re.test(motion)).length;
@@ -9090,6 +9130,7 @@ var compileVeo = targetCompiler("veo");
 var compileGeneric = targetCompiler("generic");
 var compileSDXL = targetCompiler("sdxl");
 var compileImagen = targetCompiler("imagen-3");
+var compileMinimaxH3 = targetCompiler("minimax-h3");
 
 // engine/src/assemble.ts
 function assembleDetailed(state, library) {
@@ -10298,7 +10339,7 @@ async function main() {
     const ir = stateToIR(normalizeState({
       ...promptState,
       target: typeof flags.target === "string" ? flags.target : "generic",
-      mode: flags.mode || (["kling", "veo", "sora", "runway", "wan"].includes(String(flags.target)) ? "video" : mode),
+      mode: flags.mode || (["kling", "veo", "sora", "runway", "wan", "minimax-h3"].includes(String(flags.target)) ? "video" : mode),
       movementLabel: typeof flags.movement === "string" ? flags.movement : ""
     }));
     if (typeof flags.action === "string" && flags.subject)

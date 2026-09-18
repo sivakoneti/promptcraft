@@ -5,7 +5,7 @@ import { getMovementByLabel } from '../../library/video-movements.js';
 import { resolvePreset, type CatalogCategory, type Diagnostic } from './catalog.js';
 import type { PromptIR } from './ir.js';
 
-export const VIDEO_TARGETS = ['kling', 'veo', 'sora', 'runway', 'wan'];
+export const VIDEO_TARGETS = ['kling', 'veo', 'sora', 'runway', 'wan', 'minimax-h3'];
 export const sentence = (value: string) => value.trim() ? `${value.trim().replace(/[.\s]+$/, '')}.` : '';
 export interface SceneSections {
   subject: string[]; lighting: string[]; optics: string[]; style: string[]; spatial: string[];

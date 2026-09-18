@@ -15,7 +15,7 @@ import { sync } from '../sync.js';
 import { CINEMATIC_CAMERA_MOVEMENTS } from '../../library/cinematic-movements.js';
 const compile = (input: Record<string, unknown>) => compilePrompt(PromptIRSchema.parse({ subject: 'SUBJECT', noText: false, ...input }), library);
 const output = (input: Record<string, unknown>) => { const r = compile(input); return [r.positivePrompt, r.negativePrompt, JSON.stringify(r.parameters)].join(' '); };
-const videoTargets = ['kling', 'veo', 'sora', 'runway', 'wan', 'generic'];
+const videoTargets = ['kling', 'veo', 'sora', 'runway', 'wan', 'minimax-h3', 'generic'];
 const catalogFields: Record<CatalogCategory, keyof PromptState> = { shots: 'shotId', directions: 'directionId', lighting: 'lightingId', cameras: 'cameraId', focalLengths: 'focalLengthId', lenses: 'lensId', filmStocks: 'filmId', genres: 'genreId', photographers: 'photographerId', movieLooks: 'movieLookId', filters: 'filters', aspectRatios: 'aspectRatio', animeGenres: 'animeGenreId', animeShowStyles: 'animeShowStyleId', westernAnimationStyles: 'westernAnimationStyleId' };
 
 describe('SPC-007 FR-001/002: every library preset reaches every assembly mode', () => {

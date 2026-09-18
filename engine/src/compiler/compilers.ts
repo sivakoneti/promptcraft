@@ -20,4 +20,5 @@ export const compileVeo = targetCompiler('veo');
 export const compileGeneric = targetCompiler('generic');
 export const compileSDXL = targetCompiler('sdxl');
 export const compileImagen = targetCompiler('imagen-3');
-export function compileVideo(ir: PromptIR, target: 'kling' | 'veo' | 'sora' | 'runway' | 'wan', library: PresetLibrary): CompilationResult { return compilePrompt({ ...ir, target, mode: 'video' }, library); }
+export const compileMinimaxH3 = targetCompiler('minimax-h3');
+export function compileVideo(ir: PromptIR, target: 'kling' | 'veo' | 'sora' | 'runway' | 'wan' | 'minimax-h3', library: PresetLibrary): CompilationResult { return compilePrompt({ ...ir, target, mode: 'video' }, library); }

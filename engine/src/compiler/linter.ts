@@ -31,7 +31,7 @@ function semanticDiagnostics(ir: PromptIR, library: PresetLibrary): Diagnostic[]
   if (lens.includes('fisheye') && /telephoto|85mm|200mm|300mm/.test(focal)) diagnostics.push({ severity: 'error', code: 'OPTICAL_CONFLICT', field: 'optics', message: `Fisheye lens conflicts with focal length ${focal}.` });
   const fStop = Number(ir.optics?.fStop?.replace(/^f\/?/i, ''));
   if (fStop > 22) diagnostics.push({ severity: 'warning', code: 'EXTREME_FSTOP', field: 'optics.fStop', message: `Aperture f/${fStop} suggests pronounced diffraction; check the intended look.` });
-  const video = ir.mode === 'video' || (!ir.mode && ['kling', 'veo', 'sora', 'runway', 'wan'].includes(ir.target));
+  const video = ir.mode === 'video' || (!ir.mode && ['kling', 'veo', 'sora', 'runway', 'wan', 'minimax-h3'].includes(ir.target));
   if (video) {
     const motion = [ir.motion?.movement, ir.kinematics?.primaryVector, ir.kinematics?.secondaryDrift].filter(Boolean).join(' ').toLowerCase();
     const axes = [/\b(pan|truck)\b/, /\b(tilt|pedestal|crane)\b/, /\b(dolly|zoom|push)\b/, /\b(orbit|roll|arc)\b/].filter(re => re.test(motion)).length;

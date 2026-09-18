@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- Add MiniMax H3 (Hailuo 3.0) video target and Director multimodal compiler support (SPC-008)
+
 ## [1.2.0] - 2026-09-13
 
 ### Added

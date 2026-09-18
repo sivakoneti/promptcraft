@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest';
 import { PromptIRSchema } from './ir.js';
-import { compilePrompt, compileMidjourney, compileFlux, compileVideo, compileRunway, compileKling, compileWan, compileVeo } from './compilers.js';
+import { compilePrompt, compileMidjourney, compileFlux, compileVideo, compileRunway, compileKling, compileWan, compileVeo, compileMinimaxH3 } from './compilers.js';
 import { lintPromptIR } from './linter.js';
 import { embeddedPresetLibrary } from '../library-data.js';
 
@@ -196,6 +196,58 @@ describe('Frontier Prompt Compiler', () => {
     expect(result.positivePrompt).toContain('Aperture: f/2.8.');
     expect(result.positivePrompt).toContain('Primary camera vector: sweeping slow crane down.');
     expect(result.positivePrompt).toContain('illuminated by Volumetric Lighting with visible light beams through haze.');
+  });
+
+  test('compiles MiniMax H3 multimodal format with integrated description and soundscape', () => {
+    const ir = PromptIRSchema.parse({
+      target: 'minimax-h3',
+      subject: 'baker',
+      action: 'placing a fresh warm loaf onto wooden counter',
+      environment: 'cozy street bakery before sunrise',
+      optics: { camera: 'arri-alexa-65', shotType: 'medium-shot' },
+      lighting: { setup: 'volumetric-lighting', mood: 'warm and peaceful' },
+      actionChoreography: {
+        audioFoley: 'crisp sound of bread crust crackling, wooden counter thud',
+      },
+      physics: {
+        materialProperties: 'crisp golden crust with soft airy interior',
+      },
+    });
+    const result = compileMinimaxH3(ir, embeddedPresetLibrary);
+    expect(result.target).toBe('minimax-h3');
+    expect(result.positivePrompt).toContain('integrated_multimodal_description: [Shot 1]');
+    expect(result.positivePrompt).toContain('baker, placing a fresh warm loaf onto wooden counter');
+    expect(result.positivePrompt).toContain('cozy street bakery before sunrise');
+    expect(result.positivePrompt).toContain('overall_soundscape:');
+    expect(result.positivePrompt).toContain('crisp sound of bread crust crackling, wooden counter thud');
+    expect(result.positivePrompt).toContain('non_diegetic_music: N/A');
+    expect(result.parameters.aspectRatio).toBe('16:9');
+  });
+
+  test('compiles MiniMax H3 Director multi-shot mode with cuts and sequential timestamps', () => {
+    const ir = PromptIRSchema.parse({
+      target: 'minimax-h3',
+      subject: 'lone astronaut',
+      environment: 'lunar surface at twilight',
+      actionChoreography: {
+        audioFoley: 'pressurized suit breathing, radio hum',
+      },
+      motion: {
+        directorShots: [
+          { note: 'Camera tracks astronaut walking toward crater edge', duration: 4 },
+          { note: 'Close-up of visor reflecting Earth with solar glare', duration: 3 },
+        ],
+      },
+    });
+    const result = compilePrompt(ir, embeddedPresetLibrary);
+    expect(result.target).toBe('minimax-h3');
+    expect(result.positivePrompt).toContain('integrated_multimodal_description: [Shot 1]');
+    expect(result.positivePrompt).toContain('Camera tracks astronaut walking toward crater edge');
+    expect(result.positivePrompt).toContain('[Shot 2] At 00:04.000, the camera cuts to');
+    expect(result.positivePrompt).toContain('Close-up of visor reflecting Earth with solar glare');
+    expect(result.positivePrompt).toContain('overall_soundscape: pressurized suit breathing, radio hum');
+    expect(result.timeline?.shots).toHaveLength(2);
+    expect(result.parameters.duration).toBe(7);
   });
 
   test('linter catches multi-axis camera conflicts (pan + tilt + zoom + orbit)', () => {

@@ -39,10 +39,10 @@ Never use generic strings for all foundation models. Modern image and video mode
 |---|---|---|
 | **`midjourney`** | Dual CLIP + custom ranking | Dense descriptive keywords, camera shot headers, and trailing parameter flags (`--ar 16:9 --style raw --v 6.1 --no text, blurry`). |
 | **`flux`** / **`imagen-3`** | T5-XXL (dense language) | Natural language descriptive prose sentences with full subject, environment, physical lighting, and optical aperture depth-of-field narrative. |
-| **`kling`** / **`veo`** | Video diffusion transformer | Temporal beat structuring (`1: Shot [4s] 2: Shot [3s]`), physical camera motion keywords (`dolly-zoom`, `orbit-clockwise`, `slow-motion`). |
+| **`kling`** / **`veo`** | Video diffusion transformer | Temporal beat structuring, physical camera motion keywords (`dolly-zoom`, `orbit-clockwise`, `slow-motion`), or newline-delimited optical/lighting blocks. |
 | **`runway`** | Multi-channel semantic video | Structured bracket channels: `[Camera: ...] [Motion: ...] [Subject: ...] [Physics: ...]`. |
 | **`wan`** / **`sora`** | Causal video diffusion transformer | 3-plane spatial blocking (`Foreground: ... Midground: ... Background: ...`), kinematic drift, and causal action chains. |
-
+| **`minimax-h3`** | Multimodal video + native stereo audio | Official 3-part structure: `integrated_multimodal_description: [Shot 1] ...`, `overall_soundscape: ...`, `non_diegetic_music: ...` with Director cut timestamps (`[Shot 2] At 00:04.000, the camera cuts to ...`). |
 ### Compiling Prompts via CLI / JSON IPC:
 ```bash
 echo '{

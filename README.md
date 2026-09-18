@@ -7,9 +7,7 @@
   <a href="https://modelcontextprotocol.io"><img src="https://img.shields.io/badge/MCP-Native%20Server-8A2BE2.svg" alt="Model Context Protocol"></a>
   <a href="https://www.typescriptlang.org"><img src="https://img.shields.io/badge/TypeScript-Strict%205.x-3178C6.svg" alt="TypeScript"></a>
 </p>
-
-A deterministic prompt compiler and cinematic engine for AI image, animation, and video generation. It unifies prompt crafting across **Midjourney, Flux, Kling 3.0, Runway Gen-4, Veo 3.1, Sora 2, Wan 2.1, SDXL, and Imagen-3** using a shared structured AST, optical linting, 50+ cinematic camera movements, 15 preset categories, and native Model Context Protocol (MCP) support for Claude and Cursor.
-
+A deterministic prompt compiler and cinematic engine for AI image, animation, and video generation. It unifies prompt crafting across **Midjourney, Flux, Kling 3.0, Runway Gen-4, Veo 3.1, Sora 2, Wan 2.1, MiniMax H3 (Hailuo 3.0), SDXL, and Imagen-3** using a shared structured AST, optical linting, 50+ cinematic camera movements, 15 preset categories, and native Model Context Protocol (MCP) support for Claude and Cursor.
 Promptcraft produces **executable prompt text and portable parameters**, not raw API requests. Target names select model-specific dialects.
 
 ---
@@ -245,12 +243,9 @@ Assembly state also accepts `spatial`, `physics`, `kinematics`, `anchoring`, `ac
 
 ## Targets, parameters and diagnostics
 
-Supported targets: `midjourney`, `flux`, `sdxl`, `imagen-3`, `kling`, `veo`, `sora`, `runway`, `wan`, `generic`. Each result retains exactly its requested target. `generic` supports every mode. Video targets infer video mode when mode is omitted; explicit image/video target mismatches are errors.
+Supported targets: `midjourney`, `flux`, `sdxl`, `imagen-3`, `kling`, `veo`, `sora`, `runway`, `wan`, `minimax-h3`, `generic`. Each result retains exactly its requested target. `generic` supports every mode. Video targets infer video mode when mode is omitted; explicit image/video target mismatches are errors.
 
-Midjourney emits aspect, optional raw style, seed, quality and negative flags. Runway uses semantic channels; Veo uses blocks; other targets use scene prose, with separate negative descriptions for SDXL and Wan. Custom negatives are placed in prompt text when a dialect has no separate negative channel. Director negatives and guards stay scoped to each shot. `seed` is a portable caller hint; other than rendered flags, returned parameters need mapping to the caller's actual API.
-
-Every compilation returns:
-
+Midjourney emits aspect, optional raw style, seed, quality and negative flags. Runway uses semantic channels; Veo uses blocks; MiniMax H3 emits the official multimodal structure (`integrated_multimodal_description`, `overall_soundscape`, `non_diegetic_music`) with Director cuts and timestamps; other targets use scene prose, with separate negative descriptions for SDXL and Wan. Custom negatives are placed in prompt text when a dialect has no separate negative channel. Director negatives and guards stay scoped to each shot. `seed` is a portable caller hint; other than rendered flags, returned parameters need mapping to the caller's actual API.
 - `positivePrompt`, optional `negativePrompt`, `parameters`, and `target`.
 - `valid`, structured `diagnostics` with severity/code/field, and readable `warnings`.
 - `lint` with diagnostics and estimated emitted token count, after catalog expansion.

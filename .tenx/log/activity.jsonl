@@ -45,3 +45,12 @@
 {"ts": "2026-09-13T10:32:18+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-007-T3: in_progress -> done", "ref": "SPC-007"}
 {"ts": "2026-09-13T10:32:18+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-007-T4: in_progress -> done", "ref": "SPC-007"}
 {"ts": "2026-09-13T10:32:25+00:00", "type": "progress", "actor": "agent", "message": "Completed validation of unified prompt assembly across modes and targets: 364 tests pass with 12472 assertions, typecheck passes, standalone and bundle verify outside the repo, 0 tenx errors", "ref": "SPC-007"}
+{"ts": "2026-09-18T03:10:30+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-008-T1: todo -> in_progress", "ref": "SPC-008"}
+{"ts": "2026-09-18T03:10:50+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-008-T1: in_progress -> done", "ref": "SPC-008"}
+{"ts": "2026-09-18T03:10:53+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-008-T2: todo -> in_progress", "ref": "SPC-008"}
+{"ts": "2026-09-18T03:19:15+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-008-T2: in_progress -> done", "ref": "SPC-008"}
+{"ts": "2026-09-18T03:19:20+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-008-T3: todo -> in_progress", "ref": "SPC-008"}
+{"ts": "2026-09-18T03:19:53+00:00", "type": "progress", "actor": "agent", "message": "ticket SPC-008-T3: in_progress -> done", "ref": "SPC-008"}
+{"ts": "2026-09-18T03:20:54+00:00", "type": "progress", "actor": "agent", "message": "Added minimax-h3 video target supporting official multimodal prompt structure, soundscape separation, and Director cut timestamps", "ref": "SPC-008"}
+{"ts": "2026-09-18T03:21:27+00:00", "type": "blocker", "actor": "agent", "message": "evidence gate BLOCKED EPC-005 -> complete: no evidence linked - log work with `tenx log ... --ref EPC-005`, or attach it with `tenx set EPC-005 evidence <link/command>`, or re-run with --force (human override)", "ref": "EPC-005"}
+{"ts": "2026-09-18T03:21:30+00:00", "type": "progress", "actor": "agent", "message": "MiniMax H3 compiler support verified with 397 passing tests, typecheck passing, and bundle built", "ref": "EPC-005"}

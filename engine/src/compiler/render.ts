@@ -15,6 +15,7 @@ export const TARGET_CAPABILITIES: Record<ModelTarget, { medium: 'image' | 'video
   wan: { medium: 'video', format: 'causal scene prose with negative channel', negativeChannel: true },
   sora: { medium: 'video', format: 'causal scene prose', negativeChannel: false },
   veo: { medium: 'video', format: 'optical and environmental blocks', negativeChannel: false },
+  'minimax-h3': { medium: 'video', format: 'integrated multimodal description with soundscape and score', negativeChannel: false },
 };
 export interface CompilationDraft {
   target: ModelTarget; positivePrompt: string; negativePrompt?: string;
@@ -22,6 +23,10 @@ export interface CompilationDraft {
   diagnostics: Diagnostic[]; warnings: string[]; timeline?: NormalizedTimeline;
   referenceResolution: ResolvedScene['referenceResolution'];
   shotReferences?: Array<{ index: number; resolution: ResolvedScene['referenceResolution'] }>;
+}
+function renderShotVisual(scene: ResolvedScene): string {
+  const { sections: s } = scene;
+  return [...s.subject, ...s.lighting, ...s.optics, ...s.style, ...s.spatial, ...s.anchoring, ...s.motion, ...s.choreography, ...s.physics, ...s.constraints, ...s.references].join(' ');
 }
 function renderScene(scene: ResolvedScene): string {
   const { sections: s, ir } = scene;
@@ -31,6 +36,17 @@ function renderScene(scene: ResolvedScene): string {
       ['SCENE', [...s.lighting, ...s.style, ...s.spatial]], ['PHYSICS', s.physics],
       ['CONTINUITY', s.anchoring], ['CONSTRAINTS', s.constraints], ['REFERENCES', s.references],
     ].filter(([, values]) => (values as string[]).length).map(([label, values]) => `${label}: ${(values as string[]).join(' ')}`).concat(s.audio).join('\n');
+  }
+  if (ir.target === 'minimax-h3') {
+    const visual = renderShotVisual(scene);
+    const soundscape = s.audio.map(a => a.replace(/^AUDIO:\s*/i, '')).filter(Boolean).join(' ') || undefined;
+    const music = 'N/A';
+    const desc = `[Shot 1] ${visual}`;
+    return [
+      `integrated_multimodal_description: ${desc}`,
+      `overall_soundscape: ${soundscape || 'N/A'}`,
+      `non_diegetic_music: ${music}`,
+    ].join('\n\n');
   }
   const chunks = [...s.subject, ...s.lighting, ...s.optics, ...s.style, ...s.spatial, ...s.anchoring, ...s.motion, ...s.choreography, ...s.physics, ...s.constraints, ...s.references, ...s.audio];
   return chunks.join(ir.target === 'veo' ? '\n' : ' ');
@@ -71,14 +87,34 @@ export function renderCompilation(input: PromptIR, library: PresetLibrary): Comp
       diagnostics.push(...shotScene.diagnostics.map(d => ({ ...d, field: `motion.directorShots.${shot.sourceIndex}.${d.field || 'overrides'}` })));
       shotReferences.push({ index: shot.index, resolution: shotScene.referenceResolution });
       const note = sentence(`Shot action: ${shot.prompt}`);
-      let prompt = `${renderScene(shotScene)} ${note}`;
+      const visual = ir.target === 'minimax-h3' ? renderShotVisual(shotScene) : renderScene(shotScene);
+      let prompt = `${visual} ${note}`;
       if (shotScene.ir.negativePrompt) prompt += ` ${sentence(`Avoid: ${shotScene.ir.negativePrompt}`)}`;
       const budget = ir.timelineOptions?.maxPromptChars || 512;
       if (prompt.length > budget) diagnostics.push({ severity: 'warning', code: 'SHOT_PROMPT_BUDGET', field: `motion.directorShots.${shot.sourceIndex}`, message: `Expanded shot contains ${prompt.length} characters, above the configured budget ${budget}; preserved in full.` });
       return { ...shot, prompt };
     });
     if (timeline.shots.length) {
-      positivePrompt = timeline.shots.map(s => `Shot ${s.index} [${s.start}–${s.end}s; ${s.duration}s]: ${s.prompt}`).join('\n');
+      if (ir.target === 'minimax-h3') {
+        const formatCut = (seconds: number) => {
+          const m = Math.floor(seconds / 60);
+          const s = seconds % 60;
+          return `${String(m).padStart(2, '0')}:${s.toFixed(3).padStart(6, '0')}`;
+        };
+        const shotBlocks = timeline.shots.map((s, idx) => {
+          const cutPrompt = idx === 0 ? s.prompt : s.prompt.replace(/^A\s+/, 'a ').replace(/^An\s+/, 'an ');
+          const cutPrefix = idx === 0 ? `[Shot 1]` : `[Shot ${s.index}] At ${formatCut(s.start)}, the camera cuts to`;
+          return `${cutPrefix} ${cutPrompt}`;
+        });
+        const soundscape = scene.sections.audio.map(a => a.replace(/^AUDIO:\s*/i, '')).filter(Boolean).join(' ') || undefined;
+        positivePrompt = [
+          `integrated_multimodal_description: ${shotBlocks.join(' ')}`,
+          `overall_soundscape: ${soundscape || 'N/A'}`,
+          `non_diegetic_music: N/A`,
+        ].join('\n\n');
+      } else {
+        positivePrompt = timeline.shots.map(s => `Shot ${s.index} [${s.start}–${s.end}s; ${s.duration}s]: ${s.prompt}`).join('\n');
+      }
       parameters.duration = timeline.totalDuration;
     }
   }
@@ -91,6 +127,8 @@ export function renderCompilation(input: PromptIR, library: PresetLibrary): Comp
     if (ir.quality !== undefined) flags.push(`--q ${ir.quality}`);
     if (negativePrompt) flags.push(`--no ${negativePrompt}`);
     positivePrompt += ` ${flags.join(' ')}`;
+  } else if (ir.target === 'minimax-h3') {
+    // MiniMax H3 delivers the aspect ratio through the API parameters; prompt body stays pure H3 syntax
   } else {
     positivePrompt += ` ${sentence(`The ${ir.mode === 'video' ? 'video' : 'image'} should be in a ${ir.aspectRatio} format`)}`;
   }

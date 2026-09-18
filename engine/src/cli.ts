@@ -979,7 +979,7 @@ export async function main(): Promise<void> {
   }
 
   if (command === 'compile' || command === 'lint') {
-    const ir = stateToIR(normalizeState({ ...promptState, target: typeof flags.target === 'string' ? flags.target : 'generic', mode: flags.mode || (['kling', 'veo', 'sora', 'runway', 'wan'].includes(String(flags.target)) ? 'video' : mode),
+    const ir = stateToIR(normalizeState({ ...promptState, target: typeof flags.target === 'string' ? flags.target : 'generic', mode: flags.mode || (['kling', 'veo', 'sora', 'runway', 'wan', 'minimax-h3'].includes(String(flags.target)) ? 'video' : mode),
       movementLabel: typeof flags.movement === 'string' ? flags.movement : '',
     }));
     if (typeof flags.action === 'string' && flags.subject) ir.action = flags.action;

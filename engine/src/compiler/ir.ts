@@ -1,6 +1,6 @@
 import { z } from 'zod/v4';
 
-export const ModelTargetSchema = z.enum(['midjourney', 'flux', 'sdxl', 'imagen-3', 'kling', 'veo', 'sora', 'runway', 'wan', 'generic']);
+export const ModelTargetSchema = z.enum(['midjourney', 'flux', 'sdxl', 'imagen-3', 'kling', 'veo', 'sora', 'runway', 'wan', 'minimax-h3', 'generic']);
 export type ModelTarget = z.infer<typeof ModelTargetSchema>;
 export const PromptModeSchema = z.enum(['photo', 'anime', 'edit', 'video']);
 export const AspectRatioSchema = z.enum(['16:9', '9:16', '1:1', '4:3', '3:4', '21:9', '3:2']);
